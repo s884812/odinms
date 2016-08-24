@@ -244,11 +244,6 @@ public class ChannelServer implements Runnable, ChannelServerMBean {
             gmWhiteText = Boolean.parseBoolean(props.getProperty("world.gmWhiteText", "false"));
             cashshop = Boolean.parseBoolean(props.getProperty("world.cashshop", "false"));
             mts = Boolean.parseBoolean(props.getProperty("world.mts", "false"));
-            Properties dbProp = new Properties();
-            FileReader fileReader = new FileReader("Jogo/BancoDados/db.properties");
-            dbProp.load(fileReader);
-            fileReader.close();
-            DatabaseConnection.getConnection();
             Connection c = DatabaseConnection.getConnection();
             try {
                 PreparedStatement ps = c.prepareStatement("UPDATE accounts SET loggedin = 0");
