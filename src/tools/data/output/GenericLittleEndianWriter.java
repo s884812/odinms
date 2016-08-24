@@ -3,7 +3,7 @@ package tools.data.output;
 import java.nio.charset.Charset;
 
 public class GenericLittleEndianWriter implements LittleEndianWriter {
-    
+
     private static Charset ASCII = Charset.forName("BIG5");
     private ByteOutputStream bos;
 
@@ -121,6 +121,7 @@ public class GenericLittleEndianWriter implements LittleEndianWriter {
 
     /**
      * Write a long integer to the stream.
+     *
      * @param l The long integer to write.
      */
     @Override

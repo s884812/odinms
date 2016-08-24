@@ -17,8 +17,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ */
 package net.channel.handler;
 
 import java.rmi.RemoteException;
@@ -45,7 +44,7 @@ public class PartyOperationHandler extends AbstractMaplePacketHandler {
 
         switch (operation) {
             case 1: { // Create.
-                if(c.getPlayer().getGMLevel() == 3) {
+                if (c.getPlayer().getGMLevel() == 3) {
                     c.getSession().write(MaplePacketCreator.serverNotice(5, "GameMaster's JR's nao podem criar grupos."));
                     return;
                 }
@@ -85,7 +84,7 @@ public class PartyOperationHandler extends AbstractMaplePacketHandler {
             }
             case 3: { // Accept invitation.
                 int partyid = slea.readInt();
-                if(c.getPlayer().getGMLevel() == 3) {
+                if (c.getPlayer().getGMLevel() == 3) {
                     c.getSession().write(MaplePacketCreator.serverNotice(5, "GameMaster's JR's nao aceitar grupos."));
                     return;
                 }

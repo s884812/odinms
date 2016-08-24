@@ -49,9 +49,9 @@ public class HealOvertimeHandler extends AbstractMaplePacketHandler {
             //    }
             // c.getPlayer().getCheatTracker().checkMPRegen();
             c.getPlayer().addMP(healMP);
-        // if (c.getPlayer().getCurrentMaxMp() == c.getPlayer().getMp()) {
-        //       c.getPlayer().getCheatTracker().resetMPRegen();
-        //   }
+            // if (c.getPlayer().getCurrentMaxMp() == c.getPlayer().getMp()) {
+            //       c.getPlayer().getCheatTracker().resetMPRegen();
+            //   }
         }
     }
 }

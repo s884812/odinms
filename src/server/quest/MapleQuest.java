@@ -17,14 +17,13 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
-/*
+ /*
  * MapleQuest.java
  *
  * Created on 10. Dezember 2007, 23:09
  */
-
 package server.quest;
 
 import java.io.File;
@@ -49,8 +48,8 @@ import tools.FilePrinter;
  *
  * @author Matze
  */
-
 public class MapleQuest {
+
     private static Map<Integer, MapleQuest> quests = new HashMap<Integer, MapleQuest>();
     private static Map<Integer, MapleQuest> quests2 = new HashMap<Integer, MapleQuest>();
     protected int id;
@@ -67,12 +66,12 @@ public class MapleQuest {
     private static MapleData requirements = questData.getData("Check.img");
     private static MapleData info = questData.getData("QuestInfo.img");
     protected static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(MapleQuest.class);
-	
-	protected MapleQuest() {
-		relevantMobs = new LinkedList<Integer>();
-	}
-	
-	 private MapleQuest(int id) {
+
+    protected MapleQuest() {
+        relevantMobs = new LinkedList<Integer>();
+    }
+
+    private MapleQuest(int id) {
         try {
             this.id = id;
             relevantMobs = new LinkedList<Integer>();
@@ -134,8 +133,7 @@ public class MapleQuest {
             }
         }
     }
-        
-	
+
     public static MapleQuest getInstance(int id) {
         MapleQuest ret = quests.get(id);
         if (ret == null) {

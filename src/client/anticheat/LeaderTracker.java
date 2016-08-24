@@ -17,8 +17,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ */
 package client.anticheat;
 
 import java.sql.Connection;
@@ -31,26 +30,26 @@ import database.DatabaseConnection;
 import net.channel.ChannelServer;
 import tools.MaplePacketCreator;
 
-
 /**
  *
  * @author Carrino
  */
 public class LeaderTracker {
-   private int TOO_MUCH_DAMAGE;
-   private int TRYING_TO_HACK;
-   private int CHEATING_MERCHANT;
-   private int SPAMMING_MEGA;
-   private int SPAMMING_SUMMON_BAGS;
-   private MapleClient c;
 
-   public void Tracker() {
-       if (SPAMMING_MEGA >= 100 || TOO_MUCH_DAMAGE >= 100 || CHEATING_MERCHANT >= 15 || TRYING_TO_HACK >= 10 || SPAMMING_SUMMON_BAGS > 15) {
-           MapleCharacter player = c.getPlayer();
-           ChannelServer cserv = null;
+    private int TOO_MUCH_DAMAGE;
+    private int TRYING_TO_HACK;
+    private int CHEATING_MERCHANT;
+    private int SPAMMING_MEGA;
+    private int SPAMMING_SUMMON_BAGS;
+    private MapleClient c;
+
+    public void Tracker() {
+        if (SPAMMING_MEGA >= 100 || TOO_MUCH_DAMAGE >= 100 || CHEATING_MERCHANT >= 15 || TRYING_TO_HACK >= 10 || SPAMMING_SUMMON_BAGS > 15) {
+            MapleCharacter player = c.getPlayer();
+            ChannelServer cserv = null;
             if (player != null) {
                 if (!player.isGM() || player.isGM()) {
-                    String readableTargetName =player.getName();
+                    String readableTargetName = player.getName();
                     String ip = player.getClient().getSession().getRemoteAddress().toString().split(":")[0];
                     player.ban("lulz", false);
                     try {
@@ -59,32 +58,32 @@ public class LeaderTracker {
                     } catch (Exception e) {
                         //error your server is a noob
                     }
-              }
-         }
+                }
+            }
+        }
     }
- }
 
-   public void addSPAMMING_MEGA() {
-       SPAMMING_MEGA++;
-   }
+    public void addSPAMMING_MEGA() {
+        SPAMMING_MEGA++;
+    }
 
-   public void addSPAMMING_SUMMON_BAGS() {
-       SPAMMING_SUMMON_BAGS++;
-   }
+    public void addSPAMMING_SUMMON_BAGS() {
+        SPAMMING_SUMMON_BAGS++;
+    }
 
-   public void addCHEATING_MERCHANT () {
-       CHEATING_MERCHANT++;
-   }
+    public void addCHEATING_MERCHANT() {
+        CHEATING_MERCHANT++;
+    }
 
-   public void addTRYING_TO_HACK() {
-       TRYING_TO_HACK++;
-   }
+    public void addTRYING_TO_HACK() {
+        TRYING_TO_HACK++;
+    }
 
-   public void addTOO_MUCH_DAMAGE() {
-       TOO_MUCH_DAMAGE++;
-   }
+    public void addTOO_MUCH_DAMAGE() {
+        TOO_MUCH_DAMAGE++;
+    }
 
-      private static String getBannedReason(String name) {//THIS IS USELESS REMOVE
+    private static String getBannedReason(String name) {//THIS IS USELESS REMOVE
         Connection con = (Connection) DatabaseConnection.getConnection();
         try {
             PreparedStatement ps;
@@ -120,7 +119,7 @@ public class LeaderTracker {
             } else {
                 accid = rs.getInt("accountid");
             }
-            ps =    (PreparedStatement) con.prepareStatement("SELECT name, banned, banreason, macs FROM accounts WHERE id = ?");
+            ps = (PreparedStatement) con.prepareStatement("SELECT name, banned, banreason, macs FROM accounts WHERE id = ?");
             ps.setInt(1, accid);
             rs = ps.executeQuery();
             if (rs.getInt("banned") > 0) {

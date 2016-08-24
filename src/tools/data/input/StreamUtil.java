@@ -4,6 +4,7 @@ import java.awt.Point;
 import tools.data.output.LittleEndianWriter;
 
 public class StreamUtil {
+
     /**
      * Read a 2-D coordinate of short integers (x, y).
      *

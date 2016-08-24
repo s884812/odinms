@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package net.channel.handler;
 
 import client.MapleClient;
@@ -14,10 +13,13 @@ import tools.MaplePacketCreator;
 
 /**
  * Handler for Mobs damaging Mobs.
+ *
  * @author Jvlaple
  */
 public class MobDamageMobHandler extends AbstractMaplePacketHandler {
-    private static org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(MobDamageMobHandler.class);    
+
+    private static org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(MobDamageMobHandler.class);
+
     @Override
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         int oid1 = slea.readInt(); //Id of mob that got attacked?
@@ -33,8 +35,12 @@ public class MobDamageMobHandler extends AbstractMaplePacketHandler {
         } catch (NullPointerException npe) {
             return;
         }
-        if (attacker == null || attacked == null) return;
-		if (attacker.getId() == attacked.getId()) return;
+        if (attacker == null || attacked == null) {
+            return;
+        }
+        if (attacker.getId() == attacked.getId()) {
+            return;
+        }
         int dmg = attacker.getLevel() * 8;
         if (attacker.getLevel() > 50) {
             dmg *= 2;
@@ -48,4 +54,3 @@ public class MobDamageMobHandler extends AbstractMaplePacketHandler {
         attacked.getMap().broadcastMessage(MaplePacketCreator.mobDamageMob(attacked, dmg, 0));
     }
 }
-

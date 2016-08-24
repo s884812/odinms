@@ -20,7 +20,6 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package net.channel.handler;
 
 import client.MapleClient;
@@ -33,65 +32,72 @@ import client.MapleCharacter;
 import client.MaplePet;
 
 public class GuildOperationHandler extends AbstractMaplePacketHandler {
-	private boolean isGuildNameAcceptable(String name) {
-		if (name.length() < 3 || name.length() > 12)
-			return false;
 
-		for (int i = 0; i < name.length(); i++)
-			if (!Character.isLowerCase(name.charAt(i)) && !Character.isUpperCase(name.charAt(i)))
-				return false;
+    private boolean isGuildNameAcceptable(String name) {
+        if (name.length() < 3 || name.length() > 12) {
+            return false;
+        }
 
-		return true;
-	}
+        for (int i = 0; i < name.length(); i++) {
+            if (!Character.isLowerCase(name.charAt(i)) && !Character.isUpperCase(name.charAt(i))) {
+                return false;
+            }
+        }
 
-	private void respawnPlayer(MapleCharacter mc) {
-		mc.getMap().broadcastMessage(mc, MaplePacketCreator.removePlayerFromMap(mc.getId()), false);
-		mc.getMap().broadcastMessage(mc, MaplePacketCreator.spawnPlayerMapobject(mc), false);
-		if (mc.hasBattleShip()) {
-			mc.getMap().broadcastMessage(mc, MaplePacketCreator.showBuffeffect(mc.getId(), 52210006, 1, (byte) 3), false);
-		}
-		if (mc.getNoPets() > 0) {
-			for (MaplePet pet : mc.getPets()) {
-				mc.getMap().broadcastMessage(mc, MaplePacketCreator.showPet(mc, pet, false, false), false);
-			}
-		}
-	}
+        return true;
+    }
 
-	private class Invited {
-		public String name;
-		public int gid;
-		public long expiration;
+    private void respawnPlayer(MapleCharacter mc) {
+        mc.getMap().broadcastMessage(mc, MaplePacketCreator.removePlayerFromMap(mc.getId()), false);
+        mc.getMap().broadcastMessage(mc, MaplePacketCreator.spawnPlayerMapobject(mc), false);
+        if (mc.hasBattleShip()) {
+            mc.getMap().broadcastMessage(mc, MaplePacketCreator.showBuffeffect(mc.getId(), 52210006, 1, (byte) 3), false);
+        }
+        if (mc.getNoPets() > 0) {
+            for (MaplePet pet : mc.getPets()) {
+                mc.getMap().broadcastMessage(mc, MaplePacketCreator.showPet(mc, pet, false, false), false);
+            }
+        }
+    }
 
-		public Invited(String n, int id) {
-			name = n.toLowerCase();
-			gid = id;
-			expiration = System.currentTimeMillis() + 60 * 60 * 1000; // 1 hr expiration
-		}
+    private class Invited {
 
-		@Override
-		public boolean equals(Object other) {
-			if (!(other instanceof Invited))
-				return false;
-			Invited oth = (Invited) other;
-			return (gid == oth.gid && name.equals(oth));
-		}
-	}
+        public String name;
+        public int gid;
+        public long expiration;
 
-	private org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(this.getClass());
-	private java.util.List<Invited> invited = new java.util.LinkedList<Invited>();
-	private long nextPruneTime = System.currentTimeMillis() + 20 * 60 * 1000;
+        public Invited(String n, int id) {
+            name = n.toLowerCase();
+            gid = id;
+            expiration = System.currentTimeMillis() + 60 * 60 * 1000; // 1 hr expiration
+        }
 
-	@Override
-	public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-		// prune away any expired guild requests
-		// Prune away any expired guild requests.
+        @Override
+        public boolean equals(Object other) {
+            if (!(other instanceof Invited)) {
+                return false;
+            }
+            Invited oth = (Invited) other;
+            return (gid == oth.gid && name.equals(oth));
+        }
+    }
+
+    private org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(this.getClass());
+    private java.util.List<Invited> invited = new java.util.LinkedList<Invited>();
+    private long nextPruneTime = System.currentTimeMillis() + 20 * 60 * 1000;
+
+    @Override
+    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+        // prune away any expired guild requests
+        // Prune away any expired guild requests.
         if (System.currentTimeMillis() >= nextPruneTime) {
             Iterator<Invited> itr = invited.iterator();
             Invited inv;
             while (itr.hasNext()) {
                 inv = itr.next();
-                if (System.currentTimeMillis() >= inv.expiration)
+                if (System.currentTimeMillis() >= inv.expiration) {
                     itr.remove();
+                }
             }
 
             nextPruneTime = System.currentTimeMillis() + 20 * 60 * 1000;
@@ -142,17 +148,18 @@ public class GuildOperationHandler extends AbstractMaplePacketHandler {
                 }
                 String name = slea.readMapleAsciiString();
                 MapleGuildResponse mgr = MapleGuild.sendInvite(c, name);
-                if (mgr != null)
+                if (mgr != null) {
                     c.getSession().write(mgr.getPacket());
-                else {
+                } else {
                     Invited inv = new Invited(name, mc.getGuildId());
-                    if (!invited.contains(inv))
+                    if (!invited.contains(inv)) {
                         invited.add(inv);
+                    }
                 }
                 break;
             case 0x06:
                 // Accepted guild invitation.
-               // System.out.println(slea.toString());
+                // System.out.println(slea.toString());
 
                 if (mc.getGuildId() > 0) {
                     System.out.println("[hax] " + mc.getName() + " attempted to join a guild when s/he is already in one.");
@@ -243,8 +250,9 @@ public class GuildOperationHandler extends AbstractMaplePacketHandler {
                     return;
                 }
                 String ranks[] = new String[5];
-                for (int i = 0; i < 5; i++)
+                for (int i = 0; i < 5; i++) {
                     ranks[i] = slea.readMapleAsciiString();
+                }
                 try {
                     c.getChannelServer().getWorldInterface().changeRankTitle(mc.getGuildId(), ranks);
                 } catch (java.rmi.RemoteException re) {
@@ -261,8 +269,9 @@ public class GuildOperationHandler extends AbstractMaplePacketHandler {
                     System.out.println("[hax] " + mc.getName() + " is trying to change rank outside of his/her permissions.");
                     return;
                 }
-                if (newRank <= 1 || newRank > 5)
+                if (newRank <= 1 || newRank > 5) {
                     return;
+                }
                 try {
                     c.getChannelServer().getWorldInterface().changeRank(mc.getGuildId(), cid, newRank);
                 } catch (java.rmi.RemoteException re) {
@@ -303,8 +312,9 @@ public class GuildOperationHandler extends AbstractMaplePacketHandler {
                     return;
                 }
                 String notice = slea.readMapleAsciiString();
-                if (notice.length() > 100)
+                if (notice.length() > 100) {
                     return;
+                }
                 try {
                     c.getChannelServer().getWorldInterface().setGuildNotice(mc.getGuildId(), notice);
                 } catch (java.rmi.RemoteException re) {
@@ -314,7 +324,7 @@ public class GuildOperationHandler extends AbstractMaplePacketHandler {
                 }
                 break;
             default:
-           //     System.out.println("Unhandled GUILD_OPERATION packet: \n" + slea.toString());
+            //     System.out.println("Unhandled GUILD_OPERATION packet: \n" + slea.toString());
         }
     }
 }

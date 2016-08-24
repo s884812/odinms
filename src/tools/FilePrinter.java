@@ -1,6 +1,5 @@
 package tools;
 
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -43,10 +42,8 @@ public class FilePrinter {
             LOAD_CHAR = "loadCharFromDB.txt",
             GMCommand_Log = "Log_GMComandos.rtf",
             SESSION = "sessoesiniciadas.txt";//more to come (maps)
-    
-            // Quest's
-            
-    
+
+    // Quest's
     private static final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
     private static final String FILE_PATH = "Relatorios/Logs/" + sdf.format(Calendar.getInstance().getTime()) + "/";// + sdf.format(Calendar.getInstance().getTime()) + "/"
     private static final String emails = "Relatorios/Emails/" + sdf.format(Calendar.getInstance().getTime()) + "/";// + sdf.format(Calendar.getInstance().getTime()) + "/"
@@ -63,29 +60,28 @@ public class FilePrinter {
     private static final String printCashPQ = "Relatorios/CashPQ/" + sdf.format(Calendar.getInstance().getTime()) + "/";// + sdf.format(Calendar.getInstance().getTime()) + "/"
     private static final String printSiteMSG = "Relatorios/SitesMSG/" + sdf.format(Calendar.getInstance().getTime()) + "/";// + sdf.format(Calendar.getInstance().getTime()) + "/"
     private static final String printCashShop = "Relatorios/CashShop/" + sdf.format(Calendar.getInstance().getTime()) + "/";// + sdf.format(Calendar.getInstance().getTime()) + "/"
-    
-    
+
     public static void log(final String file, final String msg) {
-	FileOutputStream out = null;
-	try {
-	    out = new FileOutputStream(file, true);
-	    out.write(msg.getBytes());
-	    out.write("\n------------------------\n".getBytes());
-	} catch (IOException ess) {
-	} finally {
-	    try {
-		if (out != null) {
-		    out.close();
-		}
-	    } catch (IOException ignore) {
-	    }
-	}
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(file, true);
+            out.write(msg.getBytes());
+            out.write("\n------------------------\n".getBytes());
+        } catch (IOException ess) {
+        } finally {
+            try {
+                if (out != null) {
+                    out.close();
+                }
+            } catch (IOException ignore) {
+            }
+        }
     }
-        public static final String CurrentReadable_Time() {
-	return sdf.format(Calendar.getInstance().getTime());
+
+    public static final String CurrentReadable_Time() {
+        return sdf.format(Calendar.getInstance().getTime());
     }
-    
-    
+
     public static void printError(final String name, final Throwable t) {
         FileOutputStream out = null;
         final String file = FILE_PATH + ERROR + name;
@@ -156,7 +152,6 @@ public class FilePrinter {
     public static void print(final String name, final String s) {
         print(name, s, true);
     }
-    
 
     public static void print(final String name, final String s, boolean line) {
         FileOutputStream out = null;
@@ -182,11 +177,11 @@ public class FilePrinter {
             }
         }
     }
-    
-     public static void printEmail(final String name, final String s) {
+
+    public static void printEmail(final String name, final String s) {
         printEmail(name, s, true);
     }
-    
+
     public static void printEmail(final String name, final String s, boolean line) {
         FileOutputStream out = null;
         final String file = emails + name;
@@ -211,11 +206,11 @@ public class FilePrinter {
             }
         }
     }
-    
-     public static void printRelatorios(final String name, final String s) {
+
+    public static void printRelatorios(final String name, final String s) {
         printRelatorios(name, s, true);
     }
-    
+
     public static void printRelatorios(final String name, final String s, boolean line) {
         FileOutputStream out = null;
         final String file = primeiraEntrada + name;
@@ -240,13 +235,11 @@ public class FilePrinter {
             }
         }
     }
-    
-    
-    
+
     public static void printGM(final String name, final String s) {
         printGM(name, s, true);
     }
-    
+
     public static void printGM(final String name, final String s, boolean line) {
         FileOutputStream out = null;
         final String file = suporteGM + name;
@@ -271,11 +264,11 @@ public class FilePrinter {
             }
         }
     }
-    
-     public static void printJumpQuest(final String name, final String s) {
+
+    public static void printJumpQuest(final String name, final String s) {
         JumpQuest(name, s, true);
     }
-    
+
     public static void JumpQuest(final String name, final String s, boolean line) {
         FileOutputStream out = null;
         final String file = JumpQuest + name;
@@ -300,11 +293,11 @@ public class FilePrinter {
             }
         }
     }
-    
-     public static void printSiteMSG(final String name, final String s) {
+
+    public static void printSiteMSG(final String name, final String s) {
         printSiteMSG(name, s, true);
     }
-    
+
     public static void printSiteMSG(final String name, final String s, boolean line) {
         FileOutputStream out = null;
         final String file = printSiteMSG + name;
@@ -329,11 +322,11 @@ public class FilePrinter {
             }
         }
     }
-    
-     public static void printCashShop(final String name, final String s) {
+
+    public static void printCashShop(final String name, final String s) {
         printCashShop(name, s, true);
     }
-    
+
     public static void printCashShop(final String name, final String s, boolean line) {
         FileOutputStream out = null;
         final String file = printCashShop + name;
@@ -358,13 +351,11 @@ public class FilePrinter {
             }
         }
     }
-    
-    
-    
-        public static void printNovo(final String name, final String s) {
+
+    public static void printNovo(final String name, final String s) {
         printNovo(name, s, true);
     }
-    
+
     public static void printNovo(final String name, final String s, boolean line) {
         FileOutputStream out = null;
         final String file = printNovo + name;
@@ -389,11 +380,11 @@ public class FilePrinter {
             }
         }
     }
-    
-   public static void printBug(final String name, final String s) {
+
+    public static void printBug(final String name, final String s) {
         printBug(name, s, true);
     }
-    
+
     public static void printBug(final String name, final String s, boolean line) {
         FileOutputStream out = null;
         final String file = printBug + name;
@@ -418,12 +409,11 @@ public class FilePrinter {
             }
         }
     }
-    
-    
+
     public static void printHacker(final String name, final String s) {
         printHacker(name, s, true);
     }
-    
+
     public static void printHacker(final String name, final String s, boolean line) {
         FileOutputStream out = null;
         final String file = printHacker + name;
@@ -448,11 +438,11 @@ public class FilePrinter {
             }
         }
     }
-    
-     public static void printHackerItemVac(final String name, final String s) {
+
+    public static void printHackerItemVac(final String name, final String s) {
         printHackerItemVac(name, s, true);
     }
-    
+
     public static void printHackerItemVac(final String name, final String s, boolean line) {
         FileOutputStream out = null;
         final String file = printHackerItemVac + name;
@@ -477,11 +467,11 @@ public class FilePrinter {
             }
         }
     }
-    
+
     public static void printIncubadora(final String name, final String s) {
         printIncubadora(name, s, true);
     }
-    
+
     public static void printIncubadora(final String name, final String s, boolean line) {
         FileOutputStream out = null;
         final String file = printIncubadora + name;
@@ -506,11 +496,11 @@ public class FilePrinter {
             }
         }
     }
-    
-        public static void printCashPQ(final String name, final String s) {
+
+    public static void printCashPQ(final String name, final String s) {
         printCashPQ(name, s, true);
     }
-    
+
     public static void printCashPQ(final String name, final String s, boolean line) {
         FileOutputStream out = null;
         final String file = printCashPQ + name;
@@ -535,11 +525,11 @@ public class FilePrinter {
             }
         }
     }
-    
-     public static void printBanco(final String name, final String s) {
+
+    public static void printBanco(final String name, final String s) {
         printBanco(name, s, true);
     }
-    
+
     public static void printBanco(final String name, final String s, boolean line) {
         FileOutputStream out = null;
         final String file = printBanco + name;
@@ -564,8 +554,7 @@ public class FilePrinter {
             }
         }
     }
-    
-     
+
     private static String getString(final Throwable e) {
         String retValue = null;
         StringWriter sw = null;

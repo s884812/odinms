@@ -18,7 +18,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package config.skills;
 
 /**
@@ -26,6 +26,7 @@ package config.skills;
  * @author BubblesDev
  */
 public class Crusader {
+
     public static final int COMBO = 1111002;
     public static final int SWORD_PANIC = 1111003;
     public static final int AXE_PANIC = 1111004;

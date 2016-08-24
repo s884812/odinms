@@ -17,8 +17,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ */
 package net.channel.handler;
 
 import client.MapleClient;
@@ -27,18 +26,17 @@ import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 /**
-*
-* @author Acrylic (Terry Han)
-*/
-
+ *
+ * @author Acrylic (Terry Han)
+ */
 public class TouchingCashShopHandler extends AbstractMaplePacketHandler {
 
-	@Override
-	public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-		c.getSession().write(MaplePacketCreator.showNXMapleTokens(c.getPlayer()));
-		/* c.getSession().write(MaplePacketCreator.enableCSUse0());
+    @Override
+    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+        c.getSession().write(MaplePacketCreator.showNXMapleTokens(c.getPlayer()));
+        /* c.getSession().write(MaplePacketCreator.enableCSUse0());
 		c.getSession().write(MaplePacketCreator.enableCSUse1());
 		c.getSession().write(MaplePacketCreator.enableCSUse2());
 		c.getSession().write(MaplePacketCreator.enableCSUse3());*/
-	}
+    }
 }

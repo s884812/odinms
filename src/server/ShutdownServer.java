@@ -17,13 +17,12 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
-/*
+ /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package server;
 
 import java.sql.SQLException;
@@ -35,68 +34,67 @@ import net.channel.ChannelServer;
  *
  * @author Frz
  */
-
 public class ShutdownServer implements Runnable {
 
     private int channel;
 
     public ShutdownServer(int channel) {
-	this.channel = channel;
+        this.channel = channel;
     }
-    
-   @Override
-  public void run() {
-	try {
-	    ChannelServer.getInstance(channel).shutdown();
-	} catch (Throwable t) {
-	    System.err.println("SHUTDOWN ERROR" + t);
-	}
 
-	while (ChannelServer.getInstance(channel).getPlayerStorage().getConnectedClients() > 0) {
-	    try {
-		Thread.sleep(1000);
-	    } catch (InterruptedException e) {
-		System.err.println("ERROR" + e);
-	    }
-	}
+    @Override
+    public void run() {
+        try {
+            ChannelServer.getInstance(channel).shutdown();
+        } catch (Throwable t) {
+            System.err.println("SHUTDOWN ERROR" + t);
+        }
 
-	System.out.println("Channel " + channel + ", Deregistering channel");
+        while (ChannelServer.getInstance(channel).getPlayerStorage().getConnectedClients() > 0) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                System.err.println("ERROR" + e);
+            }
+        }
 
-	try {
-	    ChannelServer.getWorldRegistry().deregisterChannelServer(channel);
-	} catch (Exception e) {
-	    // we are shutting down
-	}
+        System.out.println("Channel " + channel + ", Deregistering channel");
 
-	System.out.println("Channel " + channel + ", Unbinding ports...");
+        try {
+            ChannelServer.getWorldRegistry().deregisterChannelServer(channel);
+        } catch (Exception e) {
+            // we are shutting down
+        }
 
-	boolean error = true;
-	while (error) {
-	    try {
-		ChannelServer.getInstance(channel).unbind();
-		error = false;
-	    } catch (Exception e) {
-		error = true;
-	    }
-	}
+        System.out.println("Channel " + channel + ", Unbinding ports...");
 
-	System.out.println("Channel " + channel + ", closing...");
+        boolean error = true;
+        while (error) {
+            try {
+                ChannelServer.getInstance(channel).unbind();
+                error = false;
+            } catch (Exception e) {
+                error = true;
+            }
+        }
 
-	for (ChannelServer cserv : ChannelServer.getAllInstances()) {
-	    while (!cserv.hasFinishedShutdown()) {
-		try {
-		    Thread.sleep(1000);
-		} catch (InterruptedException e) {
-		    System.err.println("ERROR" + e);
-		}
-	    }
-	}
-	TimerManager.getInstance().stop();
-	try {
-	    DatabaseConnection.closeAll();
-	} catch (SQLException e) {
-	    System.err.println("THROW" + e);
-	}
-	System.exit(0);
+        System.out.println("Channel " + channel + ", closing...");
+
+        for (ChannelServer cserv : ChannelServer.getAllInstances()) {
+            while (!cserv.hasFinishedShutdown()) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    System.err.println("ERROR" + e);
+                }
+            }
+        }
+        TimerManager.getInstance().stop();
+        try {
+            DatabaseConnection.closeAll();
+        } catch (SQLException e) {
+            System.err.println("THROW" + e);
+        }
+        System.exit(0);
     }
 }

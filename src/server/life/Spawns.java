@@ -17,15 +17,18 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
-*/
+ */
 package server.life;
 
 import server.maps.MapleMap;
 
-
 public abstract class Spawns {
+
     public abstract MapleMonster getMonster();
+
     public abstract byte getCarnivalTeam();
+
     public abstract boolean shouldSpawn();
+
     public abstract MapleMonster spawnMonster(MapleMap map);
 }

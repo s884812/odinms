@@ -17,13 +17,12 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
-/*
+ /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package net.world.remote;
 
 import java.rmi.Remote;
@@ -36,8 +35,12 @@ import net.login.remote.LoginWorldInterface;
  * @author Matze
  */
 public interface WorldRegistry extends Remote {
+
     public WorldChannelInterface registerChannelServer(String authKey, ChannelWorldInterface cb) throws RemoteException;
+
     public WorldLoginInterface registerLoginServer(String authKey, LoginWorldInterface cb) throws RemoteException;
+
     public void deregisterChannelServer(int channel) throws RemoteException;
+
     public void deregisterLoginServer(LoginWorldInterface cb) throws RemoteException;
 }

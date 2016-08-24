@@ -28,8 +28,8 @@ public class MapleGuildCharacter implements java.io.Serializable // alias for a 
 {
 
     public static final long serialVersionUID = 2058609046116597760L;
-    private int level,  id,  channel,  jobid;
-    private int guildrank,  guildid;
+    private int level, id, channel, jobid;
+    private int guildrank, guildid;
     private int allianceRank;
     private boolean online;
     private String name;

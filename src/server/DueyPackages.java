@@ -13,8 +13,6 @@ import client.IItem;
  */
 public class DueyPackages {
 
-
-
     private String sender = null;
     private IItem item = null;
     private int mesos = 0;

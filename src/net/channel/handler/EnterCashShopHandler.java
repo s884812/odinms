@@ -17,8 +17,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ */
 package net.channel.handler;
 
 import client.MapleBuffStat;
@@ -32,45 +31,47 @@ import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 /**
-*
-* @author Acrylic (Terry Han)
-*/
-
+ *
+ * @author Acrylic (Terry Han)
+ */
 /**
  *
  * @author Acrylic
  */
 public class EnterCashShopHandler extends AbstractMaplePacketHandler {
+
     @Override
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-      MapleCharacter player = c.getPlayer();
-      if (player.getNoPets() > 0) {
-                player.unequipAllPets();
-            }
-            if (player.getBuffedValue(MapleBuffStat.MONSTER_RIDING) != null) {
-                player.cancelEffectFromBuffStat(MapleBuffStat.MONSTER_RIDING);
-            } if (player.getBuffedValue(MapleBuffStat.SUMMON) != null) {
-		player.cancelEffectFromBuffStat(MapleBuffStat.SUMMON);
-	    } if (player.getBuffedValue(MapleBuffStat.PUPPET) != null) {
-		player.cancelEffectFromBuffStat(MapleBuffStat.PUPPET);
-	    }
-            try {
-                WorldChannelInterface wci = c.getChannelServer().getWorldInterface();
-                wci.addBuffsToStorage(player.getId(), player.getAllBuffs());
-                wci.addCooldownsToStorage(player.getId(), player.getAllCooldowns());
-            } catch (RemoteException e) {
-                c.getChannelServer().reconnectWorld();
-            }
-            
-            player.setInCS(true);
-            player.getMap().removePlayer(player);
-            c.getSession().write(MaplePacketCreator.warpCS(c, false));
-            c.getSession().write(MaplePacketCreator.enableCSUse0());
-            c.getSession().write(MaplePacketCreator.enableCSUse1());
-            c.getSession().write(MaplePacketCreator.enableCSUse2());
-            c.getSession().write(MaplePacketCreator.enableCSUse3());
-            c.getSession().write(MaplePacketCreator.showNXMapleTokens(player));
-            c.getSession().write(MaplePacketCreator.sendWishList(player.getId(), false));
-            player.saveToDB(true, true);
+        MapleCharacter player = c.getPlayer();
+        if (player.getNoPets() > 0) {
+            player.unequipAllPets();
         }
+        if (player.getBuffedValue(MapleBuffStat.MONSTER_RIDING) != null) {
+            player.cancelEffectFromBuffStat(MapleBuffStat.MONSTER_RIDING);
+        }
+        if (player.getBuffedValue(MapleBuffStat.SUMMON) != null) {
+            player.cancelEffectFromBuffStat(MapleBuffStat.SUMMON);
+        }
+        if (player.getBuffedValue(MapleBuffStat.PUPPET) != null) {
+            player.cancelEffectFromBuffStat(MapleBuffStat.PUPPET);
+        }
+        try {
+            WorldChannelInterface wci = c.getChannelServer().getWorldInterface();
+            wci.addBuffsToStorage(player.getId(), player.getAllBuffs());
+            wci.addCooldownsToStorage(player.getId(), player.getAllCooldowns());
+        } catch (RemoteException e) {
+            c.getChannelServer().reconnectWorld();
+        }
+
+        player.setInCS(true);
+        player.getMap().removePlayer(player);
+        c.getSession().write(MaplePacketCreator.warpCS(c, false));
+        c.getSession().write(MaplePacketCreator.enableCSUse0());
+        c.getSession().write(MaplePacketCreator.enableCSUse1());
+        c.getSession().write(MaplePacketCreator.enableCSUse2());
+        c.getSession().write(MaplePacketCreator.enableCSUse3());
+        c.getSession().write(MaplePacketCreator.showNXMapleTokens(player));
+        c.getSession().write(MaplePacketCreator.sendWishList(player.getId(), false));
+        player.saveToDB(true, true);
+    }
 }

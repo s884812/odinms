@@ -16,6 +16,7 @@ import net.world.remote.WorldLoginInterface;
  * @author Matze
  */
 public class WorldLoginInterfaceImpl extends UnicastRemoteObject implements WorldLoginInterface {
+
     private static final long serialVersionUID = -4965323089596332908L;
 
     public WorldLoginInterfaceImpl() throws RemoteException {
@@ -33,7 +34,7 @@ public class WorldLoginInterfaceImpl extends UnicastRemoteObject implements Worl
     public boolean isAvailable() throws RemoteException {
         return true;
     }
- 
+
     public Map<Integer, Integer> getChannelLoad() throws RemoteException {
         Map<Integer, Integer> ret = new HashMap<Integer, Integer>();
         for (ChannelWorldInterface cwi : WorldRegistryImpl.getInstance().getAllChannelServers()) {
@@ -41,14 +42,15 @@ public class WorldLoginInterfaceImpl extends UnicastRemoteObject implements Worl
         }
         return ret;
     }
-	
-	@Override
-	public void deleteGuildCharacter(MapleGuildCharacter mgc) throws RemoteException{
-		WorldRegistryImpl wr = WorldRegistryImpl.getInstance();
-		wr.setGuildMemberOnline(mgc, false, -1);
-		if (mgc.getGuildRank() > 1)
-			wr.leaveGuild(mgc);
-		else
-			wr.disbandGuild(mgc.getGuildId());
-	}
+
+    @Override
+    public void deleteGuildCharacter(MapleGuildCharacter mgc) throws RemoteException {
+        WorldRegistryImpl wr = WorldRegistryImpl.getInstance();
+        wr.setGuildMemberOnline(mgc, false, -1);
+        if (mgc.getGuildRank() > 1) {
+            wr.leaveGuild(mgc);
+        } else {
+            wr.disbandGuild(mgc.getGuildId());
+        }
+    }
 }

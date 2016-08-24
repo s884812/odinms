@@ -17,13 +17,12 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
-/*
+ /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package net.world.remote;
 
 import java.rmi.Remote;
@@ -39,10 +38,13 @@ import net.world.guild.MapleGuildCharacter;
  */
 public interface WorldLoginInterface extends Remote {
 
-	public Properties getDatabaseProperties() throws RemoteException;
-	public Properties getWorldProperties() throws RemoteException;
-	public Map<Integer, Integer> getChannelLoad() throws RemoteException;
-	public boolean isAvailable() throws RemoteException;
-	
-	public void deleteGuildCharacter(MapleGuildCharacter mgc) throws RemoteException;
+    public Properties getDatabaseProperties() throws RemoteException;
+
+    public Properties getWorldProperties() throws RemoteException;
+
+    public Map<Integer, Integer> getChannelLoad() throws RemoteException;
+
+    public boolean isAvailable() throws RemoteException;
+
+    public void deleteGuildCharacter(MapleGuildCharacter mgc) throws RemoteException;
 }

@@ -22,7 +22,6 @@
 
     Handle MapleTV packet here. The packet sends information with what TV ch. it has shown to the client
  */
-
 package net.channel.handler;
 
 import client.MapleClient;
@@ -32,9 +31,9 @@ import tools.data.input.SeekableLittleEndianAccessor;
 
 public class MapleTVHandler extends AbstractMaplePacketHandler {
 
-	@Override
-	public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-	/*
+    @Override
+    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+        /*
 		D1 00 - header
 		07 00 4F 72 69 67 69 6E 32 - "Origin2"
 		00 00 00 00 - ?
@@ -45,10 +44,10 @@ public class MapleTVHandler extends AbstractMaplePacketHandler {
 		You could check who's actually watched the MapleTV here or atleast passed by...
 		This is why I don't have a fuckin clue why nexon implemented this packet.
 		If there's any suggestions, feel free to PM TheRamon
-	*/
-		String chString = slea.readMapleAsciiString();
-		slea.readInt();
-		slea.readInt();
-		//c.getSession().write(MaplePacketCreator.serverNotice(5, chString));
-	}
+         */
+        String chString = slea.readMapleAsciiString();
+        slea.readInt();
+        slea.readInt();
+        //c.getSession().write(MaplePacketCreator.serverNotice(5, chString));
+    }
 }

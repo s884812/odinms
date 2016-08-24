@@ -24,10 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * CashPQ
  * www.leaderms.com.br
  */
-
-
 package client.messages.commands;
-
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -65,9 +62,9 @@ public class PlayerCommand implements Command {
     @SuppressWarnings("static-access")
     @Override
     public void execute(MapleClient c, MessageCallback mc, String[] splitted) throws Exception, IllegalCommandSyntaxException {
-          MapleCharacter player = c.getPlayer();
-          ChannelServer cserv = c.getChannelServer();
-         if (splitted[0].equalsIgnoreCase("@gm") || splitted[0].equalsIgnoreCase("!gm")) {
+        MapleCharacter player = c.getPlayer();
+        ChannelServer cserv = c.getChannelServer();
+        if (splitted[0].equalsIgnoreCase("@gm") || splitted[0].equalsIgnoreCase("!gm")) {
             if (splitted.length == 1) {
                 mc.dropMessage("Tipo : @gm <mensagem>");
                 return;
@@ -90,10 +87,11 @@ public class PlayerCommand implements Command {
                 gmUsages.put(c.getPlayer().getId(), System.currentTimeMillis());
                 mc.dropMessage("Feito, aguarde uma resposta.");
             }
-        } if (splitted[0].equalsIgnoreCase("@bugs")) {
-                    FilePrinter.printBug("Bugs.rtf", "Bug relatado: " + StringUtil.joinStringFrom(splitted, 1) + "\r\nNo dia: " + sdf.format(Calendar.getInstance().getTime()) + " as " + sdf2.format(Calendar.getInstance().getTime()) + ".\r\nJogador: " + player.getName() + " (" + player.getAccountID() + ")");
-                    mc.dropMessage("Enviando seu relatorio..");
-          } else if (splitted[0].equalsIgnoreCase("@comandos") || splitted[0].equalsIgnoreCase("!comandos")) {
+        }
+        if (splitted[0].equalsIgnoreCase("@bugs")) {
+            FilePrinter.printBug("Bugs.rtf", "Bug relatado: " + StringUtil.joinStringFrom(splitted, 1) + "\r\nNo dia: " + sdf.format(Calendar.getInstance().getTime()) + " as " + sdf2.format(Calendar.getInstance().getTime()) + ".\r\nJogador: " + player.getName() + " (" + player.getAccountID() + ")");
+            mc.dropMessage("Enviando seu relatorio..");
+        } else if (splitted[0].equalsIgnoreCase("@comandos") || splitted[0].equalsIgnoreCase("!comandos")) {
             mc.dropMessage(" - LeaderMS v.62 -");
             for (CommandDefinition cd : getDefinition()) {
                 if (!cd.getCommand().equalsIgnoreCase("ajuda")) {
@@ -101,81 +99,76 @@ public class PlayerCommand implements Command {
                 }
             }
         } else if (splitted[0].equalsIgnoreCase("@dispose")) {
-                NPCScriptManager.getInstance().dispose(c);
-                c.getSession().write(MaplePacketCreator.enableActions());
-                mc.dropMessage("Feito!");
+            NPCScriptManager.getInstance().dispose(c);
+            c.getSession().write(MaplePacketCreator.enableActions());
+            mc.dropMessage("Feito!");
         } else if (splitted[0].equalsIgnoreCase("@grupofix")) {
-                    player.setParty(null);
-                    player.dropMessage("Por favor, recriar o grupo.");
+            player.setParty(null);
+            player.dropMessage("Por favor, recriar o grupo.");
 
-         } else if (splitted[0].equals("@evento")) {
+        } else if (splitted[0].equals("@evento")) {
             if (player.getClient().getChannelServer().eventOn == true) {
-                  c.getPlayer().setPreviousMap(c.getPlayer().getMapId());
-                  player.changeMap(player.getClient().getChannelServer().eventMap, 0);
-                  player.saveLocation(SavedLocationType.EVENTO);
+                c.getPlayer().setPreviousMap(c.getPlayer().getMapId());
+                player.changeMap(player.getClient().getChannelServer().eventMap, 0);
+                player.saveLocation(SavedLocationType.EVENTO);
             } else {
                 mc.dropMessage("Nao ha nenhum evento no momento.");
             }
-         } else if (splitted[0].equals("@sairevento")) {
+        } else if (splitted[0].equals("@sairevento")) {
             if (c.getChannelServer().eventOn == true) {
-                    player.changeMap(player.getSavedLocation(SavedLocationType.EVENTO), 0);
-                    player.clearSavedLocation(SavedLocationType.EVENTO);
+                player.changeMap(player.getSavedLocation(SavedLocationType.EVENTO), 0);
+                player.clearSavedLocation(SavedLocationType.EVENTO);
             } else {
                 c.getPlayer().dropMessage("Nao ha eventos ativos neste momento. Por favor, tente novamente mais tarde!");
                 return;
             }
         } else if (splitted[0].equals("@entrartot")) {
             if (player.getMapId() == 240000110) {
-                    player.changeMap(270000100);
+                player.changeMap(270000100);
             } else {
                 c.getPlayer().dropMessage("Voce nao esta na estacao de Leafre!");
                 return;
             }
         } else if (splitted[0].equals("@sairtot")) {
             if (player.getMapId() == 270000100) {
-                    player.changeMap(240000110);
+                player.changeMap(240000110);
             } else {
                 c.getPlayer().dropMessage("Voce nao esta na entrada do Templo!");
                 return;
             }
-        }
-         else if (splitted[0].equals("@jqrank")) {
-                              try {
-                    ResultSet rs = rankingJQ(false);
-                    player.dropMessage(" .:: Top 3 melhores jogadores de JQ ::. ");
-                    int i = 1;
-                    while (rs.next()) {
+        } else if (splitted[0].equals("@jqrank")) {
+            try {
+                ResultSet rs = rankingJQ(false);
+                player.dropMessage(" .:: Top 3 melhores jogadores de JQ ::. ");
+                int i = 1;
+                while (rs.next()) {
 
-                        player.dropMessage(i + ". <Nome> " + rs.getString("name") + " /  <JQ Points> " + rs.getInt("jqrank"));
-                        i++;
-                    }
-                } catch (SQLException ex) {
-                    Logger.getLogger(PlayerCommand.class.getName()).log(Level.SEVERE, null, ex);
+                    player.dropMessage(i + ". <Nome> " + rs.getString("name") + " /  <JQ Points> " + rs.getInt("jqrank"));
+                    i++;
                 }
-         }
-         else if (splitted[0].equals("@checarpersonagem")) {
-                player.saveToDB(true, false);
-                player.yellowMessage(".::Voce tem atualmente::.");
-                player.dropMessage("BetaPoints: " + player.getCSPoints(5)); //remover dps
-                player.dropMessage("LeaderPoints: " + player.getLeaderPoints());
-                player.dropMessage("Q.Points: " + player.getpqPoints());
-                player.dropMessage("JQ Points: " +  player.getJQPoints());
-                player.dropMessage("CashPoints: " +  player.getCashPoints());
-                player.dropMessage("Ocupacao: " + player.getOccupation());
-         } 
-        
-         else if (splitted[0].equalsIgnoreCase("@smega")) {
-                if (player.getMeso() >= 10000) {
+            } catch (SQLException ex) {
+                Logger.getLogger(PlayerCommand.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else if (splitted[0].equals("@checarpersonagem")) {
+            player.saveToDB(true, false);
+            player.yellowMessage(".::Voce tem atualmente::.");
+            player.dropMessage("BetaPoints: " + player.getCSPoints(5)); //remover dps
+            player.dropMessage("LeaderPoints: " + player.getLeaderPoints());
+            player.dropMessage("Q.Points: " + player.getpqPoints());
+            player.dropMessage("JQ Points: " + player.getJQPoints());
+            player.dropMessage("CashPoints: " + player.getCashPoints());
+            player.dropMessage("Ocupacao: " + player.getOccupation());
+        } else if (splitted[0].equalsIgnoreCase("@smega")) {
+            if (player.getMeso() >= 10000) {
                 player.setSmegaEnabled(!player.getSmegaEnabled());
                 String text = (!player.getSmegaEnabled() ? "[Desativando] Os smegas foram desativados." : "[Ativando] Os smegas foram ativados.");
                 mc.dropMessage(text);
                 player.gainMeso(-10000, true);
-                } else {
+            } else {
                 mc.dropMessage("Para desativalos/ativalos voce precisa de 10,000 mesos.");
             }
-        } 
+        }
     }
-    
 
     public int itemQuantity(MapleClient c, int itemid) {
         MapleInventoryType type = MapleItemInformationProvider.getInstance().getInventoryType(itemid);
@@ -183,8 +176,8 @@ public class PlayerCommand implements Command {
         int possesed = iv.countById(itemid);
         return possesed;
     }
-    
-   private static ResultSet rankingJQ(boolean gm) {
+
+    private static ResultSet rankingJQ(boolean gm) {
         try {
             Connection con = (Connection) DatabaseConnection.getConnection();
             PreparedStatement ps;
@@ -202,16 +195,15 @@ public class PlayerCommand implements Command {
     @Override
     public CommandDefinition[] getDefinition() {
         return new CommandDefinition[]{
-                        new CommandDefinition("comandos", "", "Mostra lista de ajuda.", 0),
-			new CommandDefinition("gm", "", "Envia mensagem a GM online.", 0),
-                        new CommandDefinition("dispose", "", "Nao consegue falar com algum NPC? Use este comando.", 0),
-                        new CommandDefinition("grupofix", "", "Corrige possivel bug na criacao de grupos.", 0),
-                        new CommandDefinition("evento", "", "Te leva para o evento em andamento.", 0),
-                        new CommandDefinition("sairevento", "", "Te leva para o mapa anterior em que voce estava.", 0),
-                        new CommandDefinition("smega", "", "Este comando Ativa/Desativa smega (Taxa 1,000 Mesos).", 0),
-                        new CommandDefinition("bugs", "", "Envia relatorios de BUGS!", 0),
-                        new CommandDefinition("entrartot", "", "Envia personagem ao Templo.", 0),    
-                        new CommandDefinition("sairtot", "", "Remove personagem do Templo!", 0),    
-		};
+            new CommandDefinition("comandos", "", "Mostra lista de ajuda.", 0),
+            new CommandDefinition("gm", "", "Envia mensagem a GM online.", 0),
+            new CommandDefinition("dispose", "", "Nao consegue falar com algum NPC? Use este comando.", 0),
+            new CommandDefinition("grupofix", "", "Corrige possivel bug na criacao de grupos.", 0),
+            new CommandDefinition("evento", "", "Te leva para o evento em andamento.", 0),
+            new CommandDefinition("sairevento", "", "Te leva para o mapa anterior em que voce estava.", 0),
+            new CommandDefinition("smega", "", "Este comando Ativa/Desativa smega (Taxa 1,000 Mesos).", 0),
+            new CommandDefinition("bugs", "", "Envia relatorios de BUGS!", 0),
+            new CommandDefinition("entrartot", "", "Envia personagem ao Templo.", 0),
+            new CommandDefinition("sairtot", "", "Remove personagem do Templo!", 0),};
     }
 }

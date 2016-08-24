@@ -17,8 +17,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ */
 package net.channel.handler;
 
 import java.rmi.RemoteException;
@@ -35,35 +34,36 @@ import tools.data.input.SeekableLittleEndianAccessor;
 
 public class CloseRangeDamageHandler extends AbstractDealDamageHandler {
 
-	private boolean isFinisher(int skillId) {
-		return skillId >= 1111003 && skillId <= 1111006;
-	}
+    private boolean isFinisher(int skillId) {
+        return skillId >= 1111003 && skillId <= 1111006;
+    }
 
-	@Override
-	public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        if(c.getPlayer().getMap().getDisableDamage() && !c.getPlayer().isGM())
-        {
+    @Override
+    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+        if (c.getPlayer().getMap().getDisableDamage() && !c.getPlayer().isGM()) {
             c.getSession().write(MaplePacketCreator.serverNotice(5, "Ataque esta desabilitado."));
             c.getSession().write(MaplePacketCreator.enableActions());
             return;
         }
-		AttackInfo attack = parseDamage(slea, false);
-		int skillId = attack.skill;
-		ISkill skill = SkillFactory.getSkill(skillId);
-		MapleCharacter player = c.getPlayer();
-		MapleStatEffect aef = attack.getAttackEffect(player);
-                ISkill energycharge = SkillFactory.getSkill(5110001);
-                int energyChargeSkillLevel = player.getSkillLevel(energycharge);
+        AttackInfo attack = parseDamage(slea, false);
+        int skillId = attack.skill;
+        ISkill skill = SkillFactory.getSkill(skillId);
+        MapleCharacter player = c.getPlayer();
+        MapleStatEffect aef = attack.getAttackEffect(player);
+        ISkill energycharge = SkillFactory.getSkill(5110001);
+        int energyChargeSkillLevel = player.getSkillLevel(energycharge);
 
-		//cooldowns
-		if (skillId != 0 && skill.getEffect(c.getPlayer().getSkillLevel(skill)).getCooldown() > 0) {
-			if (player.skillisCooling(skillId)) return;
-			player.checkCoolDown(skill);
-		}
+        //cooldowns
+        if (skillId != 0 && skill.getEffect(c.getPlayer().getSkillLevel(skill)).getCooldown() > 0) {
+            if (player.skillisCooling(skillId)) {
+                return;
+            }
+            player.checkCoolDown(skill);
+        }
 
-		player.getMap().broadcastMessage(player, MaplePacketCreator.closeRangeAttack(player.getId(), skillId, attack.stance, attack.numAttackedAndDamage, attack.allDamage, attack.speed), false, true);
+        player.getMap().broadcastMessage(player, MaplePacketCreator.closeRangeAttack(player.getId(), skillId, attack.stance, attack.numAttackedAndDamage, attack.allDamage, attack.speed), false, true);
 
-		// handle combo orbconsume
+        // handle combo orbconsume
         int numFinisherOrbs = 0;
         Integer comboBuff = player.getBuffedValue(MapleBuffStat.COMBO);
         if (isFinisher(attack.skill)) {
@@ -82,41 +82,41 @@ public class CloseRangeDamageHandler extends AbstractDealDamageHandler {
                 player.handleEnergyChargeGain();
             }
         }
-		
-            // Handle sacrifice hp loss.
-                if (attack.numAttacked > 0 && attack.skill == 1311005) {
-                int totDamageToOneMonster = attack.allDamage.get(0).getRight().get(0).intValue(); // sacrifice attacks only 1 mob with 1 attack
-                int remainingHP = player.getHp() - totDamageToOneMonster * attack.getAttackEffect(player).getX() / 100;
-                if (remainingHP > 1) {
+
+        // Handle sacrifice hp loss.
+        if (attack.numAttacked > 0 && attack.skill == 1311005) {
+            int totDamageToOneMonster = attack.allDamage.get(0).getRight().get(0).intValue(); // sacrifice attacks only 1 mob with 1 attack
+            int remainingHP = player.getHp() - totDamageToOneMonster * attack.getAttackEffect(player).getX() / 100;
+            if (remainingHP > 1) {
                 player.setHp(remainingHP);
-                 } else {
-                 player.setHp(1);
-                 }
-                 player.updateSingleStat(MapleStat.HP, player.getHp());
-               }
-		// handle charged blow
-		if (attack.numAttacked > 0 && attack.skill == 1211002) {
-                boolean advcharge_prob = false;
-                int advcharge_level = player.getSkillLevel(SkillFactory.getSkill(1220010));
-                if (advcharge_level > 0) {
+            } else {
+                player.setHp(1);
+            }
+            player.updateSingleStat(MapleStat.HP, player.getHp());
+        }
+        // handle charged blow
+        if (attack.numAttacked > 0 && attack.skill == 1211002) {
+            boolean advcharge_prob = false;
+            int advcharge_level = player.getSkillLevel(SkillFactory.getSkill(1220010));
+            if (advcharge_level > 0) {
                 MapleStatEffect advcharge_effect = SkillFactory.getSkill(1220010).getEffect(advcharge_level);
                 advcharge_prob = advcharge_effect.makeChanceResult();
-                } else {
+            } else {
                 advcharge_prob = false;
-                }
-                if (!advcharge_prob) {
+            }
+            if (!advcharge_prob) {
                 player.cancelEffectFromBuffStat(MapleBuffStat.WK_CHARGE);
-                  }
-                }
-		int maxdamage = player.getCurrentMaxBaseDamage();
-		int attackCount = 1;
-		if (skillId != 0) {
-			MapleStatEffect effect = attack.getAttackEffect(player);
-			attackCount = effect.getAttackCount();
-			maxdamage *= effect.getDamage() / 100.0;
-			maxdamage *= attackCount;
-		}
-	 maxdamage = Math.min(maxdamage, 99999);
+            }
+        }
+        int maxdamage = player.getCurrentMaxBaseDamage();
+        int attackCount = 1;
+        if (skillId != 0) {
+            MapleStatEffect effect = attack.getAttackEffect(player);
+            attackCount = effect.getAttackCount();
+            maxdamage *= effect.getDamage() / 100.0;
+            maxdamage *= attackCount;
+        }
+        maxdamage = Math.min(maxdamage, 99999);
         if (skillId == 4211006) {
             maxdamage = 700000;
         } else if (numFinisherOrbs > 0) {

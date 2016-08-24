@@ -31,8 +31,8 @@ import tools.Pair;
 
 /**
  * Created By :
- * @author Bassoe
- * Modified By :
+ *
+ * @author Bassoe Modified By :
  * @author Jay Estrella
  */
 public class MapleOxQuizFactory {

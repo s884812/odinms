@@ -5,7 +5,6 @@
  * Incubadora
  * www.leaderms.com.br
  */
-
 package config.Jogo;
 
 import java.io.BufferedReader;
@@ -23,28 +22,29 @@ import tools.FilePrinter;
 import tools.MaplePacketCreator;
 
 public class Incubadora {
+
     /* Mensagem ao usar incubadora */
     public static String Mensagem = "Voce acabou de ganhar um item, obrigado por nos ajudar!";
     /* Definições de Hora */
     private static final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
     private static final SimpleDateFormat sdf2 = new SimpleDateFormat("HH:mm");
-    
+
     public static final String[] Random = {"Normal", "Raros", "Medios"};
-        
+
     public static boolean getIncubatedItem(MapleClient c) {
         double chance = Math.random();
         HashMap<String, String> IncubatedItem = new HashMap<String, String>();
-        try {    
-        FileReader fl = new FileReader("Jogo/PremiumItem/Incubadora/" + Random[(int) (chance * Random.length)] + ".properties");
-        BufferedReader br = new BufferedReader(fl);
-        String[] readSplit = new String[2];
-        String readLine = null;
-        while ((readLine = br.readLine()) != null) {
-            readSplit = readLine.split(" - ");
-            IncubatedItem.put(readSplit[0], readSplit[1]);
-        }
-        fl.close();
-        br.close();
+        try {
+            FileReader fl = new FileReader("Jogo/PremiumItem/Incubadora/" + Random[(int) (chance * Random.length)] + ".properties");
+            BufferedReader br = new BufferedReader(fl);
+            String[] readSplit = new String[2];
+            String readLine = null;
+            while ((readLine = br.readLine()) != null) {
+                readSplit = readLine.split(" - ");
+                IncubatedItem.put(readSplit[0], readSplit[1]);
+            }
+            fl.close();
+            br.close();
         } catch (Exception e) {
             System.out.print(e);
             return false;
@@ -56,7 +56,7 @@ public class Incubadora {
         int npc = 9050008;
         for (Entry<String, String> entry : IncubatedItem.entrySet()) {
             hmany++;
-            if(hmany == rand) {
+            if (hmany == rand) {
                 try {
                     itemcode = Integer.parseInt(entry.getKey());
                     amount = Integer.parseInt(entry.getValue());
@@ -67,8 +67,9 @@ public class Incubadora {
                 }
             }
         }
-        if (itemcode == 0 || amount == 0)
+        if (itemcode == 0 || amount == 0) {
             return false;
+        }
         if (getInventory(c, MapleInventoryType.EQUIP).isFull(1) || getInventory(c, MapleInventoryType.USE).isFull(3) || getInventory(c, MapleInventoryType.ETC).isFull(1)) {
             c.getSession().write(MaplePacketCreator.getInventoryFull());
             c.getSession().write(MaplePacketCreator.getShowInventoryFull());
@@ -80,9 +81,8 @@ public class Incubadora {
         FilePrinter.printIncubadora(c.getPlayer().getName() + ".txt", "Ganhou o item: " + itemcode + "\r\nNo dia: " + sdf.format(Calendar.getInstance().getTime()) + " as " + sdf2.format(Calendar.getInstance().getTime()) + ".");
         c.getPlayer().dropOverheadMessage(Mensagem);
         return true;
-      }             
-           
-            
+    }
+
     private static MapleInventory getInventory(MapleClient c, MapleInventoryType type) {
         return c.getPlayer().getInventory(type);
     }

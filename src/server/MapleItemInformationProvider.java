@@ -17,8 +17,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ */
 package server;
 
 import java.io.File;
@@ -51,6 +50,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class MapleItemInformationProvider {
+
     static Logger log = LoggerFactory.getLogger(MapleItemInformationProvider.class);
     private static MapleItemInformationProvider instance = null;
     protected MapleDataProvider itemData;
@@ -82,7 +82,9 @@ public class MapleItemInformationProvider {
     protected Map<Integer, Boolean> consumeOnPickupCache = new WeakHashMap<>();
     private static Random rand = new Random();
 
-    /** Creates a new instance of MapleItemInformationProvider */
+    /**
+     * Creates a new instance of MapleItemInformationProvider
+     */
     protected MapleItemInformationProvider() {
         itemData = MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/Item.wz"));
         equipData = MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/Character.wz"));
@@ -109,9 +111,9 @@ public class MapleItemInformationProvider {
         }
         MapleInventoryType ret;
         String idStr = "0" + String.valueOf(itemId);
-		if (idStr.length() <= 4) {
-			throw new RuntimeException("ItemID is wrong! ITEMID: " + idStr);
-		}
+        if (idStr.length() <= 4) {
+            throw new RuntimeException("ItemID is wrong! ITEMID: " + idStr);
+        }
         // first look in items...
         MapleDataDirectoryEntry root = itemData.getRoot();
         for (MapleDataDirectoryEntry topDir : root.getSubdirectories()) {
@@ -143,8 +145,8 @@ public class MapleItemInformationProvider {
         inventoryTypeCache.put(itemId, ret);
         return ret;
     }
-    
-     public Equip expireItem(Equip equip, long period) {
+
+    public Equip expireItem(Equip equip, long period) {
         Calendar cal = Calendar.getInstance();
         cal.setTimeZone(TimeZone.getTimeZone("GMT+3"));
         equip.setExpiration(period);
@@ -204,9 +206,6 @@ public class MapleItemInformationProvider {
         return itemPairs;
     }
 
-    
-    
-    
     protected MapleData getStringData(int itemId) {
         String cat = "null";
         MapleData theData;
@@ -304,8 +303,8 @@ public class MapleItemInformationProvider {
         }
         return ret;
     }
-    
-        public boolean isConsumeOnPickup(int itemId) {
+
+    public boolean isConsumeOnPickup(int itemId) {
         if (consumeOnPickupCache.containsKey(itemId)) {
             return consumeOnPickupCache.get(itemId);
         }
@@ -315,7 +314,7 @@ public class MapleItemInformationProvider {
         return consume;
     }
 
-     public short getSlotMax(MapleClient c, int itemId) {
+    public short getSlotMax(MapleClient c, int itemId) {
         if (slotMaxCache.containsKey(itemId)) {
             return slotMaxCache.get(itemId);
         }
@@ -345,42 +344,48 @@ public class MapleItemInformationProvider {
     }
 
     public short getSlotMax(int itemId) {
-		if (slotMaxCache.containsKey(itemId))
-			return slotMaxCache.get(itemId);
-		short ret = 0;
-		MapleData item = getItemData(itemId);
-		if (item != null) {
-			MapleData smEntry = item.getChildByPath("info/slotMax");
-			if (smEntry == null) {
-				if (getInventoryType(itemId).getType() == MapleInventoryType.EQUIP.getType())
-					ret = 1;
-				else
-					ret = 100;
-			} else {
-				if (isThrowingStar(itemId))
-					ret = 1;
-				else if (MapleDataTool.getInt(smEntry) == 0)
-					ret = 1;
-				ret = (short) MapleDataTool.getInt(smEntry);
-			}
-		}
-		slotMaxCache.put(itemId, ret);
-		return ret;
-	}
+        if (slotMaxCache.containsKey(itemId)) {
+            return slotMaxCache.get(itemId);
+        }
+        short ret = 0;
+        MapleData item = getItemData(itemId);
+        if (item != null) {
+            MapleData smEntry = item.getChildByPath("info/slotMax");
+            if (smEntry == null) {
+                if (getInventoryType(itemId).getType() == MapleInventoryType.EQUIP.getType()) {
+                    ret = 1;
+                } else {
+                    ret = 100;
+                }
+            } else {
+                if (isThrowingStar(itemId)) {
+                    ret = 1;
+                } else if (MapleDataTool.getInt(smEntry) == 0) {
+                    ret = 1;
+                }
+                ret = (short) MapleDataTool.getInt(smEntry);
+            }
+        }
+        slotMaxCache.put(itemId, ret);
+        return ret;
+    }
 
     public int getMeso(int itemId) {
-        if (getMesoCache.containsKey(itemId))
+        if (getMesoCache.containsKey(itemId)) {
             return getMesoCache.get(itemId);
-            MapleData item = getItemData(itemId);
-        if (item == null)
+        }
+        MapleData item = getItemData(itemId);
+        if (item == null) {
             return -1;
-            int pEntry = 0;
-            MapleData pData = item.getChildByPath("info/meso");
-        if (pData == null)
+        }
+        int pEntry = 0;
+        MapleData pData = item.getChildByPath("info/meso");
+        if (pData == null) {
             return -1;
-            pEntry = MapleDataTool.getInt(pData);
-            getMesoCache.put(itemId, pEntry);
-            return pEntry;
+        }
+        pEntry = MapleDataTool.getInt(pData);
+        getMesoCache.put(itemId, pEntry);
+        return pEntry;
     }
 
     public int getWholePrice(int itemId) {
@@ -461,8 +466,7 @@ public class MapleItemInformationProvider {
 //        equipStatsCache.put(itemId, ret);
 //        return ret;
 //    }
-    
-        protected Map<String, Integer> getEquipStats(int itemId) {
+    protected Map<String, Integer> getEquipStats(int itemId) {
         if (equipStatsCache.containsKey(itemId)) {
             return equipStatsCache.get(itemId);
         }
@@ -497,7 +501,6 @@ public class MapleItemInformationProvider {
         equipStatsCache.put(itemId, ret);
         return ret;
     }
-  
 
     public int getReqLevel(int itemId) {
         final Integer req = getEquipStats(itemId).get("reqLevel");
@@ -712,7 +715,6 @@ public class MapleItemInformationProvider {
     public IItem getEquipById(int equipId) {
         return getEquipById(equipId, -1);
     }
-    
 
     public IItem getEquipById(int equipId, int ringId) {
         Equip nEquip;
@@ -774,70 +776,70 @@ public class MapleItemInformationProvider {
     }
 
     private short getRandStat1(short defaultValue, int maxRange) {
-		if (defaultValue == 0) {
-			return 0;
-		}
-		return (short) Math.round(defaultValue + Math.random() * maxRange);
-	}
-	
+        if (defaultValue == 0) {
+            return 0;
+        }
+        return (short) Math.round(defaultValue + Math.random() * maxRange);
+    }
+
     public boolean isGun(int itemId) {
         return itemId >= 1492000 && itemId <= 1492024;
     }
 
     public Equip randomizeStats(Equip equip) {
-		equip.setStr(getRandStat(equip.getStr(), 5));
-		equip.setDex(getRandStat(equip.getDex(), 5));
-		equip.setInt(getRandStat(equip.getInt(), 5));
-		equip.setLuk(getRandStat(equip.getLuk(), 5));
-		equip.setMatk(getRandStat(equip.getMatk(), 5));
-		equip.setWatk(getRandStat(equip.getWatk(), 5));
-		equip.setAcc(getRandStat(equip.getAcc(), 5));
-		equip.setAvoid(getRandStat(equip.getAvoid(), 5));
-		equip.setJump(getRandStat(equip.getJump(), 5));
-		equip.setSpeed(getRandStat(equip.getSpeed(), 5));
-		equip.setWdef(getRandStat(equip.getWdef(), 10));
-		equip.setMdef(getRandStat(equip.getMdef(), 10));
-		equip.setHp(getRandStat(equip.getHp(), 10));
-		equip.setMp(getRandStat(equip.getMp(), 10));
-		return equip;
-	}
-    
-     public Equip randomizeStatsMalady(Equip equip) {
-		equip.setStr(getRandStat(equip.getStr(), 8));
-		equip.setDex(getRandStat(equip.getDex(), 8));
-		equip.setInt(getRandStat(equip.getInt(), 8));
-		equip.setLuk(getRandStat(equip.getLuk(), 8));
-		equip.setMatk(getRandStat(equip.getMatk(), 8));
-		equip.setWatk(getRandStat(equip.getWatk(), 8));
-		equip.setAcc(getRandStat(equip.getAcc(), 8));
-		equip.setAvoid(getRandStat(equip.getAvoid(), 8));
-		equip.setJump(getRandStat(equip.getJump(), 8));
-		equip.setSpeed(getRandStat(equip.getSpeed(), 8));
-		equip.setWdef(getRandStat(equip.getWdef(), 12));
-		equip.setMdef(getRandStat(equip.getMdef(), 12));
-		equip.setHp(getRandStat(equip.getHp(), 12));
-		equip.setMp(getRandStat(equip.getMp(), 12));
-		return equip;
-	}
+        equip.setStr(getRandStat(equip.getStr(), 5));
+        equip.setDex(getRandStat(equip.getDex(), 5));
+        equip.setInt(getRandStat(equip.getInt(), 5));
+        equip.setLuk(getRandStat(equip.getLuk(), 5));
+        equip.setMatk(getRandStat(equip.getMatk(), 5));
+        equip.setWatk(getRandStat(equip.getWatk(), 5));
+        equip.setAcc(getRandStat(equip.getAcc(), 5));
+        equip.setAvoid(getRandStat(equip.getAvoid(), 5));
+        equip.setJump(getRandStat(equip.getJump(), 5));
+        equip.setSpeed(getRandStat(equip.getSpeed(), 5));
+        equip.setWdef(getRandStat(equip.getWdef(), 10));
+        equip.setMdef(getRandStat(equip.getMdef(), 10));
+        equip.setHp(getRandStat(equip.getHp(), 10));
+        equip.setMp(getRandStat(equip.getMp(), 10));
+        return equip;
+    }
+
+    public Equip randomizeStatsMalady(Equip equip) {
+        equip.setStr(getRandStat(equip.getStr(), 8));
+        equip.setDex(getRandStat(equip.getDex(), 8));
+        equip.setInt(getRandStat(equip.getInt(), 8));
+        equip.setLuk(getRandStat(equip.getLuk(), 8));
+        equip.setMatk(getRandStat(equip.getMatk(), 8));
+        equip.setWatk(getRandStat(equip.getWatk(), 8));
+        equip.setAcc(getRandStat(equip.getAcc(), 8));
+        equip.setAvoid(getRandStat(equip.getAvoid(), 8));
+        equip.setJump(getRandStat(equip.getJump(), 8));
+        equip.setSpeed(getRandStat(equip.getSpeed(), 8));
+        equip.setWdef(getRandStat(equip.getWdef(), 12));
+        equip.setMdef(getRandStat(equip.getMdef(), 12));
+        equip.setHp(getRandStat(equip.getHp(), 12));
+        equip.setMp(getRandStat(equip.getMp(), 12));
+        return equip;
+    }
 
     public Equip randomizeStats(Equip equip, int max) {
-		equip.setStr(getRandStat1(equip.getStr(), max));
-		equip.setDex(getRandStat1(equip.getDex(), max));
-		equip.setInt(getRandStat1(equip.getInt(), max));
-		equip.setLuk(getRandStat1(equip.getLuk(), max));
-		equip.setMatk(getRandStat1(equip.getMatk(), max));
-		equip.setWatk(getRandStat1(equip.getWatk(), max));
-		equip.setAcc(getRandStat1(equip.getAcc(), max));
-		equip.setAvoid(getRandStat1(equip.getAvoid(), max));
-		equip.setJump(getRandStat1(equip.getJump(), max));
-		equip.setSpeed(getRandStat1(equip.getSpeed(), max));
-		equip.setWdef(getRandStat1(equip.getWdef(), max * 2));
-		equip.setMdef(getRandStat1(equip.getMdef(), max * 2));
-		equip.setHp(getRandStat1(equip.getHp(), max * 2));
-		equip.setMp(getRandStat1(equip.getMp(), max * 2));
-    //    equip.setUpgradeSlots((byte)(equip.getUpgradeSlots() + max/5));
-		return equip;
-	}
+        equip.setStr(getRandStat1(equip.getStr(), max));
+        equip.setDex(getRandStat1(equip.getDex(), max));
+        equip.setInt(getRandStat1(equip.getInt(), max));
+        equip.setLuk(getRandStat1(equip.getLuk(), max));
+        equip.setMatk(getRandStat1(equip.getMatk(), max));
+        equip.setWatk(getRandStat1(equip.getWatk(), max));
+        equip.setAcc(getRandStat1(equip.getAcc(), max));
+        equip.setAvoid(getRandStat1(equip.getAvoid(), max));
+        equip.setJump(getRandStat1(equip.getJump(), max));
+        equip.setSpeed(getRandStat1(equip.getSpeed(), max));
+        equip.setWdef(getRandStat1(equip.getWdef(), max * 2));
+        equip.setMdef(getRandStat1(equip.getMdef(), max * 2));
+        equip.setHp(getRandStat1(equip.getHp(), max * 2));
+        equip.setMp(getRandStat1(equip.getMp(), max * 2));
+        //    equip.setUpgradeSlots((byte)(equip.getUpgradeSlots() + max/5));
+        return equip;
+    }
 
     public MapleStatEffect getItemEffect(int itemId) {
         MapleStatEffect ret = itemEffects.get(Integer.valueOf(itemId));
@@ -853,7 +855,7 @@ public class MapleItemInformationProvider {
         return ret;
     }
 
-   public List<SummonEntry> getSummonMobs(int itemId) {
+    public List<SummonEntry> getSummonMobs(int itemId) {
         if (this.summonEntryCache.containsKey(itemId)) {
             return summonEntryCache.get(itemId);
         }
@@ -874,8 +876,7 @@ public class MapleItemInformationProvider {
         return itemId >= 1302000 && itemId < 1492024;
     }
 
-   
-     public boolean isThrowingStar(int itemId) {
+    public boolean isThrowingStar(int itemId) {
         return (itemId >= 2070000 && itemId < 2080000);
     }
 
@@ -939,10 +940,10 @@ public class MapleItemInformationProvider {
                 return false;
         }
     }
-    
+
     public boolean isTownScroll(int itemId) {
-		return (itemId >= 2030000 && itemId < 2030020);
-	}
+        return (itemId >= 2030000 && itemId < 2030020);
+    }
 
     public int getWatkForProjectile(int itemId) {
         Integer atk = projectileWatkCache.get(itemId);
@@ -999,12 +1000,12 @@ public class MapleItemInformationProvider {
         msgCache.put(itemId, ret);
         return ret;
     }
-    
-      public boolean isCash(int itemId) {
+
+    public boolean isCash(int itemId) {
         return itemId / 1000000 == 5 || getEquipStats(itemId).get("cash") == 1;
     }
 
-   public boolean isDropRestricted(int itemId) {
+    public boolean isDropRestricted(int itemId) {
         if (dropRestrictionCache.containsKey(itemId)) {
             return dropRestrictionCache.get(itemId);
         }
@@ -1019,7 +1020,6 @@ public class MapleItemInformationProvider {
 
         return bRestricted;
     }
-
 
     public boolean isPickupRestricted(int itemId) {
         if (pickupRestrictionCache.containsKey(itemId)) {
@@ -1053,8 +1053,8 @@ public class MapleItemInformationProvider {
 
         MapleData skill = info.getChildByPath("skill");
         int curskill = 1;
- 	    int size = skill.getChildren().size();
- 		for (int i=0; i < size; i++) {
+        int size = skill.getChildren().size();
+        for (int i = 0; i < size; i++) {
             curskill = MapleDataTool.getInt(Integer.toString(i), skill, 0);
             if (curskill == 0) {
                 break;
@@ -1072,7 +1072,7 @@ public class MapleItemInformationProvider {
         return ret;
     }
 
- public List<Integer> petsCanConsume(int itemId) {
+    public List<Integer> petsCanConsume(int itemId) {
         List<Integer> ret = new ArrayList<Integer>();
         MapleData data = getItemData(itemId);
         int curPetId = 0;
@@ -1097,7 +1097,7 @@ public class MapleItemInformationProvider {
         isQuestItemCache.put(itemId, questItem);
         return questItem;
     }
-    
+
     public boolean isMiniDungeonMap(int mapId) {
         switch (mapId) {
             case 100020000:
@@ -1111,11 +1111,11 @@ public class MapleItemInformationProvider {
 
     }
 
-     public boolean isExpOrDropCardTime(int itemId) {
+    public boolean isExpOrDropCardTime(int itemId) {
         TimeZone timeZone = TimeZone.getTimeZone("GMT-3");
         Calendar cal = Calendar.getInstance(timeZone);
         String day = MapleDayInt.getDayInt(cal.get(Calendar.DAY_OF_WEEK));
-       // log.info(""+cal.get(Calendar.HOUR_OF_DAY));
+        // log.info(""+cal.get(Calendar.HOUR_OF_DAY));
         Map<String, String> times;
         if (getExpCardTimes.containsKey(itemId)) {
             times = getExpCardTimes.get(itemId);
@@ -1142,7 +1142,7 @@ public class MapleItemInformationProvider {
         return false;
     }
 
-     public boolean isProperSlot(int itemId, byte slot) {
+    public boolean isProperSlot(int itemId, byte slot) {
         byte comp = 0;
 
         if (getEquipStats(itemId).get("isCashItem") == 1) {
@@ -1201,13 +1201,14 @@ public class MapleItemInformationProvider {
         }
         return slot == comp;
     }
-    
+
     /**
      * @author Jvlaple
      */
     public static class SummonEntry {
+
         private int chance, mobId;
-        
+
         public SummonEntry(int a, int b) {
             this.mobId = a;
             this.chance = b;
@@ -1221,8 +1222,9 @@ public class MapleItemInformationProvider {
             return mobId;
         }
     }
-    
-  public static class MapleDayInt {
+
+    public static class MapleDayInt {
+
         public static String getDayInt(int day) {
             if (day == 1) {
                 return "SUN";

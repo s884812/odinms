@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package net.channel.handler;
 
 import client.MapleClient;
@@ -15,6 +14,7 @@ import tools.MaplePacketCreator;
 
 /**
  * Ring actions o.O
+ *
  * @author Jvlaple
  */
 //header  mode
@@ -23,9 +23,9 @@ import tools.MaplePacketCreator;
 //[7C 00] [03] 84 83 3D 00 => Dropping engagement ring
 public class RingActionHandler extends AbstractMaplePacketHandler {
 
-	private static org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(RingActionHandler.class);
+    private static org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(RingActionHandler.class);
 
- @Override
+    @Override
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         byte mode = slea.readByte();
         MapleCharacter player = c.getPlayer();
@@ -71,4 +71,3 @@ public class RingActionHandler extends AbstractMaplePacketHandler {
         }
     }
 }
-

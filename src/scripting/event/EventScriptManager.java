@@ -17,9 +17,9 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
-/*
+ /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -40,7 +40,9 @@ import scripting.AbstractScriptManager;
  * @author Matze
  */
 public class EventScriptManager extends AbstractScriptManager {
+
     private class EventEntry {
+
         public EventEntry(String script, Invocable iv, EventManager em) {
             this.script = script;
             this.iv = iv;
@@ -54,17 +56,19 @@ public class EventScriptManager extends AbstractScriptManager {
 
     public EventScriptManager(ChannelServer cserv, String[] scripts) {
         super();
-        for (String script : scripts)
+        for (String script : scripts) {
             if (!script.equals("")) {
                 Invocable iv = getInvocable("event/" + script + ".js", null);
                 events.put(script, new EventEntry(script, iv, new EventManager(cserv, iv, script)));
             }
+        }
     }
 
     public EventManager getEventManager(String event) {
         EventEntry entry = events.get(event);
-        if (entry == null)
+        if (entry == null) {
             return null;
+        }
         return entry.em;
     }
 
@@ -83,7 +87,8 @@ public class EventScriptManager extends AbstractScriptManager {
     }
 
     public void cancel() {
-        for (EventEntry entry : events.values())
+        for (EventEntry entry : events.values()) {
             entry.em.cancel();
+        }
     }
 }

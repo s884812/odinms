@@ -17,8 +17,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ */
 package server.life;
 
 import java.io.File;
@@ -47,14 +46,14 @@ public class MapleLifeFactory {
     private static Map<Integer, MapleMonsterStats> monsterStats = new HashMap<Integer, MapleMonsterStats>();
 
     public static AbstractLoadedMapleLife getLife(int id, String type) {
-	if (type.equalsIgnoreCase("n")) {
-	    return getNPC(id);
-	} else if (type.equalsIgnoreCase("m")) {
-	    return getMonster(id);
-	} else {
-	    System.err.println("Unknown Life type: " + type + "");
-	    return null;
-	}
+        if (type.equalsIgnoreCase("n")) {
+            return getNPC(id);
+        } else if (type.equalsIgnoreCase("m")) {
+            return getMonster(id);
+        } else {
+            System.err.println("Unknown Life type: " + type + "");
+            return null;
+        }
     }
 
     public static MapleMonster getMonster(int mid) {
@@ -163,11 +162,11 @@ public class MapleLifeFactory {
         }
     }
 
-       public static final void decodeElementalString(MapleMonsterStats stats, String elemAttr) {
-	for (int i = 0; i < elemAttr.length(); i += 2) {
-	            stats.setEffectiveness(Element.getFromChar(elemAttr.charAt(i)),
-		    ElementalEffectiveness.getByNumber(Integer.valueOf(String.valueOf(elemAttr.charAt(i + 1)))));
-	}
+    public static final void decodeElementalString(MapleMonsterStats stats, String elemAttr) {
+        for (int i = 0; i < elemAttr.length(); i += 2) {
+            stats.setEffectiveness(Element.getFromChar(elemAttr.charAt(i)),
+                    ElementalEffectiveness.getByNumber(Integer.valueOf(String.valueOf(elemAttr.charAt(i + 1)))));
+        }
     }
 
     public static MapleNPC getNPC(int nid) {

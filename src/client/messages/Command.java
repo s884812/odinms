@@ -17,13 +17,14 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ */
 package client.messages;
 
 import client.MapleClient;
 
 public interface Command {
-	CommandDefinition[] getDefinition();
-	void execute (MapleClient c, MessageCallback mc, String []splittedLine) throws Exception, IllegalCommandSyntaxException;
+
+    CommandDefinition[] getDefinition();
+
+    void execute(MapleClient c, MessageCallback mc, String[] splittedLine) throws Exception, IllegalCommandSyntaxException;
 }

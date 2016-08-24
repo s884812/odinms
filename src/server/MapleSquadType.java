@@ -17,26 +17,24 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ */
 package server;
 
 /**
  *
  * @author Leifde
  */
-
 public enum MapleSquadType {
-	ZAKUM(0),
-	HORNTAIL(1),
-	ARIANT1(2), //Ariant one
-	ARIANT2(3), //Ariant two
-	ARIANT3(4), //Ariant three
-	UNKNOWN(99);
-	
-	final byte type;
-	
-	private MapleSquadType(int type) {
-		this.type = (byte)type;
-	}
+    ZAKUM(0),
+    HORNTAIL(1),
+    ARIANT1(2), //Ariant one
+    ARIANT2(3), //Ariant two
+    ARIANT3(4), //Ariant three
+    UNKNOWN(99);
+
+    final byte type;
+
+    private MapleSquadType(int type) {
+        this.type = (byte) type;
+    }
 }

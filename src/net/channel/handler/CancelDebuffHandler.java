@@ -29,6 +29,7 @@ import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 public final class CancelDebuffHandler extends AbstractMaplePacketHandler {
+
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         List<MapleDisease> diseases = c.getPlayer().getDiseases();
         List<MapleDisease> diseases_ = new ArrayList<MapleDisease>();

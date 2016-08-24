@@ -17,8 +17,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ */
 package net.channel.handler;
 
 import client.MapleCharacter;
@@ -31,17 +30,17 @@ import tools.data.input.SeekableLittleEndianAccessor;
  *
  * @author Xterminator
  */
-
 public class DenyGuildRequestHandler extends AbstractMaplePacketHandler {
-	@Override
-	public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-		// [3E 00] [37] [08 00] [4F 75 54 6F 4C 75 43 6B]
-		slea.readByte();
-		String from = slea.readMapleAsciiString();
 
-		MapleCharacter cfrom = c.getChannelServer().getPlayerStorage().getCharacterByName(from);
-		if (cfrom != null) {
-			cfrom.getClient().getSession().write(MaplePacketCreator.denyGuildInvitation(c.getPlayer().getName()));
-		}
-	}
+    @Override
+    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+        // [3E 00] [37] [08 00] [4F 75 54 6F 4C 75 43 6B]
+        slea.readByte();
+        String from = slea.readMapleAsciiString();
+
+        MapleCharacter cfrom = c.getChannelServer().getPlayerStorage().getCharacterByName(from);
+        if (cfrom != null) {
+            cfrom.getClient().getSession().write(MaplePacketCreator.denyGuildInvitation(c.getPlayer().getName()));
+        }
+    }
 }

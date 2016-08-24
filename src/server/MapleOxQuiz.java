@@ -25,7 +25,7 @@ public class MapleOxQuiz {
         this.map = map;
         this.round = round;
         this.question = question;
-		map.setOx(this);
+        map.setOx(this);
     }
 
     public void checkAnswers() {

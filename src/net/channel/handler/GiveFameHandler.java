@@ -17,8 +17,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ */
 package net.channel.handler;
 
 import client.MapleCharacter;
@@ -30,7 +29,8 @@ import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 public class GiveFameHandler extends AbstractMaplePacketHandler {
-	 @Override
+
+    @Override
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         int who = slea.readInt();
         int mode = slea.readByte();

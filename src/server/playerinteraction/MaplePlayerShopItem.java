@@ -8,13 +8,13 @@ public class MaplePlayerShopItem {
     private short bundles;
     private short perBundle;
     private int price;
-    private boolean doesExist; 
-    
+    private boolean doesExist;
+
     public MaplePlayerShopItem(IItem item, short bundles, int price) {
         this.item = item;
         this.bundles = bundles;
         this.price = price;
-        this.doesExist = true; 
+        this.doesExist = true;
     }
 
     public IItem getItem() {
@@ -28,10 +28,10 @@ public class MaplePlayerShopItem {
     public int getPrice() {
         return price;
     }
-    
-        public boolean isExist() { 
-        return doesExist; 
-    } 
+
+    public boolean isExist() {
+        return doesExist;
+    }
 
     public void setBundles(short bundles) {
         this.bundles = bundles;
@@ -41,7 +41,7 @@ public class MaplePlayerShopItem {
         this.doesExist = tf;
     }
 
-   public int getPerBundles() {
+    public int getPerBundles() {
         return perBundle;
     }
 }

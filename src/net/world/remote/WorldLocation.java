@@ -17,13 +17,12 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
-/*
+ /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package net.world.remote;
 
 import java.io.Serializable;
@@ -33,14 +32,15 @@ import java.io.Serializable;
  * @author Matze
  */
 public class WorldLocation implements Serializable {
-	private static final long serialVersionUID = 2226165329466413678L;
-	
-	public int map;
-	public int channel;
 
-	public WorldLocation(int map, int channel) {
-		this.map = map;
-		this.channel = channel;
-	}
-	
+    private static final long serialVersionUID = 2226165329466413678L;
+
+    public int map;
+    public int channel;
+
+    public WorldLocation(int map, int channel) {
+        this.map = map;
+        this.channel = channel;
+    }
+
 }

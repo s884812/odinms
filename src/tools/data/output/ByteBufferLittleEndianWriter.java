@@ -3,6 +3,7 @@ package tools.data.output;
 import org.apache.mina.core.buffer.IoBuffer;
 
 public class ByteBufferLittleEndianWriter extends GenericLittleEndianWriter {
+
     private IoBuffer bb;
 
     /**
@@ -22,7 +23,8 @@ public class ByteBufferLittleEndianWriter extends GenericLittleEndianWriter {
     }
 
     /**
-     * Constructor - Constructs this object as optionally fixed at size <code>size</code>.
+     * Constructor - Constructs this object as optionally fixed at size
+     * <code>size</code>.
      *
      * @param initialSize The size of the fixed bytebuffer.
      * @param autoExpand Expand if needed.

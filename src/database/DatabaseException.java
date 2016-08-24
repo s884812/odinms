@@ -19,7 +19,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
+ /*
  * DatabaseException.java
  *
  * Created on 28. November 2007, 13:51
@@ -37,7 +37,9 @@ public class DatabaseException extends RuntimeException {
 
     private static final long serialVersionUID = -420103154764822555L;
 
-    /** Creates a new instance of DatabaseException */
+    /**
+     * Creates a new instance of DatabaseException
+     */
     public DatabaseException() {
     }
 

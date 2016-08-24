@@ -17,13 +17,12 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
-/*
+ /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package server.quest;
 
 import java.io.Serializable;
@@ -49,58 +48,58 @@ public class MapleCustomQuestData implements MapleData, Serializable {
     private MapleDataEntity parent;
 
     public MapleCustomQuestData(String name, Object data, MapleDataEntity parent) {
-	this.name = name;
-	this.data = data;
-	this.parent = parent;
+        this.name = name;
+        this.data = data;
+        this.parent = parent;
     }
 
     public void addChild(MapleData child) {
-	children.add((MapleCustomQuestData) child);
+        children.add((MapleCustomQuestData) child);
     }
 
     public String getName() {
-	return name;
+        return name;
     }
 
     public MapleDataType getType() {
-	return MapleDataType.UNKNOWN_TYPE;
+        return MapleDataType.UNKNOWN_TYPE;
     }
 
     public List<MapleData> getChildren() {
-	MapleData[] ret = new MapleData[children.size()];
-	ret = children.toArray(ret);
-	return new ArrayList<MapleData>(Arrays.asList(ret));
+        MapleData[] ret = new MapleData[children.size()];
+        ret = children.toArray(ret);
+        return new ArrayList<MapleData>(Arrays.asList(ret));
     }
 
     public MapleData getChildByPath(String name) {
-	if (name.equals(this.name)) {
-	    return this;
-	}
-	String lookup, nextName;
-	if (name.indexOf("/") == -1) {
-	    lookup = name;
-	    nextName = name;
-	} else {
-	    lookup = name.substring(0, name.indexOf("/"));
-	    nextName = name.substring(name.indexOf("/") + 1);
-	}
-	for (MapleData child : children) {
-	    if (child.getName().equals(lookup)) {
-		return child.getChildByPath(nextName);
-	    }
-	}
-	return null;
+        if (name.equals(this.name)) {
+            return this;
+        }
+        String lookup, nextName;
+        if (name.indexOf("/") == -1) {
+            lookup = name;
+            nextName = name;
+        } else {
+            lookup = name.substring(0, name.indexOf("/"));
+            nextName = name.substring(name.indexOf("/") + 1);
+        }
+        for (MapleData child : children) {
+            if (child.getName().equals(lookup)) {
+                return child.getChildByPath(nextName);
+            }
+        }
+        return null;
     }
 
     public Object getData() {
-	return data;
+        return data;
     }
 
     public Iterator<MapleData> iterator() {
-	return getChildren().iterator();
+        return getChildren().iterator();
     }
 
     public MapleDataEntity getParent() {
-	return parent;
+        return parent;
     }
 }

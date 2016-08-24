@@ -17,14 +17,13 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
-/*
+ /*
  * MesoDropHandler.java
  *
  * Created on 8. Dezember 2007, 14:57
  */
-
 package net.channel.handler;
 
 import client.MapleClient;
@@ -37,34 +36,33 @@ import tools.data.input.SeekableLittleEndianAccessor;
  *
  * @author Matze
  */
-
 public class MesoDropHandler extends AbstractMaplePacketHandler {
-	
-	public MesoDropHandler() {
-	}
 
-	public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-		slea.readInt(); // i don't know :)
-		int meso = slea.readInt();
-		if (!c.getPlayer().isAlive() || c.getPlayer().getCheatTracker().Spam(500, 2)) {
-                     c.getSession().write(MaplePacketCreator.enableActions());
-                  return;
-                }
-		if (!c.getPlayer().isAlive()) {
-			c.getSession().write(MaplePacketCreator.enableActions());
-			return;
-		}
-		if (meso < 10 || meso > 50000) {
-                        AutobanManager.getInstance().addPoints(c, 1000, 0, "Dropando " + meso + " mesos!");
-                        return;
-                }
-		if (meso <= c.getPlayer().getMeso()) {
-			c.getPlayer().gainMeso(-meso, false, true);
-			c.getPlayer().getMap().spawnMesoDrop(meso, meso, c.getPlayer().getPosition(), c.getPlayer(),c.getPlayer(), false);
-		} else {
-			//we should disconnect here though...
-			c.disconnect();
-			return;
-		}
-	}
+    public MesoDropHandler() {
+    }
+
+    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+        slea.readInt(); // i don't know :)
+        int meso = slea.readInt();
+        if (!c.getPlayer().isAlive() || c.getPlayer().getCheatTracker().Spam(500, 2)) {
+            c.getSession().write(MaplePacketCreator.enableActions());
+            return;
+        }
+        if (!c.getPlayer().isAlive()) {
+            c.getSession().write(MaplePacketCreator.enableActions());
+            return;
+        }
+        if (meso < 10 || meso > 50000) {
+            AutobanManager.getInstance().addPoints(c, 1000, 0, "Dropando " + meso + " mesos!");
+            return;
+        }
+        if (meso <= c.getPlayer().getMeso()) {
+            c.getPlayer().gainMeso(-meso, false, true);
+            c.getPlayer().getMap().spawnMesoDrop(meso, meso, c.getPlayer().getPosition(), c.getPlayer(), c.getPlayer(), false);
+        } else {
+            //we should disconnect here though...
+            c.disconnect();
+            return;
+        }
+    }
 }

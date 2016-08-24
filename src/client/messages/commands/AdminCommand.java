@@ -100,7 +100,7 @@ public class AdminCommand implements Command {
             }
             CommandProcessor.forcePersisting();
             c.getChannelServer().shutdownWorld(time);
-        // shutdown
+            // shutdown
         } else if (splitted[0].equals("!shutdownnow")) {
             CommandProcessor.forcePersisting();
             new ShutdownServer(c.getChannel()).run();
@@ -146,7 +146,7 @@ public class AdminCommand implements Command {
                 npc.setCustom(true);
                 c.getPlayer().getMap().addMapObject(npc);
                 c.getPlayer().getMap().broadcastMessage(MaplePacketCreator.spawnNPC(npc));
-            // c.getPlayer().getMap().broadcastMessage(MaplePacketCreator.spawnNPC(npc, true));
+                // c.getPlayer().getMap().broadcastMessage(MaplePacketCreator.spawnNPC(npc, true));
             } else {
                 mc.dropMessage("You have entered an invalid Npc-Id");
             }
@@ -352,11 +352,11 @@ public class AdminCommand implements Command {
             eq.setWdef(stat);
             MapleInventoryManipulator.addFromDrop(c, eq, new String(), false);    // If this doesnt work
 
-        // change to this:
-        // MapleInventoryManipulator.addFromDrop(c, eq, new String());
+            // change to this:
+            // MapleInventoryManipulator.addFromDrop(c, eq, new String());
         } else if (splitted[0].equalsIgnoreCase("!memory")) {
-            mc.dropMessage("Free memory: " + Runtime.getRuntime().freeMemory() + "/" +
-                    Runtime.getRuntime().maxMemory());
+            mc.dropMessage("Free memory: " + Runtime.getRuntime().freeMemory() + "/"
+                    + Runtime.getRuntime().maxMemory());
             mc.dropMessage("Total memory: " + Runtime.getRuntime().totalMemory());
         } else if (splitted[0].equalsIgnoreCase("!gmmap")) {
             server.maps.MapleMapFactory gmf = c.getChannelServer().getGmMapFactory();
@@ -389,7 +389,7 @@ public class AdminCommand implements Command {
 
                 c.getPlayer().getMap().addMapObject(npc);
                 c.getPlayer().getMap().broadcastMessage(MaplePacketCreator.spawnNPC(npc));
-            // c.getPlayer().getMap().broadcastMessage(MaplePacketCreator.spawnNPC(npc, true));
+                // c.getPlayer().getMap().broadcastMessage(MaplePacketCreator.spawnNPC(npc, true));
             } else {
                 mc.dropMessage("You have entered an invalid Npc-Id");
             }
@@ -487,14 +487,11 @@ public class AdminCommand implements Command {
             MapleMap map = c.getChannelServer().getMapFactory().getMap(mapId);
             boolean force = splitted.length >= 3 && splitted[2].equals("force");// && c.getPlayer().isInvincible();
             if (force) {
-                if(map.getForcedReturnId() == map.getId() || map.getReturnMapId() == map.getId())
-                {
+                if (map.getForcedReturnId() == map.getId() || map.getReturnMapId() == map.getId()) {
                     map.warpAllToCashShop(map.getStreetName() + " : " + map.getMapName() + "was disposed by " + c.getPlayer().getName() + ". You will be warped to the cash shop.");
-                } else
+                } else {
                     map.warpAllToNearestTown(map.getStreetName() + " : " + map.getMapName() + "was disposed by " + c.getPlayer().getName() + ". You will be warped to the nearest town.");
-
-
-
+                }
 
             }
             if (map.getAllPlayer().size() == 0) {
@@ -539,7 +536,6 @@ public class AdminCommand implements Command {
                     break;
             }
 
-
         } else if (splitted[0].equalsIgnoreCase("!mspfc")) {
             int duration = 0, mapid = 100000000;
             duration = Integer.parseInt(splitted[1]);
@@ -559,7 +555,6 @@ public class AdminCommand implements Command {
             } catch (RemoteException e) {
                 c.getChannelServer().reconnectWorld();
             }
-
 
         } else if (splitted[0].equalsIgnoreCase("!area")) {
             MapleMap map = c.getPlayer().getMap();
@@ -592,10 +587,8 @@ public class AdminCommand implements Command {
 
                         pet = true;
 
-
                     } else if (ii.isRechargable(amount)) {
                         quantity = (short) ii.getSlotMax(c, amount);
-
 
                     }
                     for (MapleCharacter x : players) {
@@ -703,12 +696,12 @@ public class AdminCommand implements Command {
             chr.gainDonatorPoints(d);
             mc.dropMessage(chr.getName() + " now has " + chr.getDonatorPoints() + " donator points.");
         } else if (splitted[0].equalsIgnoreCase("!chatmode")) {
-			int mode = Integer.parseInt(splitted[1]);
-			c.getPlayer().setChatMode(mode);
-		} else if (splitted[0].equalsIgnoreCase("!chatrange")) {
-			int range = Integer.parseInt(splitted[1]);
-			c.getPlayer().setChatRange(range);
-		}
+            int mode = Integer.parseInt(splitted[1]);
+            c.getPlayer().setChatMode(mode);
+        } else if (splitted[0].equalsIgnoreCase("!chatrange")) {
+            int range = Integer.parseInt(splitted[1]);
+            c.getPlayer().setChatRange(range);
+        }
     }
 
     private MapleReactor createMarker(Point position) {
@@ -722,57 +715,56 @@ public class AdminCommand implements Command {
     @Override
     public CommandDefinition[] getDefinition() {
         return new CommandDefinition[]{
-                    new CommandDefinition("shutdown", "[when in Minutes]", "Shuts down the current channel - don't use atm", 4),
-                    new CommandDefinition("shutdownnow", "", "Shuts down the current channel now", 4),
-                    new CommandDefinition("shutdownworld", "[when in Minutes]", "Cleanly shuts down all channels and the loginserver of this world", 4),
-                    new CommandDefinition("removenpcs", "", "Removes all custom spawned npcs from the map - requires reentering the map", 4),
-                    new CommandDefinition("saveall", "?", "save data", 4),
-                    new CommandDefinition("mynpcpos", "", "Gets the info for making an npc", 4),
-                    new CommandDefinition("npc", "npcid", "Spawns the npc with the given id at the player position", 4),
-                    new CommandDefinition("packet", "hex data", "Shows a clock to everyone in the map", 4),
-                    new CommandDefinition("clearguilds", "", "", 4),
-                    new CommandDefinition("reloadops", "", "", 4),
-                    new CommandDefinition("clearPortalScripts", "", "", 4),
-                    new CommandDefinition("reloaddrops", "", "", 4),
-                    new CommandDefinition("clearReactorDrops", "", "", 4),
-                    new CommandDefinition("clearshops", "", "", 4),
-                    new CommandDefinition("clearevents", "", "", 4),
-                    new CommandDefinition("reloadcommands", "", "", 4),
-                    new CommandDefinition("startProfiling", "", "Starts the CPU Sampling based profiler", 4),
-                    new CommandDefinition("stopProfiling", "[fileName]", "Stops the Profiler and saves the results to the given fileName", 4),
-                    new CommandDefinition("warpallhere", "", "", 4),
-                    new CommandDefinition("letter", "", "", 4),
-                    new CommandDefinition("strip", "", "", 4),
-                    new CommandDefinition("superequip", "", "", 4),
-                    new CommandDefinition("memory", "", "", 4),
-                    new CommandDefinition("gmmap", "", "", 4),
-                    new CommandDefinition("pmob", "", "", 4),
-                    new CommandDefinition("pnpc", "", "", 4),
-                    new CommandDefinition("curse", "", "", 4),
-                    new CommandDefinition("gmob", "", "", 4),
-                    new CommandDefinition("ns", "", "", 4),
-                    new CommandDefinition("kill", "", "", 4),
-                    new CommandDefinition("randomevent", "", "", 4),
-                    new CommandDefinition("randomexp", "", "", 4),
-                    new CommandDefinition("level", "", "", 4),
-                    new CommandDefinition("removemapnpcs", "", "", 4),
-                    new CommandDefinition("disposemap", "", "", 4),
-                    new CommandDefinition("clock", "<duration> [mapid to warp to] [min level to warp] [max level to warp]", "", 4),
-                    new CommandDefinition("yn", "", "", 4),
-                    new CommandDefinition("mspfc", "", "ASK ANGELSL FOR TRAINING ON COMMAND!", 4),
-                    new CommandDefinition("area", "", "ASK ANGELSL FOR TRAINING ON COMMAND!", 4),
-                    new CommandDefinition("toggleinvincibilityskills", "", "", 4),
-                    new CommandDefinition("cursemap", "", "", 4),
-                    new CommandDefinition("mapmsg", "", "", 4),
-                    new CommandDefinition("toggledamage", "", "", 4),
-                    new CommandDefinition("mute", "", "", 4),
-                    new CommandDefinition("energycharge", "", "", 4),
-                    new CommandDefinition("immune", "", "", 4),
-                    new CommandDefinition("donatorpoints", "", "", 4),
-					new CommandDefinition("unhide", "", "", 4),
-                    new CommandDefinition("chatmode", "", "", 4),
-					new CommandDefinition("chatrange", "", "", 4),
-		};
+            new CommandDefinition("shutdown", "[when in Minutes]", "Shuts down the current channel - don't use atm", 4),
+            new CommandDefinition("shutdownnow", "", "Shuts down the current channel now", 4),
+            new CommandDefinition("shutdownworld", "[when in Minutes]", "Cleanly shuts down all channels and the loginserver of this world", 4),
+            new CommandDefinition("removenpcs", "", "Removes all custom spawned npcs from the map - requires reentering the map", 4),
+            new CommandDefinition("saveall", "?", "save data", 4),
+            new CommandDefinition("mynpcpos", "", "Gets the info for making an npc", 4),
+            new CommandDefinition("npc", "npcid", "Spawns the npc with the given id at the player position", 4),
+            new CommandDefinition("packet", "hex data", "Shows a clock to everyone in the map", 4),
+            new CommandDefinition("clearguilds", "", "", 4),
+            new CommandDefinition("reloadops", "", "", 4),
+            new CommandDefinition("clearPortalScripts", "", "", 4),
+            new CommandDefinition("reloaddrops", "", "", 4),
+            new CommandDefinition("clearReactorDrops", "", "", 4),
+            new CommandDefinition("clearshops", "", "", 4),
+            new CommandDefinition("clearevents", "", "", 4),
+            new CommandDefinition("reloadcommands", "", "", 4),
+            new CommandDefinition("startProfiling", "", "Starts the CPU Sampling based profiler", 4),
+            new CommandDefinition("stopProfiling", "[fileName]", "Stops the Profiler and saves the results to the given fileName", 4),
+            new CommandDefinition("warpallhere", "", "", 4),
+            new CommandDefinition("letter", "", "", 4),
+            new CommandDefinition("strip", "", "", 4),
+            new CommandDefinition("superequip", "", "", 4),
+            new CommandDefinition("memory", "", "", 4),
+            new CommandDefinition("gmmap", "", "", 4),
+            new CommandDefinition("pmob", "", "", 4),
+            new CommandDefinition("pnpc", "", "", 4),
+            new CommandDefinition("curse", "", "", 4),
+            new CommandDefinition("gmob", "", "", 4),
+            new CommandDefinition("ns", "", "", 4),
+            new CommandDefinition("kill", "", "", 4),
+            new CommandDefinition("randomevent", "", "", 4),
+            new CommandDefinition("randomexp", "", "", 4),
+            new CommandDefinition("level", "", "", 4),
+            new CommandDefinition("removemapnpcs", "", "", 4),
+            new CommandDefinition("disposemap", "", "", 4),
+            new CommandDefinition("clock", "<duration> [mapid to warp to] [min level to warp] [max level to warp]", "", 4),
+            new CommandDefinition("yn", "", "", 4),
+            new CommandDefinition("mspfc", "", "ASK ANGELSL FOR TRAINING ON COMMAND!", 4),
+            new CommandDefinition("area", "", "ASK ANGELSL FOR TRAINING ON COMMAND!", 4),
+            new CommandDefinition("toggleinvincibilityskills", "", "", 4),
+            new CommandDefinition("cursemap", "", "", 4),
+            new CommandDefinition("mapmsg", "", "", 4),
+            new CommandDefinition("toggledamage", "", "", 4),
+            new CommandDefinition("mute", "", "", 4),
+            new CommandDefinition("energycharge", "", "", 4),
+            new CommandDefinition("immune", "", "", 4),
+            new CommandDefinition("donatorpoints", "", "", 4),
+            new CommandDefinition("unhide", "", "", 4),
+            new CommandDefinition("chatmode", "", "", 4),
+            new CommandDefinition("chatrange", "", "", 4),};
 
     }
 }

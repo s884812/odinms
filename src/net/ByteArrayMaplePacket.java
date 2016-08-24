@@ -3,6 +3,7 @@ package net;
 import tools.HexTool;
 
 public class ByteArrayMaplePacket implements MaplePacket {
+
     private byte[] data;
     private Runnable onSend;
 

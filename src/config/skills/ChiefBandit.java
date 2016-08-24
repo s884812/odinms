@@ -18,14 +18,15 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package config.skills;
 
 /**
- * 
+ *
  * @author BubblesDev
  */
 public class ChiefBandit {
+
     public static final int CHAKRA = 4211001;
     public static final int ASSAULTER = 4211002;
     public static final int PICKPOCKET = 4211003;

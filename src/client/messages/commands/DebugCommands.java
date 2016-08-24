@@ -71,7 +71,7 @@ public class DebugCommands implements Command {
             door.getTarget().addMapObject(door);
             // c.getSession().write(MaplePacketCreator.spawnDoor(/*c.getPlayer().getId()*/ 0x1E47, door.getPosition(),
             // false));
-			/* c.getSession().write(MaplePacketCreator.saveSpawnPosition(door.getPosition())); */
+            /* c.getSession().write(MaplePacketCreator.saveSpawnPosition(door.getPosition())); */
             MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
             mplew.write(HexTool.getByteArrayFromHexString("B9 00 00 47 1E 00 00 0A 04 76 FF"));
             c.getSession().write(mplew.getPacket());
@@ -513,8 +513,8 @@ public class DebugCommands implements Command {
             int a = Integer.parseInt(splitted[1]);
             c.getSession().write(MaplePacketCreator.showZakumShrineTimeLeft(a));
         } else if (splitted[0].equalsIgnoreCase("!npcdebug")) {
-            List<MapleMapObject> npcs =
-                    c.getPlayer().getMap().
+            List<MapleMapObject> npcs
+                    = c.getPlayer().getMap().
                     getMapObjectsInRange(new Point(0, 0), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.NPC));
             for (MapleMapObject mmo : npcs) {
                 mc.dropMessage(mmo.toString());
@@ -562,42 +562,41 @@ public class DebugCommands implements Command {
     @Override
     public CommandDefinition[] getDefinition() {
         return new CommandDefinition[]{
-			new CommandDefinition("gc", "", "", 4),
-			new CommandDefinition("resetquest", "", "", 4),
-			new CommandDefinition("nearestPortal", "", "", 3),
-			new CommandDefinition("spawndebug", "", "", 4),
-			new CommandDefinition("timerdebug", "", "", 4),
-			new CommandDefinition("threads", "", "", 4),
-			new CommandDefinition("showtrace", "", "", 4),
-			new CommandDefinition("toggleoffense", "", "", 4),
-			new CommandDefinition("fakerelog", "", "", 4),
-			new CommandDefinition("tdrops", "", "", 4),
-			new CommandDefinition("givebuff", "", "", 4),
-			new CommandDefinition("givemonsbuff", "", "", 4),
-			new CommandDefinition("givemonstatus", "", "", 4),
-			new CommandDefinition("sreactor", "[id]", "Spawn a Reactor", 4),
-			new CommandDefinition("hreactor", "[object ID]", "Hit reactor", 4),
-			new CommandDefinition("rreactor", "", "Resets all reactors", 4),
-			new CommandDefinition("lreactor", "", "List reactors", 4),
-			new CommandDefinition("dreactor", "", "Remove a Reactor", 4),
-			new CommandDefinition("cpqhud", "", "", 4),
-			new CommandDefinition("maxskills", "", "", 4),
-			new CommandDefinition("partymessage", "", "", 4),
-			new CommandDefinition("cpdebug", "", "", 4),
-			new CommandDefinition("zakclock", "", "", 4),
-			new CommandDefinition("npcdebug", "", "", 4),
-			new CommandDefinition("mapevent", "", "", 4),
-			new CommandDefinition("cpqbuffmap", "", "", 4),
-			new CommandDefinition("buffmap", "", "", 4),
-			new CommandDefinition("cpqunbuffmap", "", "", 4),
-			new CommandDefinition("packet", "", "", 4),
-			new CommandDefinition("hmerchantlist", "", "", 4),
-			new CommandDefinition("playernpc", "", "", 4),
-			new CommandDefinition("save", "", "", 4),
-			new CommandDefinition("disableportal", "", "", 4),
-			new CommandDefinition("pmerchant", "", "", 4),
-			new CommandDefinition("pmerchant", "", "", 4),
-			new CommandDefinition("testchat", "", "", 4),
-		};
+            new CommandDefinition("gc", "", "", 4),
+            new CommandDefinition("resetquest", "", "", 4),
+            new CommandDefinition("nearestPortal", "", "", 3),
+            new CommandDefinition("spawndebug", "", "", 4),
+            new CommandDefinition("timerdebug", "", "", 4),
+            new CommandDefinition("threads", "", "", 4),
+            new CommandDefinition("showtrace", "", "", 4),
+            new CommandDefinition("toggleoffense", "", "", 4),
+            new CommandDefinition("fakerelog", "", "", 4),
+            new CommandDefinition("tdrops", "", "", 4),
+            new CommandDefinition("givebuff", "", "", 4),
+            new CommandDefinition("givemonsbuff", "", "", 4),
+            new CommandDefinition("givemonstatus", "", "", 4),
+            new CommandDefinition("sreactor", "[id]", "Spawn a Reactor", 4),
+            new CommandDefinition("hreactor", "[object ID]", "Hit reactor", 4),
+            new CommandDefinition("rreactor", "", "Resets all reactors", 4),
+            new CommandDefinition("lreactor", "", "List reactors", 4),
+            new CommandDefinition("dreactor", "", "Remove a Reactor", 4),
+            new CommandDefinition("cpqhud", "", "", 4),
+            new CommandDefinition("maxskills", "", "", 4),
+            new CommandDefinition("partymessage", "", "", 4),
+            new CommandDefinition("cpdebug", "", "", 4),
+            new CommandDefinition("zakclock", "", "", 4),
+            new CommandDefinition("npcdebug", "", "", 4),
+            new CommandDefinition("mapevent", "", "", 4),
+            new CommandDefinition("cpqbuffmap", "", "", 4),
+            new CommandDefinition("buffmap", "", "", 4),
+            new CommandDefinition("cpqunbuffmap", "", "", 4),
+            new CommandDefinition("packet", "", "", 4),
+            new CommandDefinition("hmerchantlist", "", "", 4),
+            new CommandDefinition("playernpc", "", "", 4),
+            new CommandDefinition("save", "", "", 4),
+            new CommandDefinition("disableportal", "", "", 4),
+            new CommandDefinition("pmerchant", "", "", 4),
+            new CommandDefinition("pmerchant", "", "", 4),
+            new CommandDefinition("testchat", "", "", 4),};
     }
 }

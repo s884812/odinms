@@ -17,15 +17,13 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ */
 package client;
 
 //import java.util.Calendar;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-
 
 public class Item implements IItem {
 
@@ -63,7 +61,7 @@ public class Item implements IItem {
         return ret;
     }
 
-     public void setPosition(byte position) {
+    public void setPosition(byte position) {
         this.position = position;
     }
 
@@ -132,7 +130,7 @@ public class Item implements IItem {
     public long getExpiration() {
         return expiration;
     }
-    
+
     public void setExpiration(long expire) {
         this.expiration = expire;
     }

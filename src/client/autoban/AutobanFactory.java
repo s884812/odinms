@@ -19,7 +19,6 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package client.autoban;
 
 import client.MapleCharacter;
@@ -40,7 +39,7 @@ public enum AutobanFactory {
     ITEM_VAC,
     FAST_ATTACK(10, 30000),
     MPCON(25, 30000);
-    
+
     private int points;
     private long expiretime;
 

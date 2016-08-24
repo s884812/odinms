@@ -17,8 +17,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ */
 package net.channel;
 
 import java.util.Collection;
@@ -26,9 +25,10 @@ import java.util.Collection;
 import client.MapleCharacter;
 
 public interface IPlayerStorage {
-	public MapleCharacter getCharacterByName(String name);
 
-	public MapleCharacter getCharacterById(int id);
-	
-	Collection<MapleCharacter> getAllCharacters();
+    public MapleCharacter getCharacterByName(String name);
+
+    public MapleCharacter getCharacterById(int id);
+
+    Collection<MapleCharacter> getAllCharacters();
 }

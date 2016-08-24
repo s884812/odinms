@@ -59,13 +59,11 @@ public class MoveLifeHandler extends AbstractMovementPacketHandler {
         // 0D 00
         // 00
         // FF 00 00 00 00 00 01 00 00 00 D6 03 9F 06 01 00 D6 03 9F 06 00 00 00 00 22 00 04 38 04 00 D6 03 9F 06 D6 03 9F 06
-
         int objectid = slea.readInt();
         short moveid = slea.readShort();
         // or is the moveid an int?
 
         // when someone trys to move an item/npc he gets thrown out with a class cast exception mwaha
-
         MapleMapObject mmo = c.getPlayer().getMap().getMapObject(objectid);
         if (mmo == null || mmo.getType() != MapleMapObjectType.MONSTER) {
             /*if (mmo != null) {
@@ -119,11 +117,9 @@ public class MoveLifeHandler extends AbstractMovementPacketHandler {
             } else {
                 return;
             }
-        } else {
-            if (skill == -1 && monster.isControllerKnowsAboutAggro() && !monster.isMobile() && !monster.isFirstAttack()) {
-                monster.setControllerHasAggro(false);
-                monster.setControllerKnowsAboutAggro(false);
-            }
+        } else if (skill == -1 && monster.isControllerKnowsAboutAggro() && !monster.isMobile() && !monster.isFirstAttack()) {
+            monster.setControllerHasAggro(false);
+            monster.setControllerKnowsAboutAggro(false);
         }
         boolean aggro = monster.isControllerHasAggro();
 
@@ -185,23 +181,20 @@ public class MoveLifeHandler extends AbstractMovementPacketHandler {
                 } catch (Exception ex) {
 
                 }
-            } else {
-                if (monster.getShouldDrop() == true) {
-                    int d = monster.getDropped() + 1;
-                    monster.getMap().broadcastMessage(MaplePacketCreator.serverNotice(0, "O Coelhinho da Lua fez " + d + " bolinhos de arroz."));
-                    monster.setDropped(d);
-                    monster.setShouldDrop(false);
-                    monster.scheduleCanDrop(6000);
-                    IItem Item = new Item(4001101, (byte) 0, (short) 1);
-                    try {
-                        monster.getMap().spawnItemDrop(monster, monster.getEventInstance().getPlayers().get(0), Item, monster.getPosition(), false, false);  
-                    } catch (NullPointerException ex) {
+            } else if (monster.getShouldDrop() == true) {
+                int d = monster.getDropped() + 1;
+                monster.getMap().broadcastMessage(MaplePacketCreator.serverNotice(0, "O Coelhinho da Lua fez " + d + " bolinhos de arroz."));
+                monster.setDropped(d);
+                monster.setShouldDrop(false);
+                monster.scheduleCanDrop(6000);
+                IItem Item = new Item(4001101, (byte) 0, (short) 1);
+                try {
+                    monster.getMap().spawnItemDrop(monster, monster.getEventInstance().getPlayers().get(0), Item, monster.getPosition(), false, false);
+                } catch (NullPointerException ex) {
 
-                    }
                 }
-                
             }
         }
-        
-    }    
+
+    }
 }

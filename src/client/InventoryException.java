@@ -17,30 +17,31 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
-/*
+ /*
  * InventoryException.java
  *
  * Created on 26. November 2007, 15:39
  */
-
 package client;
 
 /**
- * 
+ *
  * @author Matze
  */
-
 public class InventoryException extends RuntimeException {
-	private static final long serialVersionUID = 1L;
 
-	/** Creates a new instance of InventoryException */
-	public InventoryException() {
-		super();
-	}
+    private static final long serialVersionUID = 1L;
 
-	public InventoryException(String msg) {
-		super(msg);
-	}
+    /**
+     * Creates a new instance of InventoryException
+     */
+    public InventoryException() {
+        super();
+    }
+
+    public InventoryException(String msg) {
+        super(msg);
+    }
 }

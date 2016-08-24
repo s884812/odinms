@@ -18,7 +18,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package config.skills;
 
 /**
@@ -26,6 +26,7 @@ package config.skills;
  * @author BubblesDev
  */
 public class Spearman {
+
     public static final int SPEAR_MASTERY = 1300000;
     public static final int POLEARM_MASTERY = 1300001;
     public static final int FINAL_ATTACK_SPEAR = 1300002;

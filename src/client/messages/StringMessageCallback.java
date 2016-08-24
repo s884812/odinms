@@ -17,21 +17,21 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ */
 package client.messages;
 
 public class StringMessageCallback implements MessageCallback {
-	StringBuilder ret = new StringBuilder();
-	
-	@Override
-	public void dropMessage(String message) {
-		ret.append(message);
-		ret.append("\n");
-	}
 
-	@Override
-	public String toString() {
-		return ret.toString();
-	}
+    StringBuilder ret = new StringBuilder();
+
+    @Override
+    public void dropMessage(String message) {
+        ret.append(message);
+        ret.append("\n");
+    }
+
+    @Override
+    public String toString() {
+        return ret.toString();
+    }
 }

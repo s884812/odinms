@@ -17,28 +17,28 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ */
 package server.movement;
 
 import java.awt.Point;
 import tools.data.output.LittleEndianWriter;
 
 public class ChangeEquipSpecialAwesome implements LifeMovementFragment {
-	private int wui;
 
-	public ChangeEquipSpecialAwesome(int wui) {
-		this.wui = wui;
-	}
+    private int wui;
 
-	@Override
-	public void serialize(LittleEndianWriter lew) {
-		lew.write(10);
-		lew.write(wui);
-	}
-	
-	@Override
-        public Point getPosition() {
-            return new Point(0,0);
-        }
+    public ChangeEquipSpecialAwesome(int wui) {
+        this.wui = wui;
+    }
+
+    @Override
+    public void serialize(LittleEndianWriter lew) {
+        lew.write(10);
+        lew.write(wui);
+    }
+
+    @Override
+    public Point getPosition() {
+        return new Point(0, 0);
+    }
 }

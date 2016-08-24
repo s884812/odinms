@@ -17,8 +17,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ */
 package net.login.handler;
 
 import java.util.Calendar;
@@ -29,6 +28,7 @@ import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 public final class DeleteCharHandler extends AbstractMaplePacketHandler {
+
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         int idate = slea.readInt();
         int year = idate / 10000;

@@ -7,6 +7,7 @@ import javax.rmi.ssl.SslRMIServerSocketFactory;
 import net.login.remote.LoginWorldInterface;
 
 public class LoginWorldInterfaceImpl extends UnicastRemoteObject implements LoginWorldInterface {
+
     private static final long serialVersionUID = -3405666366539470037L;
 
     public LoginWorldInterfaceImpl() throws RemoteException {

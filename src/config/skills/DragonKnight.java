@@ -18,14 +18,15 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package config.skills;
 
 /**
- * 
+ *
  * @author David
  */
 public class DragonKnight {
+
     public static final int ELEMENTAL_RESISTANCE = 1310000;
     public static final int SACRIFICE = 1311005;
     public static final int DRAGON_ROAR = 1311006;

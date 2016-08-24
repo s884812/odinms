@@ -3,6 +3,7 @@ package tools.data.output;
 import java.io.ByteArrayOutputStream;
 
 public class BAOSByteOutputStream implements ByteOutputStream {
+
     private final ByteArrayOutputStream baos;
 
     /**

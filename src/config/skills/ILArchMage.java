@@ -18,7 +18,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package config.skills;
 
 /**
@@ -26,6 +26,7 @@ package config.skills;
  * @author BubblesDev
  */
 public class ILArchMage {
+
     public static final int MAPLE_WARRIOR = 2221000;
     public static final int BIG_BANG = 2221001;
     public static final int MANA_REFLECTION = 2221002;

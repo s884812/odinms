@@ -45,12 +45,14 @@ public class UseMountFoodHandler extends AbstractMaplePacketHandler {
                 c.getPlayer().getMount().setExp((int) ((Math.random() * 26) + 12) + c.getPlayer().getMount().getExp());
                 int level = c.getPlayer().getMount().getLevel();
                 boolean levelup = c.getPlayer().getMount().getExp() >= ExpTable.getMountExpNeededForLevel(level) && level < 31 && c.getPlayer().getMount().getTiredness() != 0;
-                if (levelup)
+                if (levelup) {
                     c.getPlayer().getMount().setLevel(level + 1);
+                }
                 c.getPlayer().getMap().broadcastMessage(MaplePacketCreator.updateMount(c.getPlayer().getId(), c.getPlayer().getMount(), levelup));
                 MapleInventoryManipulator.removeById(c, MapleInventoryType.USE, itemid, 1, true, false);
-            } else
+            } else {
                 c.getPlayer().dropMessage("Favor montar em sua montaria antes de usar a comida.");
+            }
         }
     }
 }

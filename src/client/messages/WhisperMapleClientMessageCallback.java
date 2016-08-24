@@ -17,24 +17,24 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ */
 package client.messages;
 
 import client.MapleClient;
 import tools.MaplePacketCreator;
 
 public class WhisperMapleClientMessageCallback implements MessageCallback {
-	private MapleClient client;
-	private String whisperfrom;
-	
-	public WhisperMapleClientMessageCallback(String whisperfrom, MapleClient client) {
-		this.whisperfrom = whisperfrom;
-		this.client = client;
-	}
-	
-	@Override
-	public void dropMessage(String message) {
-		client.getSession().write(MaplePacketCreator.getWhisper(whisperfrom, client.getChannel(), message));
-	}
+
+    private MapleClient client;
+    private String whisperfrom;
+
+    public WhisperMapleClientMessageCallback(String whisperfrom, MapleClient client) {
+        this.whisperfrom = whisperfrom;
+        this.client = client;
+    }
+
+    @Override
+    public void dropMessage(String message) {
+        client.getSession().write(MaplePacketCreator.getWhisper(whisperfrom, client.getChannel(), message));
+    }
 }

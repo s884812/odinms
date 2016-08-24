@@ -17,8 +17,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ */
 package server;
 
 import java.awt.Point;
@@ -29,13 +28,14 @@ import server.maps.MapleGenericPortal;
 import server.maps.MapleMapPortal;
 
 public class PortalFactory {
-	private int nextDoorPortal;
-	
-	public PortalFactory() {
-		nextDoorPortal = 0x80;
-	}
-	
-	public MaplePortal makePortal(int type, MapleData portal) {
+
+    private int nextDoorPortal;
+
+    public PortalFactory() {
+        nextDoorPortal = 0x80;
+    }
+
+    public MaplePortal makePortal(int type, MapleData portal) {
         MapleGenericPortal ret = null;
         if (type == MaplePortal.MAP_PORTAL) {
             ret = new MapleMapPortal();
@@ -45,8 +45,8 @@ public class PortalFactory {
         loadPortal(ret, portal);
         return ret;
     }
-	
-	private void loadPortal(MapleGenericPortal myPortal, MapleData portal) {
+
+    private void loadPortal(MapleGenericPortal myPortal, MapleData portal) {
         myPortal.setName(MapleDataTool.getString(portal.getChildByPath("pn")));
         myPortal.setTarget(MapleDataTool.getString(portal.getChildByPath("tn")));
         myPortal.setTargetMapId(MapleDataTool.getInt(portal.getChildByPath("tm")));

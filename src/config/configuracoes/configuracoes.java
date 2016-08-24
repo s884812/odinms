@@ -5,8 +5,6 @@
  * Configurações Gerais
  * www.leaderms.com.br
  */
-
-
 package config.configuracoes;
 
 import java.util.Properties;
@@ -17,16 +15,16 @@ import net.world.WorldServer;
 import server.maps.MapleMapObjectType;
 
 public class configuracoes {
+
     /* Correcoes p/ possivel bug */
     private static final Properties server;
     public static final byte getChannelLimit;
-
 
     static {
         server = WorldServer.getInstance().getWorldProp();
         getChannelLimit = Byte.parseByte(server.getProperty("ChannelCount", "6"));
     }
-    
+
     public static String getProperty(String name) {
         if (server.containsKey(name)) {
             return server.getProperty(name);
@@ -35,22 +33,19 @@ public class configuracoes {
             return null;
         }
     }
-   
 
     public static Properties worldServerProperties() {
         return server;
     }
-        public static final List<MapleMapObjectType> rangedMapobjectTypes = Arrays.asList(
-	    MapleMapObjectType.ITEM,
-	    MapleMapObjectType.MONSTER,
-	    MapleMapObjectType.DOOR,
-	    MapleMapObjectType.REACTOR,
-	    MapleMapObjectType.SUMMON,
-	    MapleMapObjectType.NPC,
-	    MapleMapObjectType.MIST);
-    
-    
-    
+    public static final List<MapleMapObjectType> rangedMapobjectTypes = Arrays.asList(
+            MapleMapObjectType.ITEM,
+            MapleMapObjectType.MONSTER,
+            MapleMapObjectType.DOOR,
+            MapleMapObjectType.REACTOR,
+            MapleMapObjectType.SUMMON,
+            MapleMapObjectType.NPC,
+            MapleMapObjectType.MIST);
+
     /* Fim/*
     
     
@@ -68,12 +63,12 @@ public class configuracoes {
     public static int LeaderPoints_3 = 3;
     /*       CashShop        */
     public static int[] BLOQUEADO_CS = new int[]{
-        1812006,/*Magic Scales*/ 
-        1812007,/*Item Ignore Pendant*/  
-        5230000,/*The Owl Of Minerva*/  
+        1812006,/*Magic Scales*/
+        1812007,/*Item Ignore Pendant*/
+        5230000,/*The Owl Of Minerva*/
         5220000,/* Gachapon Ticket */
-        5400000,/*Character Name Change*/  
-        5401000,/*Character Transfer*/ 
+        5400000,/*Character Name Change*/
+        5401000,/*Character Transfer*/
         5430000,/*Extra Character Slot Coupon*/
         5140000,
         5140001,
@@ -88,20 +83,18 @@ public class configuracoes {
         5370000,
         5370001,
         5281000
-            
+
     };
     /*  Mensagem do Sistema */
-   public static final String[] botMensagens = {
-   "Seja bem-vindo ao melhor servidor privado do Brasil!",
-   "Qualquer bug ou erro reportar em nossa comunidade.",
-   "Nostalgia no ar, eventos diarios participe!",
-   "Lembre-se de registrar em nosso forum - leaderms.com.br/forum",
-   "Sabe como melhorar nosso jogo? Deixe sua sugestao em nossa comunidade!",
-   "[Atencao] Jogadores sem respawn/drops, devem sair das quest's.",
-   };
+    public static final String[] botMensagens = {
+        "Seja bem-vindo ao melhor servidor privado do Brasil!",
+        "Qualquer bug ou erro reportar em nossa comunidade.",
+        "Nostalgia no ar, eventos diarios participe!",
+        "Lembre-se de registrar em nosso forum - leaderms.com.br/forum",
+        "Sabe como melhorar nosso jogo? Deixe sua sugestao em nossa comunidade!",
+        "[Atencao] Jogadores sem respawn/drops, devem sair das quest's.",};
 
-    
-    /* Outros ajustes */   
+    /* Outros ajustes */
     public static MapleInventoryType getInventoryType(final int itemId) {
         final byte type = (byte) (itemId / 1000000);
         if (type < 1 || type > 5) {
@@ -109,19 +102,19 @@ public class configuracoes {
         }
         return MapleInventoryType.getByType(type);
     }
-    
-     public static boolean isBeginnerJob(final int job) {
+
+    public static boolean isBeginnerJob(final int job) {
         return job == 0 || job == 1 || job == 1000 || job == 2000 || job == 2001 || job == 3000 || job == 3001 || job == 2002;
     }
-     
+
     public static boolean isWeapon(final int itemId) {
         return itemId >= 1300000 && itemId < 1533000;
     }
-         
+
     public static boolean isRechargable(int itemId) {
         return itemId / 10000 == 233 || itemId / 10000 == 207;
     }
-    
+
     public static final boolean isThrowingStar(int itemId) {
         return itemId / 10000 == 207;
     }
@@ -129,20 +122,19 @@ public class configuracoes {
     public static final boolean isBullet(int itemId) {
         return itemId / 10000 == 233;
     }
-        
-     public static boolean isForceRespawn(int mapid) {
+
+    public static boolean isForceRespawn(int mapid) {
         switch (mapid) {
             case 103000800:
-            case 925100100: 
+            case 925100100:
                 return true;
             default:
                 return mapid / 100000 == 9800 && (mapid % 10 == 1 || mapid % 1000 == 100);
         }
     }
 
-     public static final int maxViewRangeSq() {
-	return 800000; // 800 * 800
+    public static final int maxViewRangeSq() {
+        return 800000; // 800 * 800
     }
-     
-     
+
 }

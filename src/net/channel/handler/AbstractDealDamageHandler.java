@@ -56,8 +56,8 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
 
     public class AttackInfo {
 
-        public int numAttacked,  numDamage,  numAttackedAndDamage;
-        public int skill,  stance,  direction,  charge;
+        public int numAttacked, numDamage, numAttackedAndDamage;
+        public int skill, stance, direction, charge;
         public List<Pair<Integer, List<Integer>>> allDamage;
         public boolean isHH = false;
         public int speed = 4;
@@ -120,29 +120,29 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
         final MapleMap map = player.getMap();
         if (attack.skill == 4211006) { // meso explosion
             for (Pair<Integer, List<Integer>> oned : attack.allDamage) {
-                    MapleMapObject mapobject = map.getMapObject(oned.getLeft().intValue());
-                    if (mapobject != null && mapobject.getType() == MapleMapObjectType.ITEM) {
-                        MapleMapItem mapitem = (MapleMapItem) mapobject;
-                        if (mapitem.getMeso() > 0) {
-                            synchronized (mapitem) {
-                                if (mapitem.isPickedUp()) {
-                                    return;
-                                }
-                                map.removeMapObject(mapitem);
-                                map.broadcastMessage(MaplePacketCreator.removeItemFromMap(mapitem.getObjectId(), 4, 0), mapitem.getPosition());
-                                mapitem.setPickedUp(true);
+                MapleMapObject mapobject = map.getMapObject(oned.getLeft().intValue());
+                if (mapobject != null && mapobject.getType() == MapleMapObjectType.ITEM) {
+                    MapleMapItem mapitem = (MapleMapItem) mapobject;
+                    if (mapitem.getMeso() > 0) {
+                        synchronized (mapitem) {
+                            if (mapitem.isPickedUp()) {
+                                return;
                             }
-                        } else if (mapitem.getMeso() == 0) {
-                            player.getCheatTracker().registerOffense(CheatingOffense.ETC_EXPLOSION);
-                            return;
+                            map.removeMapObject(mapitem);
+                            map.broadcastMessage(MaplePacketCreator.removeItemFromMap(mapitem.getObjectId(), 4, 0), mapitem.getPosition());
+                            mapitem.setPickedUp(true);
                         }
-                    } else if (mapobject != null && mapobject.getType() != MapleMapObjectType.MONSTER) {
-                        player.getCheatTracker().registerOffense(CheatingOffense.EXPLODING_NONEXISTANT);
-                        return; // etc explosion, exploding nonexistant things, etc.
-
+                    } else if (mapitem.getMeso() == 0) {
+                        player.getCheatTracker().registerOffense(CheatingOffense.ETC_EXPLOSION);
+                        return;
                     }
+                } else if (mapobject != null && mapobject.getType() != MapleMapObjectType.MONSTER) {
+                    player.getCheatTracker().registerOffense(CheatingOffense.EXPLODING_NONEXISTANT);
+                    return; // etc explosion, exploding nonexistant things, etc.
+
                 }
             }
+        }
         for (Pair<Integer, List<Integer>> oned : attack.allDamage) {
             MapleMonster monster = map.getMonsterByOid(oned.getLeft().intValue());
 
@@ -156,17 +156,17 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                 player.checkMonsterAggro(monster);
 
                 // anti-hack
-                                if (totDamageToOneMonster > attack.numDamage + 1) {
-                                        int dmgCheck = player.getCheatTracker().checkDamage(totDamageToOneMonster);
-                                        if (dmgCheck > 5 && totDamageToOneMonster < 99999 && monster.getId() < 9500317 && monster.getId() > 9500319) {
-                                                player.getCheatTracker().registerOffense(CheatingOffense.SAME_DAMAGE, dmgCheck + " times: " + totDamageToOneMonster);
-                                        }
-                                }
-                                player.getCheatTracker().checkSameDamage(totDamageToOneMonster);
+                if (totDamageToOneMonster > attack.numDamage + 1) {
+                    int dmgCheck = player.getCheatTracker().checkDamage(totDamageToOneMonster);
+                    if (dmgCheck > 5 && totDamageToOneMonster < 99999 && monster.getId() < 9500317 && monster.getId() > 9500319) {
+                        player.getCheatTracker().registerOffense(CheatingOffense.SAME_DAMAGE, dmgCheck + " times: " + totDamageToOneMonster);
+                    }
+                }
+                player.getCheatTracker().checkSameDamage(totDamageToOneMonster);
 
-                                checkHighDamage(player, monster, attack, theSkill, attackEffect, totDamageToOneMonster, maxDamagePerMonster);
+                checkHighDamage(player, monster, attack, theSkill, attackEffect, totDamageToOneMonster, maxDamagePerMonster);
 
-                                double distance = player.getPosition().distanceSq(monster.getPosition());
+                double distance = player.getPosition().distanceSq(monster.getPosition());
 //                                if (distance > 800000.0 + (this.isFarRangedSkill(attack.skill) ? 800000.0 : 0)) { // 600^2, 550 is approximatly the range of ultis
 //                                        player.getCheatTracker().registerOffense(CheatingOffense.ATTACK_FARAWAY_MONSTER, Double.toString(Math.sqrt(distance)));
 //                                        if (player.getCheatTracker().getPoints() > 20) {
@@ -179,13 +179,13 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
 //                                        }
 //                                }
 
-                                if (attack.skill == 2301002 && !monster.getUndead()) {
-                                        player.getCheatTracker().registerOffense(CheatingOffense.HEAL_ATTACKING_UNDEAD);
-                                        player.getClient().getSession().close();
-                                        return;
-                                }
+                if (attack.skill == 2301002 && !monster.getUndead()) {
+                    player.getCheatTracker().registerOffense(CheatingOffense.HEAL_ATTACKING_UNDEAD);
+                    player.getClient().getSession().close();
+                    return;
+                }
 
-                  // pickpocket
+                // pickpocket
                 if (player.getBuffedValue(MapleBuffStat.PICKPOCKET) != null) {
                     switch (attack.skill) {
                         case 0:
@@ -305,7 +305,7 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
         }
     }
 
-	 private void checkHighDamage(MapleCharacter player, MapleMonster monster, AttackInfo attack, ISkill theSkill, MapleStatEffect attackEffect, int damageToMonster, int maximumDamageToMonster) {
+    private void checkHighDamage(MapleCharacter player, MapleMonster monster, AttackInfo attack, ISkill theSkill, MapleStatEffect attackEffect, int damageToMonster, int maximumDamageToMonster) {
         if (!player.isGM()) {
             int elementalMaxDamagePerMonster;
             int multiplyer = player.getJob().isA(MapleJob.PIRATE) ? 40 : 4;
@@ -370,26 +370,28 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                     default:
                         throw new RuntimeException("Unknown enum constant");
                 }
-            } else elementalMaxDamagePerMonster = maximumDamageToMonster;
-                        if (damageToMonster > elementalMaxDamagePerMonster * multiplyer) {
-                                player.getCheatTracker().registerOffense(CheatingOffense.HIGH_DAMAGE);
-                                if (damageToMonster > elementalMaxDamagePerMonster * multiplyer) { 
-                                                                        FilePrinter.printHacker(player.getName() + ".rtf", "O jogador esta hitando " + damageToMonster + ".\r\nNome do Monstro - " + monster.getName() + "\r\nNivel do Jogador: " + player.getLevel() + "\r\nNivel do Monstro: " + monster.getLevel() + "");
-									try {
-										player.getClient().getChannelServer().getWorldInterface().broadcastGMMessage("", MaplePacketCreator.serverNotice(5, player.getName() + " esta com a DMG (" + damageToMonster + ") no monstro " + monster.getName()).getBytes());
-									} catch (RemoteException ex) {
-										player.getClient().getChannelServer().reconnectWorld();
-									}
-									player.getClient().disconnect();
-									return;
-                                }
-                        }
+            } else {
+                elementalMaxDamagePerMonster = maximumDamageToMonster;
+            }
+            if (damageToMonster > elementalMaxDamagePerMonster * multiplyer) {
+                player.getCheatTracker().registerOffense(CheatingOffense.HIGH_DAMAGE);
+                if (damageToMonster > elementalMaxDamagePerMonster * multiplyer) {
+                    FilePrinter.printHacker(player.getName() + ".rtf", "O jogador esta hitando " + damageToMonster + ".\r\nNome do Monstro - " + monster.getName() + "\r\nNivel do Jogador: " + player.getLevel() + "\r\nNivel do Monstro: " + monster.getLevel() + "");
+                    try {
+                        player.getClient().getChannelServer().getWorldInterface().broadcastGMMessage("", MaplePacketCreator.serverNotice(5, player.getName() + " esta com a DMG (" + damageToMonster + ") no monstro " + monster.getName()).getBytes());
+                    } catch (RemoteException ex) {
+                        player.getClient().getChannelServer().reconnectWorld();
+                    }
+                    player.getClient().disconnect();
+                    return;
+                }
+            }
             if (damageToMonster > elementalMaxDamagePerMonster) {
                 player.getCheatTracker().registerOffense(CheatingOffense.HIGH_DAMAGE);
             }
         }
     }
-	
+
     private void handlePickPocket(MapleCharacter player, MapleMonster monster, Pair<Integer, List<Integer>> oned) {
         int delay = 0;
         int maxmeso = player.getBuffedValue(MapleBuffStat.PICKPOCKET).intValue();
@@ -496,9 +498,9 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
             lea.readByte();
             ret.speed = lea.readByte();
             lea.skip(4);
-        // if (ret.skill == 5201002) {
-        //     lea.skip(4);
-        //  }
+            // if (ret.skill == 5201002) {
+            //     lea.skip(4);
+            //  }
         }
 
         for (int i = 0; i < ret.numAttacked; i++) {
@@ -570,18 +572,18 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
 
         return ret;
     }
-    
- protected boolean isFarRangedSkill(int skillID) {
-			switch (skillID) {
-				case 1311006: //dragon roar
-				case 2121007: //metor shower
-				case 2321008: //genesis
-				case 2221007: //Blizzard
-				case 1221011: //Heavens hammer
-				case 5221003: //Aerial strike
-				case 9101006: //GM roar
-				case 9001001: //GM roar [2]
-			}
-			return false;
-		}
+
+    protected boolean isFarRangedSkill(int skillID) {
+        switch (skillID) {
+            case 1311006: //dragon roar
+            case 2121007: //metor shower
+            case 2321008: //genesis
+            case 2221007: //Blizzard
+            case 1221011: //Heavens hammer
+            case 5221003: //Aerial strike
+            case 9101006: //GM roar
+            case 9001001: //GM roar [2]
+        }
+        return false;
+    }
 }

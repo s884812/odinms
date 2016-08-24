@@ -7,6 +7,7 @@ import net.MaplePacket;
 import tools.HexTool;
 
 public class MaplePacketLittleEndianWriter extends GenericLittleEndianWriter {
+
     private ByteArrayOutputStream baos;
 
     /**
@@ -27,8 +28,8 @@ public class MaplePacketLittleEndianWriter extends GenericLittleEndianWriter {
     }
 
     /**
-     * Gets a <code>MaplePacket</code> instance representing this
-     * sequence of bytes.
+     * Gets a <code>MaplePacket</code> instance representing this sequence of
+     * bytes.
      *
      * @return A <code>MaplePacket</code> with the bytes in this stream.
      */
@@ -47,7 +48,7 @@ public class MaplePacketLittleEndianWriter extends GenericLittleEndianWriter {
     public String toString() {
         return HexTool.toString(baos.toByteArray());
     }
-    
+
     public void writePos(Point s) {
         writeShort(s.x);
         writeShort(s.y);

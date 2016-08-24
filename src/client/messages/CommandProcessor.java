@@ -17,8 +17,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ */
 package client.messages;
 
 import java.lang.management.ManagementFactory;
@@ -49,63 +48,63 @@ import tools.Pair;
 import tools.StringUtil;
 
 public class CommandProcessor implements CommandProcessorMBean {
-	private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(GeneralchatHandler.class);
-	private static final List<Pair<String, String>> gmlog = new LinkedList<Pair<String, String>>();
-	private Map<String, DefinitionCommandPair> commands = new LinkedHashMap<String, DefinitionCommandPair>();
-	private static CommandProcessor instance = new CommandProcessor();
-	private static Runnable persister;
-	private ScriptEngineFactory sef;
-        private static final Lock rl = new ReentrantLock();
 
-	static {
-		persister = new PersistingTask();
-		TimerManager.getInstance().register(persister, 62000);
-	}
-	
-	public List<CommandDefinition> getCommands() {
-		List<CommandDefinition> ret = new LinkedList<CommandDefinition>();
-		for (DefinitionCommandPair dcp : this.commands.values()) {
-			ret.add(dcp.getDefinition());
-		} 
-		return ret;
-	}
-        
-     private CommandProcessor() {
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(GeneralchatHandler.class);
+    private static final List<Pair<String, String>> gmlog = new LinkedList<Pair<String, String>>();
+    private Map<String, DefinitionCommandPair> commands = new LinkedHashMap<String, DefinitionCommandPair>();
+    private static CommandProcessor instance = new CommandProcessor();
+    private static Runnable persister;
+    private ScriptEngineFactory sef;
+    private static final Lock rl = new ReentrantLock();
+
+    static {
+        persister = new PersistingTask();
+        TimerManager.getInstance().register(persister, 62000);
+    }
+
+    public List<CommandDefinition> getCommands() {
+        List<CommandDefinition> ret = new LinkedList<CommandDefinition>();
+        for (DefinitionCommandPair dcp : this.commands.values()) {
+            ret.add(dcp.getDefinition());
+        }
+        return ret;
+    }
+
+    private CommandProcessor() {
         ScriptEngineManager sem = new ScriptEngineManager();
         sef = sem.getEngineByName("javascript").getFactory();
         instance = this; // hackydihack
         reloadCommands();
     }
 
-	
     public static class PersistingTask implements Runnable {
 
         @Override
-	public void run() {
-	    final StringBuilder sb = new StringBuilder();
+        public void run() {
+            final StringBuilder sb = new StringBuilder();
 
-	    rl.lock();
-	    try {
-		final String time = FilePrinter.CurrentReadable_Time();
+            rl.lock();
+            try {
+                final String time = FilePrinter.CurrentReadable_Time();
 
-		for (Pair<String, String> logentry : gmlog) {
-		    sb.append("NOME : ");
-		    sb.append(logentry.getLeft());
-		    sb.append(", COMANDO : ");
-		    sb.append(logentry.getRight());
-		    sb.append(", HORARIO : ");
-		    sb.append(time);
-		    sb.append("\n");
-		}
-		gmlog.clear();
-	    } finally {
-		rl.unlock();
-	    }
-	    FilePrinter.log(FilePrinter.GMCommand_Log, sb.toString());
-	}
+                for (Pair<String, String> logentry : gmlog) {
+                    sb.append("NOME : ");
+                    sb.append(logentry.getLeft());
+                    sb.append(", COMANDO : ");
+                    sb.append(logentry.getRight());
+                    sb.append(", HORARIO : ");
+                    sb.append(time);
+                    sb.append("\n");
+                }
+                gmlog.clear();
+            } finally {
+                rl.unlock();
+            }
+            FilePrinter.log(FilePrinter.GMCommand_Log, sb.toString());
+        }
     }
 
-	 public static void registerMBean() {
+    public static void registerMBean() {
         MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
         try {
             mBeanServer.registerMBean(instance, new ObjectName("client.messages:name=CommandProcessor"));
@@ -114,75 +113,75 @@ public class CommandProcessor implements CommandProcessorMBean {
         }
     }
 
-	public static String joinAfterString(String splitted[], String str) {
-		for (int i = 1; i < splitted.length; i++) {
-			if (splitted[i].equalsIgnoreCase(str) && i + 1 < splitted.length) {
-				return StringUtil.joinStringFrom(splitted, i + 1);
-			}
-		}
-		return null;
-	}
+    public static String joinAfterString(String splitted[], String str) {
+        for (int i = 1; i < splitted.length; i++) {
+            if (splitted[i].equalsIgnoreCase(str) && i + 1 < splitted.length) {
+                return StringUtil.joinStringFrom(splitted, i + 1);
+            }
+        }
+        return null;
+    }
 
-	public static int getOptionalIntArg(String splitted[], int position, int def) {
-		if (splitted.length > position) {
-			try {
-				return Integer.parseInt(splitted[position]);
-			} catch (NumberFormatException nfe) {
-				return def;
-			}
-		}
-		return def;
-	}
+    public static int getOptionalIntArg(String splitted[], int position, int def) {
+        if (splitted.length > position) {
+            try {
+                return Integer.parseInt(splitted[position]);
+            } catch (NumberFormatException nfe) {
+                return def;
+            }
+        }
+        return def;
+    }
 
-	public static String getNamedArg(String splitted[], int startpos, String name) {
-		for (int i = startpos; i < splitted.length; i++) {
-			if (splitted[i].equalsIgnoreCase(name) && i + 1 < splitted.length) {
-				return splitted[i + 1];
-			}
-		}
-		return null;
-	}
+    public static String getNamedArg(String splitted[], int startpos, String name) {
+        for (int i = startpos; i < splitted.length; i++) {
+            if (splitted[i].equalsIgnoreCase(name) && i + 1 < splitted.length) {
+                return splitted[i + 1];
+            }
+        }
+        return null;
+    }
 
-	public static Integer getNamedIntArg(String splitted[], int startpos, String name) {
-		String arg = getNamedArg(splitted, startpos, name);
-		if (arg != null) {
-			try {
-				return Integer.parseInt(arg);
-			} catch (NumberFormatException nfe) {
-				// swallow - we don't really care
-			}
-		}
-		return null;
-	}
+    public static Integer getNamedIntArg(String splitted[], int startpos, String name) {
+        String arg = getNamedArg(splitted, startpos, name);
+        if (arg != null) {
+            try {
+                return Integer.parseInt(arg);
+            } catch (NumberFormatException nfe) {
+                // swallow - we don't really care
+            }
+        }
+        return null;
+    }
 
-	public static int getNamedIntArg(String splitted[], int startpos, String name, int def) {
-		Integer ret = getNamedIntArg(splitted, startpos, name);
-		if (ret == null) {
-			return def;
-		}
-		return ret.intValue();
-	}
+    public static int getNamedIntArg(String splitted[], int startpos, String name, int def) {
+        Integer ret = getNamedIntArg(splitted, startpos, name);
+        if (ret == null) {
+            return def;
+        }
+        return ret.intValue();
+    }
 
-	public static Double getNamedDoubleArg(String splitted[], int startpos, String name) {
-		String arg = getNamedArg(splitted, startpos, name);
-		if (arg != null) {
-			try {
-				return Double.parseDouble(arg);
-			} catch (NumberFormatException nfe) {
-				// swallow - we don't really care
-			}
-		}
-		return null;
-	}
+    public static Double getNamedDoubleArg(String splitted[], int startpos, String name) {
+        String arg = getNamedArg(splitted, startpos, name);
+        if (arg != null) {
+            try {
+                return Double.parseDouble(arg);
+            } catch (NumberFormatException nfe) {
+                // swallow - we don't really care
+            }
+        }
+        return null;
+    }
 
-	public boolean processCommand(MapleClient c, String line) {
-		return instance.processCommandInternal(c, new ServernoticeMapleClientMessageCallback(c), line);
-	}
+    public boolean processCommand(MapleClient c, String line) {
+        return instance.processCommandInternal(c, new ServernoticeMapleClientMessageCallback(c), line);
+    }
 
-	/* (non-Javadoc)
+    /* (non-Javadoc)
 	 * @see client.messages.CommandProcessorMBean#processCommandJMX(int, int, java.lang.String)
-	 */
-	  public String processCommandJMX(int cserver, int mapid, String command) {
+     */
+    public String processCommandJMX(int cserver, int mapid, String command) {
         ChannelServer cserv = ChannelServer.getInstance(cserver);
         if (cserv == null) {
             return "The specified channel Server does not exist in this serverprocess";
@@ -238,71 +237,72 @@ public class CommandProcessor implements CommandProcessorMBean {
         }
     }
 
-   private void registerCommand(Command command) {
+    private void registerCommand(Command command) {
         CommandDefinition[] definition = command.getDefinition();
         for (CommandDefinition def : definition) {
             commands.put(def.getCommand().toLowerCase(), new DefinitionCommandPair(command, def));
         }
     }
-         
-	public void dropHelp(MapleCharacter chr, MessageCallback mc, int page) {
-		List<DefinitionCommandPair> allCommands = new ArrayList<DefinitionCommandPair>(commands.values());
-		int startEntry = (page - 1) * 20;
-		mc.dropMessage("Pagina de Comandos : --------" + page + "---------");
-		for (int i = startEntry; i < startEntry + 20 && i < allCommands.size(); i++) {
-			CommandDefinition commandDefinition = allCommands.get(i).getDefinition();
-			if (chr.hasGmLevel(commandDefinition.getRequiredLevel())) {
-				dropHelpForDefinition(mc, commandDefinition);
-			}
-		}
-	}
 
-	private void dropHelpForDefinition(MessageCallback mc, CommandDefinition commandDefinition) {
-		mc.dropMessage(commandDefinition.getCommand() + " " + commandDefinition.getParameterDescription() + ": " + commandDefinition.getHelp());
-	}
+    public void dropHelp(MapleCharacter chr, MessageCallback mc, int page) {
+        List<DefinitionCommandPair> allCommands = new ArrayList<DefinitionCommandPair>(commands.values());
+        int startEntry = (page - 1) * 20;
+        mc.dropMessage("Pagina de Comandos : --------" + page + "---------");
+        for (int i = startEntry; i < startEntry + 20 && i < allCommands.size(); i++) {
+            CommandDefinition commandDefinition = allCommands.get(i).getDefinition();
+            if (chr.hasGmLevel(commandDefinition.getRequiredLevel())) {
+                dropHelpForDefinition(mc, commandDefinition);
+            }
+        }
+    }
 
-	/* (non-Javadoc)
+    private void dropHelpForDefinition(MessageCallback mc, CommandDefinition commandDefinition) {
+        mc.dropMessage(commandDefinition.getCommand() + " " + commandDefinition.getParameterDescription() + ": " + commandDefinition.getHelp());
+    }
+
+    /* (non-Javadoc)
 	 * @see client.messages.CommandProcessorMBean#processCommandInstance(client.MapleClient, java.lang.String)
-	 */
-	private boolean processCommandInternal(MapleClient c, MessageCallback mc, String line) {
-		MapleCharacter player = c.getPlayer();
-		if (line.charAt(0) == '!' || line.charAt(0) == '@' || line.charAt(0) == '~') {
-			if (line.charAt(0) == '~') {
-				mc.dropMessage("Para usar os comandos de jogador use apenas (@).");
-				return false;
-			}
-			String[] splitted = line.split(" ");
-			if (splitted.length > 0 && splitted[0].length() > 1) {
-				DefinitionCommandPair definitionCommandPair = commands.get(splitted[0].substring(1));
-				if (definitionCommandPair != null && (player.getGMLevel() >= definitionCommandPair.getDefinition().getRequiredLevel()) ||
-						player.isLord() && definitionCommandPair.getDefinition().getRequiredLevel() == 50) {
-					synchronized (gmlog) {
-						if (definitionCommandPair.getDefinition().getRequiredLevel() > 0)
-//							gmlog.add(new Pair<MapleCharacter, String>(player, line));
-                                                gmlog.add(new Pair<String, String>(c.getPlayer().getName(), line));
-					}
-					try {
-						definitionCommandPair.getCommand().execute(c, mc, splitted);
-					} catch (IllegalCommandSyntaxException e) {
-						mc.dropMessage("Excecao Sintaxe ilegal de comando : " + e.getMessage());
-						dropHelpForDefinition(mc, definitionCommandPair.getDefinition());
-					} catch (Exception e) {
-						mc.dropMessage("Ocorreu um erro : " + e.getClass().getName() + " " + e.getMessage());
-						// why do we need to spam the console when someone makes a typo? D:
-						//log.error("COMMAND ERROR", e);
-					}
-					return true;
-				} else {
-					if (definitionCommandPair == null || player.getGMLevel() >= definitionCommandPair.getDefinition().getRequiredLevel()) {
-						mc.dropMessage("O comando " + splitted[0] + " nao existe ou voce nao tem os privilegios necessarios.");
-						if (line.charAt(0) == '~') return false;
-						return true;
-					}
-				}
-			}
-		}
-		return false;
-	}
+     */
+    private boolean processCommandInternal(MapleClient c, MessageCallback mc, String line) {
+        MapleCharacter player = c.getPlayer();
+        if (line.charAt(0) == '!' || line.charAt(0) == '@' || line.charAt(0) == '~') {
+            if (line.charAt(0) == '~') {
+                mc.dropMessage("Para usar os comandos de jogador use apenas (@).");
+                return false;
+            }
+            String[] splitted = line.split(" ");
+            if (splitted.length > 0 && splitted[0].length() > 1) {
+                DefinitionCommandPair definitionCommandPair = commands.get(splitted[0].substring(1));
+                if (definitionCommandPair != null && (player.getGMLevel() >= definitionCommandPair.getDefinition().getRequiredLevel())
+                        || player.isLord() && definitionCommandPair.getDefinition().getRequiredLevel() == 50) {
+                    synchronized (gmlog) {
+                        if (definitionCommandPair.getDefinition().getRequiredLevel() > 0) //							gmlog.add(new Pair<MapleCharacter, String>(player, line));
+                        {
+                            gmlog.add(new Pair<String, String>(c.getPlayer().getName(), line));
+                        }
+                    }
+                    try {
+                        definitionCommandPair.getCommand().execute(c, mc, splitted);
+                    } catch (IllegalCommandSyntaxException e) {
+                        mc.dropMessage("Excecao Sintaxe ilegal de comando : " + e.getMessage());
+                        dropHelpForDefinition(mc, definitionCommandPair.getDefinition());
+                    } catch (Exception e) {
+                        mc.dropMessage("Ocorreu um erro : " + e.getClass().getName() + " " + e.getMessage());
+                        // why do we need to spam the console when someone makes a typo? D:
+                        //log.error("COMMAND ERROR", e);
+                    }
+                    return true;
+                } else if (definitionCommandPair == null || player.getGMLevel() >= definitionCommandPair.getDefinition().getRequiredLevel()) {
+                    mc.dropMessage("O comando " + splitted[0] + " nao existe ou voce nao tem os privilegios necessarios.");
+                    if (line.charAt(0) == '~') {
+                        return false;
+                    }
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }
 
 class DefinitionCommandPair {

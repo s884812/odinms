@@ -17,9 +17,9 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
-/*
+ /*
  * MapleDataDirectoryEntry.java
  *
  * Created on 26. November 2007, 22:22
@@ -27,7 +27,6 @@
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
-
 package provider;
 
 import java.util.List;
@@ -37,7 +36,10 @@ import java.util.List;
  * @author Matze
  */
 public interface MapleDataDirectoryEntry extends MapleDataEntry {
-	public List<MapleDataDirectoryEntry> getSubdirectories();
-	public List<MapleDataFileEntry> getFiles();
-	public MapleDataEntry getEntry(String name);
+
+    public List<MapleDataDirectoryEntry> getSubdirectories();
+
+    public List<MapleDataFileEntry> getFiles();
+
+    public MapleDataEntry getEntry(String name);
 }

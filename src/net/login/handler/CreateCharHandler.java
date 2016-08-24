@@ -18,7 +18,7 @@ import tools.StringUtil;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 public class CreateCharHandler extends AbstractMaplePacketHandler {
-    
+
     private static final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
     private static final SimpleDateFormat sdf2 = new SimpleDateFormat("HH:mm");
 
@@ -51,7 +51,7 @@ public class CreateCharHandler extends AbstractMaplePacketHandler {
         newchar.setRemainingAp(9);
         newchar.setName(name, false);
         newchar.setSkinColor(MapleSkinColor.getById(skinColor));
-        
+
         if (c.isGm()) {
             newchar.setGMLevel(c.getGMLevel());
         }
@@ -72,11 +72,11 @@ public class CreateCharHandler extends AbstractMaplePacketHandler {
         IItem pWeap = MapleItemInformationProvider.getInstance().getEquipById(1702069);
         pWeap.setPosition((byte) -111);
         equip.addFromDB(pWeap);
-        
+
         /* Correcoes p/ Quest */
         newchar.getInventory(MapleInventoryType.ETC).addItem(new Item(4161001, (byte) 0, (short) 1));
         newchar.getInventory(MapleInventoryType.ETC).addItem(new Item(4031180, (byte) 0, (short) 1));
-        
+
         boolean charok = true;
 
         int totstats = str + dex + _int + luk;
@@ -136,14 +136,14 @@ public class CreateCharHandler extends AbstractMaplePacketHandler {
         if (charok && MapleCharacterUtil.canCreateChar(name, c.getWorld())) {
             newchar.saveToDB(false, true);
             c.getSession().write(MaplePacketCreator.addNewCharEntry(newchar, charok));
-            FilePrinter.printNovo(""+  newchar.getName() +".rtf", "Nome do novo jogador: " +  newchar.getName() + "\r\nID da conta: (" + newchar.getAccountID() + ")\r\nAdmissao ao jogo: " + sdf.format(Calendar.getInstance().getTime()) + " as " + sdf2.format(Calendar.getInstance().getTime()) + ".");
+            FilePrinter.printNovo("" + newchar.getName() + ".rtf", "Nome do novo jogador: " + newchar.getName() + "\r\nID da conta: (" + newchar.getAccountID() + ")\r\nAdmissao ao jogo: " + sdf.format(Calendar.getInstance().getTime()) + " as " + sdf2.format(Calendar.getInstance().getTime()) + ".");
         } else {
             System.out.println(MapleClient.getLogMessage(c, "Trying to create a character with a name: " + name));
-        }     
-        
-    }	
-    
-      private boolean checkName(MapleClient c, String name) {
+        }
+
+    }
+
+    private boolean checkName(MapleClient c, String name) {
         String lowerCase = name.toLowerCase();
         if (lowerCase.contains("gm")
                 || lowerCase.contains("admin")
@@ -164,10 +164,9 @@ public class CreateCharHandler extends AbstractMaplePacketHandler {
                 || lowerCase.contains("Foda")
                 || lowerCase.contains("Mesos")
                 || lowerCase.contains("shit")) {
-                c.getSession().close();
+            c.getSession().close();
             return true;
         }
         return false;
     }
 }
-

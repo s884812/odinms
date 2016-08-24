@@ -40,8 +40,8 @@ public class ChangeMapHandler extends AbstractMaplePacketHandler {
 
     private static Logger log = LoggerFactory.getLogger(ChangeMapHandler.class);
 
- @Override
-       public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    @Override
+    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         if (slea.available() == 0) {
             int channel = c.getChannel();
             String ip = ChannelServer.getInstance(c.getChannel()).getIP(channel);
@@ -94,20 +94,17 @@ public class ChangeMapHandler extends AbstractMaplePacketHandler {
                             player.changeMap(to, pto);
 
                         }
+                    } else if (c.getPlayer().getMap().isCPQMap()) {
+                        MapleMap to = c.getChannelServer().getMapFactory().getMap(
+                                c.getPlayer().getMap().getId() + 1);
+                        MaplePortal pto = to.getPortal(0);
+
                     } else {
-                        if (c.getPlayer().getMap().isCPQMap()) {
-                            MapleMap to = c.getChannelServer().getMapFactory().getMap(
-                                    c.getPlayer().getMap().getId() + 1);
-                            MaplePortal pto = to.getPortal(0);
+                        MapleMap to = c.getPlayer().getMap().getReturnMap();
+                        MaplePortal pto = to.getPortal(0);
+                        player.setStance(0);
+                        player.changeMap(to, pto);
 
-
-                        } else {
-                            MapleMap to = c.getPlayer().getMap().getReturnMap();
-                            MaplePortal pto = to.getPortal(0);
-                            player.setStance(0);
-                            player.changeMap(to, pto);
-
-                        }
                     }
                 }
             } else if (targetid != -1 && c.getPlayer().isGM()) {
@@ -116,13 +113,11 @@ public class ChangeMapHandler extends AbstractMaplePacketHandler {
                 player.changeMap(to, pto);
             } else if (targetid != -1 && !c.getPlayer().isGM()) {
                 log.warn("Player {} attempted Mapjumping without being a gm", c.getPlayer().getName());
+            } else if (portal != null) {
+                portal.enterPortal(c);
             } else {
-                if (portal != null) {
-                    portal.enterPortal(c);
-                } else {
-                    c.getSession().write(MaplePacketCreator.enableActions());
-                    log.warn("Portal {} not found on map {}", startwp, c.getPlayer().getMap().getId());
-                }
+                c.getSession().write(MaplePacketCreator.enableActions());
+                log.warn("Portal {} not found on map {}", startwp, c.getPlayer().getMap().getId());
             }
         }
     }

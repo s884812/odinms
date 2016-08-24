@@ -2,15 +2,15 @@ package tools.data.output;
 
 import org.apache.mina.core.buffer.IoBuffer;
 
-
 public class ByteBufferOutputstream implements ByteOutputStream {
+
     private final IoBuffer bb;
 
     /**
      * Class constructor - Wraps this instance around ByteBuffer <code>bb</code>
      *
-     * @param bb The <code>org.apache.mina.common.ByteBuffer</code> to wrap
-     *            this stream around.
+     * @param bb The <code>org.apache.mina.common.ByteBuffer</code> to wrap this
+     * stream around.
      */
     public ByteBufferOutputstream(IoBuffer bb) {
         super();

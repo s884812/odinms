@@ -5,9 +5,11 @@ public interface IEquip extends IItem {
     public enum ScrollResult {
         SUCCESS, FAIL, CURSE
     }
- 
+
     byte getUpgradeSlots();
+
     byte getLocked();
+
     byte getLevel();
 
     public int getRingId();
@@ -43,8 +45,8 @@ public interface IEquip extends IItem {
     public short getJump();
 
     public long getExpiration();
-    
+
     public boolean isWearing();
-    
+
     public void wear(boolean yes);
 }

@@ -10,10 +10,9 @@ import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 /**
-*
-* @author Pat
-*/
-
+ *
+ * @author Pat
+ */
 /**
  *
  * @author Pat
@@ -46,12 +45,12 @@ public class UseCatchItemHandler extends AbstractMaplePacketHandler {
                     c.getPlayer().getMap().broadcastMessage(MaplePacketCreator.catchMonster(oid, itemid, (byte) 1));
                     mob.getMap().killMonster(mob, c.getPlayer(), false, false, 0);
                     MapleInventoryManipulator.removeById(c, MapleInventoryType.USE, itemid, 1, false, false);
-                    MapleInventoryManipulator.addById(c, 4031868, (short)1, null, "", -1);
+                    MapleInventoryManipulator.addById(c, 4031868, (short) 1, null, "", -1);
                     c.getSession().write(MaplePacketCreator.serverNotice(5, "Voce ganhou uma joia!"));
                     c.getPlayer().setLastCatch(System.currentTimeMillis());
                     c.getPlayer().updateAriantScore();
                 } else {
-                  ///  map.broadcastMessage(MaplePacketCreator.catchMonster(mob.getId(), itemid, (byte) 0));
+                    ///  map.broadcastMessage(MaplePacketCreator.catchMonster(mob.getId(), itemid, (byte) 0));
                     c.getPlayer().getMap().broadcastMessage(MaplePacketCreator.catchMonster(oid, itemid, (byte) 0));
                     c.getPlayer().dropMessage(5, "O monstro tem muita forca fisica, entao voce nao pode pega-lo.");
                 }

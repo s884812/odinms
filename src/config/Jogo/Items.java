@@ -1,4 +1,3 @@
-
 package config.Jogo;
 
 /**
@@ -27,7 +26,7 @@ public class Items {
         return itemid >= 3000000 && itemid < 4000000;
     }
 
-    public static boolean isCurrency(int itemid){
+    public static boolean isCurrency(int itemid) {
         return itemid >= 4032015 && itemid < 4032017;
     }
 
@@ -106,6 +105,7 @@ public class Items {
             return i;
         }
     }
+
     public static final boolean isThrowingStar(int itemId) {
         return itemId / 10000 == 207;
     }

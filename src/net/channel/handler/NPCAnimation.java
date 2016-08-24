@@ -17,8 +17,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ */
 package net.channel.handler;
 
 import client.MapleClient;
@@ -29,21 +28,21 @@ import tools.data.output.MaplePacketLittleEndianWriter;
 
 public class NPCAnimation extends AbstractMaplePacketHandler {
 
-	@Override
-	public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-		MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-		int length = (int) slea.available();
-	
-		if (length == 6) { // NPC Talk
-			mplew.writeShort(SendPacketOpcode.NPC_ACTION.getValue());
-			mplew.writeInt(slea.readInt());
-			mplew.writeShort(slea.readShort());
-			c.getSession().write(mplew.getPacket());
-		} else if (length > 6) { // NPC Move
-			byte[] bytes = slea.read(length - 9);
-			mplew.writeShort(SendPacketOpcode.NPC_ACTION.getValue());
-			mplew.write(bytes);
-			c.getSession().write(mplew.getPacket());
-		}
-	}
+    @Override
+    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        int length = (int) slea.available();
+
+        if (length == 6) { // NPC Talk
+            mplew.writeShort(SendPacketOpcode.NPC_ACTION.getValue());
+            mplew.writeInt(slea.readInt());
+            mplew.writeShort(slea.readShort());
+            c.getSession().write(mplew.getPacket());
+        } else if (length > 6) { // NPC Move
+            byte[] bytes = slea.read(length - 9);
+            mplew.writeShort(SendPacketOpcode.NPC_ACTION.getValue());
+            mplew.write(bytes);
+            c.getSession().write(mplew.getPacket());
+        }
+    }
 }

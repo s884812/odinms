@@ -1,6 +1,7 @@
 package tools.data.output;
 
 public interface LittleEndianWriter {
+
     /**
      * Write an array of bytes to the sequence.
      *
@@ -38,6 +39,7 @@ public interface LittleEndianWriter {
 
     /**
      * Write a long integer to the sequence.
+     *
      * @param l The long integer to write.
      */
     public void writeLong(long l);

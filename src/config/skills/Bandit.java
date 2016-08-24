@@ -18,7 +18,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package config.skills;
 
 /**
@@ -26,6 +26,7 @@ package config.skills;
  * @author BubblesDev
  */
 public class Bandit {
+
     public static final int DAGGER_MASTERY = 4200000;
     public static final int ENDURE = 4200001;
     public static final int DAGGER_BOOSTER = 4201002;

@@ -17,8 +17,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ */
 package net.channel.handler;
 
 import client.MapleCharacter;
@@ -29,18 +28,19 @@ import tools.data.input.SeekableLittleEndianAccessor;
 
 public class CharInfoRequestHandler extends AbstractMaplePacketHandler {
 
-	@Override
-	public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-		slea.readShort(); // most likely two shorts rather than one int but dunno ^___^
-		slea.readShort();
-		int cid = slea.readInt();
-		boolean me = cid == c.getPlayer().getId();
-		MapleCharacter player = (MapleCharacter) c.getPlayer().getMap().getMapObject(cid);
-              //  c.getPlayer().dropMessage("O jogador possui a ocupacao - " + c.getPlayer().getOccupation() + ".");
-		if (!player.isGM() || (c.getPlayer().isGM() && player.isGM()))
-			c.getSession().write(MaplePacketCreator.charInfo(player));
-		else
-			c.getSession().write(MaplePacketCreator.enableActions());
-		return;
-	}
+    @Override
+    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+        slea.readShort(); // most likely two shorts rather than one int but dunno ^___^
+        slea.readShort();
+        int cid = slea.readInt();
+        boolean me = cid == c.getPlayer().getId();
+        MapleCharacter player = (MapleCharacter) c.getPlayer().getMap().getMapObject(cid);
+        //  c.getPlayer().dropMessage("O jogador possui a ocupacao - " + c.getPlayer().getOccupation() + ".");
+        if (!player.isGM() || (c.getPlayer().isGM() && player.isGM())) {
+            c.getSession().write(MaplePacketCreator.charInfo(player));
+        } else {
+            c.getSession().write(MaplePacketCreator.enableActions());
+        }
+        return;
+    }
 }

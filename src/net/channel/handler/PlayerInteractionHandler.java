@@ -117,7 +117,7 @@ public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                         c.getPlayer().dropMessage(1, "Loja desabilitada!");
                         return;
                     }
-                     if (c.getPlayer().haveItem(5140000) || c.getPlayer().haveItem(5140001) || c.getPlayer().haveItem(5140002) || c.getPlayer().haveItem(5140003) && c.getPlayer().haveItem(5140004) || c.getPlayer().haveItem(5140006)/* || c.getPlayer().haveItem(5030006) || c.getPlayer().haveItem(5030002) || c.getPlayer().haveItem(5030001) || c.getPlayer().haveItem(5030000)*/) {
+                    if (c.getPlayer().haveItem(5140000) || c.getPlayer().haveItem(5140001) || c.getPlayer().haveItem(5140002) || c.getPlayer().haveItem(5140003) && c.getPlayer().haveItem(5140004) || c.getPlayer().haveItem(5140006)/* || c.getPlayer().haveItem(5030006) || c.getPlayer().haveItem(5030002) || c.getPlayer().haveItem(5030001) || c.getPlayer().haveItem(5030000)*/) {
                         c.getPlayer().dropMessage(1, "Loja desabilitada temporariamente!");
                         return;
                     }
@@ -192,7 +192,7 @@ public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                 CommandProcessor.getInstance().processCommand(c, message);
                 ips.broadcast(MaplePacketCreator.shopChat(c.getPlayer().getName() + " : " + message, ips.isOwner(c.getPlayer()) ? 0 : ips.getVisitorSlot(c.getPlayer()) + 1), true);
             }
-       } else if (mode == Action.EXIT.getCode()) {
+        } else if (mode == Action.EXIT.getCode()) {
             if (c.getPlayer().getTrade() != null) {
                 MapleTrade.cancelTrade(c.getPlayer());
             } else {
@@ -315,13 +315,13 @@ public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
             MapleInventoryType ivType = MapleInventoryType.getByType(slea.readByte());
             IItem item = c.getPlayer().getInventory(ivType).getItem((byte) slea.readShort());
             long checkq = slea.readShort();
-            short quantity = (short)(int)checkq;
+            short quantity = (short) (int) checkq;
             byte targetSlot = slea.readByte();
             if (c.getPlayer().getTrade() != null && item != null) {
                 if (checkq > 4000) {
                     AutobanManager.getInstance().autoban(c, "LeaderMS| PE esta em troca.");
                 }
-               if ((quantity <= item.getQuantity() && quantity >= 0) || ii.isThrowingStar(item.getItemId()) || ii.isBullet(item.getItemId())) {
+                if ((quantity <= item.getQuantity() && quantity >= 0) || ii.isThrowingStar(item.getItemId()) || ii.isBullet(item.getItemId())) {
                     if (!c.getChannelServer().allowUndroppablesDrop() && ii.isDropRestricted(item.getItemId())) {
                         c.getSession().write(MaplePacketCreator.enableActions());
                         return;
@@ -354,7 +354,7 @@ public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
             IPlayerInteractionManager shop = c.getPlayer().getInteraction();
             long checkquantity = bundles * perBundle;
             int checkiquantity = bundles * perBundle;
-            short checksmquantity = (short)(bundles * perBundle);
+            short checksmquantity = (short) (bundles * perBundle);
             if (shop != null && shop.isOwner(c.getPlayer())) {
                 if (ivItem != null && ivItem.getQuantity() >= bundles * perBundle) {
                     if (price < 0) {
@@ -365,7 +365,9 @@ public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                         AutobanManager.getInstance().autoban(c, "LeaderMS| PE Item de Loja : " + sellItem.getItemId());
                         return;
                     }
-                    if (bundles > 10 || perBundle > 4000) return;
+                    if (bundles > 10 || perBundle > 4000) {
+                        return;
+                    }
                     MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
                     if (ii.isThrowingStar(ivItem.getItemId()) || ii.isBullet(ivItem.getItemId())) {
                         MapleInventoryManipulator.removeFromSlot(c, type, slot, ivItem.getQuantity(), true);
@@ -376,7 +378,7 @@ public class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                     c.getSession().write(MaplePacketCreator.shopItemUpdate(shop));
                 }
             }
-         } else if (mode == Action.BUY.getCode() || mode == Action.MERCHANT_BUY.getCode()) {
+        } else if (mode == Action.BUY.getCode() || mode == Action.MERCHANT_BUY.getCode()) {
             int item = slea.readByte();
             short quantity = slea.readShort();
             IPlayerInteractionManager shop = c.getPlayer().getInteraction();

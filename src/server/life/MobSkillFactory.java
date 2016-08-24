@@ -17,8 +17,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ */
 package server.life;
 
 import java.awt.Point;
@@ -38,14 +37,14 @@ import tools.Pair;
  *
  * @author Danny (Leifde)
  */
-
 public class MobSkillFactory {
-	private static Map<String, MobSkill> mobSkills = new HashMap<String, MobSkill>();
-	private static MapleDataProvider dataSource = MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/Skill.wz"));
-	private static MapleData skillRoot = dataSource.getData("MobSkill.img");
-        private static ReentrantReadWriteLock dataLock = new ReentrantReadWriteLock();
-	
-	public static MobSkill getMobSkill(int skillId, int level) {
+
+    private static Map<String, MobSkill> mobSkills = new HashMap<String, MobSkill>();
+    private static MapleDataProvider dataSource = MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/Skill.wz"));
+    private static MapleData skillRoot = dataSource.getData("MobSkill.img");
+    private static ReentrantReadWriteLock dataLock = new ReentrantReadWriteLock();
+
+    public static MobSkill getMobSkill(int skillId, int level) {
         String key = String.valueOf(skillId) + "." + String.valueOf(level);
         dataLock.readLock().lock();
         try {

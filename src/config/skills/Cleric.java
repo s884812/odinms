@@ -18,10 +18,11 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package config.skills;
 
 public class Cleric {
+
     public static final int MP_EATER = 2300000;
     public static final int HEAL = 2301002;
     public static final int INVINCIBLE = 2301003;

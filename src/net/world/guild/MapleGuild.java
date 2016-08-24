@@ -81,8 +81,7 @@ public class MapleGuild implements java.io.Serializable {
     private boolean bDirty = true;
     private int allianceId;
 
-
-   public MapleGuild(MapleGuildCharacter initiator) {
+    public MapleGuild(MapleGuildCharacter initiator) {
         int guildid = initiator.getGuildId();
         members = new ArrayList<MapleGuildCharacter>();
         Connection con = DatabaseConnection.getConnection();
@@ -132,12 +131,11 @@ public class MapleGuild implements java.io.Serializable {
         }
     }
 
-    
-     public void buildNotifications() {
+    public void buildNotifications() {
         if (!bDirty) {
             return;
         }
-       Set<Integer> chs = WorldRegistryImpl.getInstance().getChannelServer();
+        Set<Integer> chs = WorldRegistryImpl.getInstance().getChannelServer();
         if (notifications.keySet().size() != chs.size()) {
             notifications.clear();
             for (Integer ch : chs) {
@@ -154,7 +152,9 @@ public class MapleGuild implements java.io.Serializable {
                     continue;
                 }
                 List<Integer> ch = notifications.get(mgc.getChannel());
-                if (ch != null) ch.add(mgc.getId());
+                if (ch != null) {
+                    ch.add(mgc.getId());
+                }
             }
         }
         bDirty = false;
@@ -164,7 +164,7 @@ public class MapleGuild implements java.io.Serializable {
         writeToDB(false);
     }
 
- public void writeToDB(boolean bDisband) {
+    public void writeToDB(boolean bDisband) {
         try {
             Connection con = DatabaseConnection.getConnection();
             if (!bDisband) {
@@ -428,7 +428,7 @@ public class MapleGuild implements java.io.Serializable {
         }
     }
 
-     public void expelMember(MapleGuildCharacter initiator, String name, int cid) {
+    public void expelMember(MapleGuildCharacter initiator, String name, int cid) {
         synchronized (members) {
             java.util.Iterator<MapleGuildCharacter> itr = members.iterator();
             MapleGuildCharacter mgc;
@@ -552,7 +552,7 @@ public class MapleGuild implements java.io.Serializable {
         return true;
     }
 
-     public void gainGP(int amount) {
+    public void gainGP(int amount) {
         this.gp += amount;
         this.writeToDB(false);
         this.guildMessage(MaplePacketCreator.updateGP(this.id, this.gp));
@@ -577,26 +577,24 @@ public class MapleGuild implements java.io.Serializable {
         return null;
     }
 
-   public static void displayGuildRanks(MapleClient c, int npcid)
-	{
-		try {
-			Connection con = DatabaseConnection.getConnection();
-			PreparedStatement ps = con.prepareStatement(
-				"SELECT `name`, `GP`, `logoBG`, `logoBGColor`, " +
-				"`logo`, `logoColor` FROM guilds ORDER BY `GP` DESC LIMIT 50");
+    public static void displayGuildRanks(MapleClient c, int npcid) {
+        try {
+            Connection con = DatabaseConnection.getConnection();
+            PreparedStatement ps = con.prepareStatement(
+                    "SELECT `name`, `GP`, `logoBG`, `logoBGColor`, "
+                    + "`logo`, `logoColor` FROM guilds ORDER BY `GP` DESC LIMIT 50");
 
-			ResultSet rs = ps.executeQuery();
-			c.getSession().write(MaplePacketCreator.showGuildRanks(npcid, rs));
+            ResultSet rs = ps.executeQuery();
+            c.getSession().write(MaplePacketCreator.showGuildRanks(npcid, rs));
 
-			ps.close();
-			rs.close();
-		} catch (Exception e) {
-			log.error("Nao foi possivel exibir fileiras de guild.", e);
-		}
-	}
+            ps.close();
+            rs.close();
+        } catch (Exception e) {
+            log.error("Nao foi possivel exibir fileiras de guild.", e);
+        }
+    }
 
-
-      public int getAllianceId() {
+    public int getAllianceId() {
         return allianceId;
     }
 

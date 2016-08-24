@@ -52,16 +52,14 @@ public class PetFoodHandler extends AbstractMaplePacketHandler {
                         c.getPlayer().getMap().broadcastMessage(MaplePacketCreator.showPetLevelUp(c.getPlayer(), c.getPlayer().getPetIndex(pet)));
                     }
                 }
-            } else {
-                if (gainCloseness) {
-                    int newCloseness = pet.getCloseness() - (1 * c.getChannelServer().getPetExpRate());
-                    if (newCloseness < 0) {
-                        newCloseness = 0;
-                    }
-                    pet.setCloseness(newCloseness);
-                    if (newCloseness < ExpTable.getClosenessNeededForLevel(pet.getLevel())) {
-                        pet.setLevel(pet.getLevel() - 1);
-                    }
+            } else if (gainCloseness) {
+                int newCloseness = pet.getCloseness() - (1 * c.getChannelServer().getPetExpRate());
+                if (newCloseness < 0) {
+                    newCloseness = 0;
+                }
+                pet.setCloseness(newCloseness);
+                if (newCloseness < ExpTable.getClosenessNeededForLevel(pet.getLevel())) {
+                    pet.setLevel(pet.getLevel() - 1);
                 }
             }
             c.getSession().write(MaplePacketCreator.updatePet(pet, true));

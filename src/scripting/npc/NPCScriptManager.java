@@ -26,9 +26,8 @@ public class NPCScriptManager extends AbstractScriptManager {
     public synchronized static NPCScriptManager getInstance() {
         return instance;
     }
-	
-    
-  public void start(String filename, MapleClient c, int npc, List<MaplePartyCharacter> chrs) {
+
+    public void start(String filename, MapleClient c, int npc, List<MaplePartyCharacter> chrs) {
         try {
             NPCConversationManager cm = new NPCConversationManager(c, npc, chrs, 0);
             cm.dispose();
@@ -50,16 +49,15 @@ public class NPCScriptManager extends AbstractScriptManager {
             engine.put("cm", cm);
             NPCScript ns = iv.getInterface(NPCScript.class);
             scripts.put(c, ns);
-	    ns.start(chrs);
+            ns.start(chrs);
         } catch (Exception e) {
             FilePrinter.printError(FilePrinter.NPC + npc + ".txt", e);
             dispose(c);
             cms.remove(c);
-        }		
-	}
-  
+        }
+    }
 
-       public void start(MapleClient c, int npc, String filename, MapleCharacter chr) {
+    public void start(MapleClient c, int npc, String filename, MapleCharacter chr) {
         try {
             NPCConversationManager cm = new NPCConversationManager(c, npc);
             if (cms.containsKey(c)) {
@@ -123,13 +121,13 @@ public class NPCScriptManager extends AbstractScriptManager {
         resetContext("npc/" + cm.getNpc() + ".js", cm.getC());
     }
 
-     public void dispose(MapleClient c) {
+    public void dispose(MapleClient c) {
         if (cms.get(c) != null) {
             dispose(cms.get(c));
         }
     }
-     
-        private void notice(MapleClient c, int id) {
+
+    private void notice(MapleClient c, int id) {
         if (c != null) {
             c.getPlayer().dropMessage(1, "Ocorreu um erro desconhecido durante a execucao deste NPC. Por favor reporte para um dos Admins! ID: " + id);
         }

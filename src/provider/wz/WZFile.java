@@ -17,8 +17,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ */
 package provider.wz;
 
 import java.io.BufferedInputStream;
@@ -50,6 +49,7 @@ import provider.MapleDataProvider;
 import provider.MapleDataProvider;
 
 public class WZFile implements MapleDataProvider {
+
     static {
         ListWZFile.init();
     }
@@ -99,7 +99,6 @@ public class WZFile implements MapleDataProvider {
     // cOffset = leo.size();
     // writeOffsets(root);
     // }
-
     private void getOffsets(MapleDataDirectoryEntry dir) {
         for (MapleDataFileEntry file : dir.getFiles()) {
             file.setOffset(cOffset);
@@ -120,7 +119,7 @@ public class WZFile implements MapleDataProvider {
             int size, checksum;
             switch (marker) {
                 case 0x02:
-                    name = WZTool.readDecodedStringAtOffset(slea, lea.readInt() + this.headerSize + 1,true);
+                    name = WZTool.readDecodedStringAtOffset(slea, lea.readInt() + this.headerSize + 1, true);
                     size = WZTool.readValue(lea);
                     checksum = WZTool.readValue(lea);
                     dummyInt = lea.readInt();
@@ -144,7 +143,7 @@ public class WZFile implements MapleDataProvider {
         }
 
         for (MapleDataDirectoryEntry idir : dir.getSubdirectories()) {
-                parseDirectory((WZDirectoryEntry) idir);
+            parseDirectory((WZDirectoryEntry) idir);
         }
     }
 
@@ -191,7 +190,6 @@ public class WZFile implements MapleDataProvider {
     // parseDirectory(idir);
     // }
     // }
-
     public WZIMGFile getImgFile(String path) throws IOException {
         String segments[] = path.split("/");
         WZDirectoryEntry dir = root;
@@ -226,6 +224,6 @@ public class WZFile implements MapleDataProvider {
     }
 
     public MapleDataDirectoryEntry getRoot() {
-            return root;
+        return root;
     }
 }

@@ -18,7 +18,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package client;
 
 import java.util.Collections;
@@ -32,6 +32,7 @@ import tools.StringUtil;
  * @author Matze
  */
 public class MapleQuestStatus {
+
     public enum Status {
         UNDEFINED(-1),
         NOT_STARTED(0),

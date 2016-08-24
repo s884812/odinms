@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class RandomAccessByteStream implements SeekableInputStreamBytestream {
+
     private RandomAccessFile raf;
     private long read = 0;
     private static Logger log = LoggerFactory.getLogger(RandomAccessByteStream.class);
@@ -13,8 +14,7 @@ public class RandomAccessByteStream implements SeekableInputStreamBytestream {
     /**
      * Class constructor. Wraps this object around a RandomAccessFile.
      *
-     * @param raf
-     *            The RandomAccessFile instance to wrap this around.
+     * @param raf The RandomAccessFile instance to wrap this around.
      * @see java.io.RandomAccessFile
      */
     public RandomAccessByteStream(RandomAccessFile raf) {
@@ -32,8 +32,9 @@ public class RandomAccessByteStream implements SeekableInputStreamBytestream {
         int temp;
         try {
             temp = raf.read();
-            if (temp == -1)
+            if (temp == -1) {
                 throw new RuntimeException("EOF");
+            }
             read++;
             return temp;
         } catch (IOException e) {

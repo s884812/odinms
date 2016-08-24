@@ -18,7 +18,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package config.skills;
 
 /**
@@ -26,6 +26,7 @@ package config.skills;
  * @author BubblesDev
  */
 public class FPMage {
+
     public static final int PARTIAL_RESISTANCE = 2110000;
     public static final int ELEMENT_AMPLIFICATION = 2110001;
     public static final int EXPLOSION = 2111002;

@@ -17,8 +17,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ */
 package net.handler;
 
 import client.MapleClient;
@@ -27,13 +26,13 @@ import tools.data.input.SeekableLittleEndianAccessor;
 
 public class KeepAliveHandler implements MaplePacketHandler {
 
-	@Override
-	public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-		c.pongReceived();
-	}
+    @Override
+    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+        c.pongReceived();
+    }
 
-	@Override
-	public boolean validateState(MapleClient c) {
-		return true;
-	}
+    @Override
+    public boolean validateState(MapleClient c) {
+        return true;
+    }
 }

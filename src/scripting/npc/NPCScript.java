@@ -17,27 +17,30 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
-/*
+ /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package scripting.npc;
 
 import java.util.List;
 import client.MapleCharacter;
 import net.world.MaplePartyCharacter;
+
 /**
  *
  * @author Matze
  */
 public interface NPCScript {
-	
-	public void start();
-	public void start(MapleCharacter chr);
-	public void start(List<MaplePartyCharacter> chrs);
-	public void action(byte mode, byte type, int selection);
+
+    public void start();
+
+    public void start(MapleCharacter chr);
+
+    public void start(List<MaplePartyCharacter> chrs);
+
+    public void action(byte mode, byte type, int selection);
 
 }

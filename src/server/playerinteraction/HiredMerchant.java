@@ -51,13 +51,13 @@ public class HiredMerchant extends PlayerInteractionManager {
             synchronized (items) {
                 IItem newItem = pItem.getItem().copy();
                 newItem.setQuantity((short) (newItem.getQuantity() * quantity));
-            if (quantity < 1 || pItem.getBundles() < 1 || newItem.getQuantity() > pItem.getBundles() || !pItem.isExist()) {
-                return;
-            } else if (newItem.getType() == 1 && newItem.getQuantity() > 1) {
-                return;
-            } else if (!pItem.isExist()) {
-                return;
-            }
+                if (quantity < 1 || pItem.getBundles() < 1 || newItem.getQuantity() > pItem.getBundles() || !pItem.isExist()) {
+                    return;
+                } else if (newItem.getType() == 1 && newItem.getQuantity() > 1) {
+                    return;
+                } else if (!pItem.isExist()) {
+                    return;
+                }
                 if (c.getPlayer().getMeso() >= pItem.getPrice() * quantity) {
                     if (quantity > 0 && pItem.getBundles() >= quantity && pItem.getBundles() > 0) {
                         if (MapleInventoryManipulator.addFromDrop(c, newItem, "")) {
@@ -87,7 +87,7 @@ public class HiredMerchant extends PlayerInteractionManager {
             }
         }
     }
-    
+
     @Override
     public void closeShop(boolean saveItems) {
         map.removeMapObject(this);
@@ -105,8 +105,6 @@ public class HiredMerchant extends PlayerInteractionManager {
         }
         schedule.cancel(false);
     }
-    
-
 
     public boolean isOpen() {
         return this.open;
@@ -123,7 +121,7 @@ public class HiredMerchant extends PlayerInteractionManager {
     public int getItemId() {
         return itemId;
     }
-    
+
     public String getOwner() {
         return ownerName;
     }

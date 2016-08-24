@@ -1,7 +1,7 @@
-
 package tools.data.output;
 
 public interface ByteOutputStream {
+
     /**
      * Writes a byte to the stream.
      *

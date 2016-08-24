@@ -18,7 +18,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package config.skills;
 
 /**
@@ -26,6 +26,7 @@ package config.skills;
  * @author BubblesDev
  */
 public class Corsair {
+
     public static final int MAPLE_WARRIOR = 5221000;
     public static final int ELEMENTAL_BOOST = 5220001;
     public static final int WRATH_OF_THE_OCTOPI = 5220002;

@@ -17,14 +17,13 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
-/*
+ /*
  * MapleShop.java
  *
  * Created on 28. November 2007, 17:35
  */
-
 package server;
 
 import java.sql.Connection;
@@ -50,7 +49,6 @@ import tools.MaplePacketCreator;
  *
  * @author Matze
  */
-
 public class MapleShop {
 
     private static final Set<Integer> rechargeableItems = new LinkedHashSet<Integer>();

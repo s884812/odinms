@@ -17,8 +17,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ */
 package net.channel.handler;
 
 import java.util.List;
@@ -38,7 +37,6 @@ import tools.data.input.SeekableLittleEndianAccessor;
  *
  * @author AngelSL
  */
-
 public class UseSummonBag extends AbstractMaplePacketHandler {
 
     public UseSummonBag() {
@@ -56,13 +54,13 @@ public class UseSummonBag extends AbstractMaplePacketHandler {
         IItem toUse = c.getPlayer().getInventory(MapleInventoryType.USE).getItem(slot);
         if (toUse != null && toUse.getQuantity() > 0) {
             if (toUse.getItemId() != itemId) {
-      //          c.getPlayer().ban("Trying to use a summonbag not in item inventory.");
+                //          c.getPlayer().ban("Trying to use a summonbag not in item inventory.");
                 return;
             }
             MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, slot, (short) 1, false);
             List<SummonEntry> toSpawn = ii.getSummonMobs(itemId);
-           for (int z = 0; z < toSpawn.size(); z++) {
-                    SummonEntry se = toSpawn.get(z);
+            for (int z = 0; z < toSpawn.size(); z++) {
+                SummonEntry se = toSpawn.get(z);
                 if ((int) Math.ceil(Math.random() * 100) <= se.getChance()) {
                     MapleMonster mob = MapleLifeFactory.getMonster(se.getMobId());
                     c.getPlayer().getMap().spawnMonsterOnGroundBelow(mob, c.getPlayer().getPosition());

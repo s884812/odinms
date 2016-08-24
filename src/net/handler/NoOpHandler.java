@@ -17,8 +17,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ */
 package net.handler;
 
 import client.MapleClient;
@@ -26,23 +25,24 @@ import net.MaplePacketHandler;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 public final class NoOpHandler implements MaplePacketHandler {
-	private static NoOpHandler instance = new NoOpHandler();
 
-	private NoOpHandler() {
-		// singleton
-	}
+    private static NoOpHandler instance = new NoOpHandler();
 
-	public static NoOpHandler getInstance() {
-		return instance;
-	}
+    private NoOpHandler() {
+        // singleton
+    }
 
-	@Override
-	public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-		// no op
-	}
+    public static NoOpHandler getInstance() {
+        return instance;
+    }
 
-	@Override
-	public boolean validateState(MapleClient c) {
-		return true;
-	}
+    @Override
+    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+        // no op
+    }
+
+    @Override
+    public boolean validateState(MapleClient c) {
+        return true;
+    }
 }

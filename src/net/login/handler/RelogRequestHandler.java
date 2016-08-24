@@ -17,8 +17,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ */
 package net.login.handler;
 
 import client.MapleClient;
@@ -27,13 +26,14 @@ import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 public class RelogRequestHandler extends AbstractMaplePacketHandler {
-	@Override
-	public boolean validateState(MapleClient c) {
-		return !c.isLoggedIn();
-	}
-	
-	@Override
-	public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-		c.getSession().write(MaplePacketCreator.getRelogResponse());
-	}
+
+    @Override
+    public boolean validateState(MapleClient c) {
+        return !c.isLoggedIn();
+    }
+
+    @Override
+    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+        c.getSession().write(MaplePacketCreator.getRelogResponse());
+    }
 }

@@ -17,26 +17,25 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ */
 package server.life;
 
 public enum Element {
-	NEUTRAL, FIRE, ICE, LIGHTING, POISON, HOLY;
-	
-	public static Element getFromChar(char c) {
-		switch (Character.toUpperCase(c)) {
-			case 'F':
-				return FIRE;
-			case 'I':
-				return ICE;
-			case 'L':
-				return LIGHTING;
-			case 'S':
-				return POISON;
-			case 'H':
-				return HOLY;
-		}
-		throw new IllegalArgumentException("unknown elemnt char " + c);
-	}
+    NEUTRAL, FIRE, ICE, LIGHTING, POISON, HOLY;
+
+    public static Element getFromChar(char c) {
+        switch (Character.toUpperCase(c)) {
+            case 'F':
+                return FIRE;
+            case 'I':
+                return ICE;
+            case 'L':
+                return LIGHTING;
+            case 'S':
+                return POISON;
+            case 'H':
+                return HOLY;
+        }
+        throw new IllegalArgumentException("unknown elemnt char " + c);
+    }
 }

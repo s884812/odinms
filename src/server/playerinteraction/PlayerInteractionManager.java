@@ -15,6 +15,7 @@ import net.MaplePacket;
 import server.MapleInventoryManipulator;
 import server.maps.AbstractMapleMapObject;
 import tools.MaplePacketCreator;
+
 /**
  *
  * @author XoticStory
@@ -168,8 +169,6 @@ public abstract class PlayerInteractionManager extends AbstractMapleMapObject im
             }
         }
     }
-    
-   
 
     @Override
     public void addVisitor(MapleCharacter visitor) {

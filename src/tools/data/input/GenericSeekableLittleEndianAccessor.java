@@ -3,12 +3,13 @@ package tools.data.input;
 import java.io.IOException;
 
 public class GenericSeekableLittleEndianAccessor extends GenericLittleEndianAccessor implements SeekableLittleEndianAccessor {
+
     private static org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(GenericSeekableLittleEndianAccessor.class);
     private SeekableInputStreamBytestream bs;
 
     /**
-     * Class constructor
-     * Provide a seekable input stream to wrap this object around.
+     * Class constructor Provide a seekable input stream to wrap this object
+     * around.
      *
      * @param bs The byte stream to wrap this around.
      */

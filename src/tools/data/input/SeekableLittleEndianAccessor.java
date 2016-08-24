@@ -1,11 +1,11 @@
 package tools.data.input;
 
 public interface SeekableLittleEndianAccessor extends LittleEndianAccessor {
+
     /**
      * Seeks the stream by <code>offset</code>
      *
-     * @param offset
-     *            Number of bytes to seek ahead.
+     * @param offset Number of bytes to seek ahead.
      */
     void seek(long offset);
 

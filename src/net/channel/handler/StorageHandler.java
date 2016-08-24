@@ -18,7 +18,7 @@ public class StorageHandler extends AbstractMaplePacketHandler {
 
     private static final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     private static final SimpleDateFormat sdf2 = new SimpleDateFormat("HH:mm");
-    
+
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
         byte mode = slea.readByte();
@@ -65,7 +65,7 @@ public class StorageHandler extends AbstractMaplePacketHandler {
                     MapleInventoryManipulator.removeFromSlot(c, type, slot, quantity, false);
                     item.setQuantity(quantity);
                     storage.store(item);
-                    FilePrinter.printBanco(c.getPlayer().getName() + ".txt", "Depositou o " +  item + "\r\nNo dia: " + sdf.format(Calendar.getInstance().getTime()) + " as " + sdf2.format(Calendar.getInstance().getTime()) + ".");
+                    FilePrinter.printBanco(c.getPlayer().getName() + ".txt", "Depositou o " + item + "\r\nNo dia: " + sdf.format(Calendar.getInstance().getTime()) + " as " + sdf2.format(Calendar.getInstance().getTime()) + ".");
                 } else {
                     AutobanManager.getInstance().addPoints(c, 1000, 0, "Trying to store non-matching itemid (" + itemId + "/" + item.getItemId() + ") or quantity not in posession (" + quantity + "/" + item.getQuantity() + ")");
                     return;
@@ -92,7 +92,7 @@ public class StorageHandler extends AbstractMaplePacketHandler {
                 }
                 storage.setMeso(storageMesos - meso);
                 c.getPlayer().gainMeso(meso, false, true, false);
-                FilePrinter.printBanco(c.getPlayer().getName() + ".txt", "Depositou (-) / Removeu (+) : " +  meso + "\r\nTotal antes do deposito: " + storageMesos + "\r\nNo dia: " + sdf.format(Calendar.getInstance().getTime()) + " as " + sdf2.format(Calendar.getInstance().getTime()) + ".");
+                FilePrinter.printBanco(c.getPlayer().getName() + ".txt", "Depositou (-) / Removeu (+) : " + meso + "\r\nTotal antes do deposito: " + storageMesos + "\r\nNo dia: " + sdf.format(Calendar.getInstance().getTime()) + " as " + sdf2.format(Calendar.getInstance().getTime()) + ".");
             } else {
                 AutobanManager.getInstance().addPoints(c, 1000, 0, "Tentar armazenar ou retirar quantidade disponivel de mesos (" + meso + "/" + storage.getMeso() + "/" + c.getPlayer().getMeso() + ")");
                 return;

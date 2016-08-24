@@ -6,13 +6,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class InputStreamByteStream implements ByteInputStream {
+
     private InputStream is;
     private long read = 0;
     private static Logger log = LoggerFactory.getLogger(InputStreamByteStream.class);
 
     /**
-     * Class constructor.
-     * Provide an input stream to wrap this around.
+     * Class constructor. Provide an input stream to wrap this around.
      *
      * @param is The input stream to wrap this object around.
      */
@@ -30,8 +30,9 @@ public class InputStreamByteStream implements ByteInputStream {
         int temp;
         try {
             temp = is.read();
-            if (temp == -1)
+            if (temp == -1) {
                 throw new RuntimeException("EOF");
+            }
             read++;
             return temp;
         } catch (IOException e) {

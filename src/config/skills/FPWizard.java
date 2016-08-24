@@ -18,7 +18,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package config.skills;
 
 /**
@@ -26,6 +26,7 @@ package config.skills;
  * @author BubblesDev
  */
 public class FPWizard {
+
     public static final int MP_EATER = 2100000;
     public static final int MEDITATION = 2101001;
     public static final int SLOW = 2101003;

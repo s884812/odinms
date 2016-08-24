@@ -17,9 +17,9 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
-/*
+ /*
  * MapleDataFileEntry.java
  *
  * Created on 26. November 2007, 22:25
@@ -27,7 +27,6 @@
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
-
 package provider;
 
 /**
@@ -36,6 +35,6 @@ package provider;
  */
 public interface MapleDataFileEntry extends MapleDataEntry {
 
-	public void setOffset(int offset);
-        
+    public void setOffset(int offset);
+
 }

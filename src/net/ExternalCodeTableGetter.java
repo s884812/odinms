@@ -9,6 +9,7 @@ import java.util.Properties;
 import tools.HexTool;
 
 public class ExternalCodeTableGetter {
+
     Properties props;
 
     public ExternalCodeTableGetter(Properties properties) {
@@ -16,9 +17,11 @@ public class ExternalCodeTableGetter {
     }
 
     private static <T extends Enum<? extends IntValueHolder> & IntValueHolder> T valueOf(String name, T[] values) {
-        for (T val : values)
-            if (val.name().equals(name))
+        for (T val : values) {
+            if (val.name().equals(name)) {
                 return val;
+            }
+        }
         return null;
     }
 
@@ -31,15 +34,18 @@ public class ExternalCodeTableGetter {
             String offset;
             if (args.length == 2) {
                 base = valueOf(args[0], values).getValue();
-                if (base == def)
+                if (base == def) {
                     base = getValue(args[0], values, def);
+                }
                 offset = args[1];
-            } else
+            } else {
                 offset = args[0];
-            if (offset.length() > 2 && offset.substring(0, 2).equals("0x"))
+            }
+            if (offset.length() > 2 && offset.substring(0, 2).equals("0x")) {
                 return Integer.parseInt(offset.substring(2), 16) + base;
-            else
+            } else {
                 return Integer.parseInt(offset) + base;
+            }
         }
         return def;
     }
@@ -54,15 +60,17 @@ public class ExternalCodeTableGetter {
                 return Integer.valueOf(o1.getValue()).compareTo(o2.getValue());
             }
         });
-        for (T code : all)
+        for (T code : all) {
             enumVals.append(code.name() + " = " + "0x" + HexTool.toString(code.getValue()) + " (" + code.getValue() + ")\n");
+        }
         return enumVals.toString();
     }
 
     public static <T extends Enum<? extends WritableIntValueHolder> & WritableIntValueHolder> void populateValues(Properties properties, T[] values) {
         ExternalCodeTableGetter exc = new ExternalCodeTableGetter(properties);
-        for (T code : values)
+        for (T code : values) {
             code.setValue(exc.getValue(code.name(), values, -2));
+        }
 //        org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(ExternalCodeTableGetter.class);
 //        if (log.isTraceEnabled()) { // generics - copy pasted between send and recv current?
 //            log.trace(getOpcodeTable(values));

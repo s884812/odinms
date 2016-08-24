@@ -27,7 +27,7 @@ public class MaplePet extends Item {
         this.uniqueid = uniqueid;
     }
 
-     public static MaplePet loadFromDb(int itemid, byte position, int petid) {
+    public static MaplePet loadFromDb(int itemid, byte position, int petid) {
         try {
             MaplePet ret = new MaplePet(itemid, position, petid);
             PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("SELECT name, level, closeness, fullness FROM pets WHERE petid = ?"); // Get pet details..
@@ -45,8 +45,8 @@ public class MaplePet extends Item {
             return null;
         }
     }
-     
-   public void saveToDb() {
+
+    public void saveToDb() {
         try {
             PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("UPDATE pets SET name = ?, level = ?, closeness = ?, fullness = ? WHERE petid = ?");
             ps.setString(1, getName());
@@ -60,7 +60,7 @@ public class MaplePet extends Item {
         }
     }
 
-     public static int createPet(int itemid) {
+    public static int createPet(int itemid) {
         try {
             PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("INSERT INTO pets (name, level, closeness, fullness) VALUES (?, 1, 0, 100)");
             ps.setString(1, MapleItemInformationProvider.getInstance().getName(itemid));
@@ -142,7 +142,7 @@ public class MaplePet extends Item {
         this.stance = stance;
     }
 
-      public boolean canConsume(int itemId) {
+    public boolean canConsume(int itemId) {
         for (int petId : MapleItemInformationProvider.getInstance().petsCanConsume(itemId)) {
             if (petId == this.getItemId()) {
                 return true;

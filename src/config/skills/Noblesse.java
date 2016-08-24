@@ -18,7 +18,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package config.skills;
 
 /**
@@ -26,6 +26,7 @@ package config.skills;
  * @author BubblesDev
  */
 public class Noblesse {
+
     public static final int BLESSING_OF_THE_FAIRY = 10000012;
     public static final int THREE_SNAILS = 10001000;
     public static final int RECOVERY = 10001001;

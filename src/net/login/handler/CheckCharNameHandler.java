@@ -17,8 +17,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ */
 package net.login.handler;
 
 import client.MapleCharacterUtil;
@@ -28,9 +27,9 @@ import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 public class CheckCharNameHandler extends AbstractMaplePacketHandler {
+
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         String name = slea.readMapleAsciiString();
         c.getSession().write(MaplePacketCreator.charNameResponse(name, !MapleCharacterUtil.canCreateChar(name, c.getWorld())));
     }
 }
-

@@ -17,67 +17,67 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ */
 package tools;
 
 import java.io.Serializable;
 
 /**
  * Represents a pair of values.
- * 
+ *
  * @author Frz
  * @since Revision 333
  * @version 1.0
- * 
+ *
  * @param <E> The type of the left value.
  * @param <F> The type of the right value.
  */
 public class Pair<E, F> implements Serializable {
-	static final long serialVersionUID = 9179541993413738569L;
-	public final E left;
-	private final F right;
 
-	/**
-	 * Class constructor - pairs two objects together.
-	 * 
-	 * @param left The left object.
-	 * @param right The right object.
-	 */
-	public Pair(E left, F right) {
-		this.left = left;
-		this.right = right;
-	}
+    static final long serialVersionUID = 9179541993413738569L;
+    public final E left;
+    private final F right;
 
-	/**
-	 * Gets the left value.
-	 * 
-	 * @return The left value.
-	 */
-	public E getLeft() {
-		return left;
-	}
+    /**
+     * Class constructor - pairs two objects together.
+     *
+     * @param left The left object.
+     * @param right The right object.
+     */
+    public Pair(E left, F right) {
+        this.left = left;
+        this.right = right;
+    }
 
-	/**
-	 * Gets the right value.
-	 * 
-	 * @return The right value.
-	 */
-	public F getRight() {
-		return right;
-	}
+    /**
+     * Gets the left value.
+     *
+     * @return The left value.
+     */
+    public E getLeft() {
+        return left;
+    }
 
-	/**
-	 * Turns the pair into a string.
-	 * 
-	 * @return Each value of the pair as a string joined by a colon.
-	 */
-	@Override
-	public String toString() {
-		return left.toString() + ":" + right.toString();
-	}
+    /**
+     * Gets the right value.
+     *
+     * @return The right value.
+     */
+    public F getRight() {
+        return right;
+    }
 
-	 /**
+    /**
+     * Turns the pair into a string.
+     *
+     * @return Each value of the pair as a string joined by a colon.
+     */
+    @Override
+    public String toString() {
+        return left.toString() + ":" + right.toString();
+    }
+
+    /**
      * Gets the hash code of this pair.
      */
     @Override
@@ -89,7 +89,7 @@ public class Pair<E, F> implements Serializable {
         return result;
     }
 
-	/**
+    /**
      * Checks to see if two pairs are equal.
      */
     @SuppressWarnings("unchecked")

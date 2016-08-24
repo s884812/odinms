@@ -9,9 +9,11 @@ import org.apache.mina.filter.codec.CumulativeProtocolDecoder;
 import org.apache.mina.filter.codec.ProtocolDecoderOutput;
 
 public class MaplePacketDecoder extends CumulativeProtocolDecoder {
+
     private static final String DECODER_STATE_KEY = MaplePacketDecoder.class.getName() + ".STATE";
 
     private static class DecoderState {
+
         public int packetlength = -1;
     }
 
@@ -30,8 +32,9 @@ public class MaplePacketDecoder extends CumulativeProtocolDecoder {
                 return false;
             }
             decoderState.packetlength = MapleAESOFB.getPacketLength(packetHeader);
-        } else if (in.remaining() < 4 && decoderState.packetlength == -1)
+        } else if (in.remaining() < 4 && decoderState.packetlength == -1) {
             return false;
+        }
         if (in.remaining() >= decoderState.packetlength) {
             byte decryptedPacket[] = new byte[decoderState.packetlength];
             in.get(decryptedPacket, 0, decoderState.packetlength);
@@ -40,7 +43,8 @@ public class MaplePacketDecoder extends CumulativeProtocolDecoder {
             MapleCustomEncryption.decryptData(decryptedPacket);
             out.write(decryptedPacket);
             return true;
-        } else
+        } else {
             return false;
+        }
     }
 }

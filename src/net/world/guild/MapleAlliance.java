@@ -202,11 +202,9 @@ public class MapleAlliance implements java.io.Serializable {
                             avail = i;
                             break;
                         }
-                    } else {
-                        if (guildId == gid) {
-                            avail = i;
-                            break;
-                        }
+                    } else if (guildId == gid) {
+                        avail = i;
+                        break;
                     }
                 }
                 rs.close();

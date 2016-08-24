@@ -5,18 +5,16 @@ import net.AbstractMaplePacketHandler;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 //import org.slf4j.LoggerFactory;
-
 /**
  *
  * @author Xterminator
  */
-
 public class InnerPortalHandler extends AbstractMaplePacketHandler {
 //	private static org.slf4j.Logger log = LoggerFactory.getLogger(SpecialPortalHandler.class);
-	
-	@Override
-	public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-/*
+
+    @Override
+    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+        /*
 		// TODO Need to code this check somehow =/
 		[5D 00] // Opcode
 		[02] // Map Portal
@@ -33,6 +31,6 @@ public class InnerPortalHandler extends AbstractMaplePacketHandler {
 		int X = slea.readShort();
 		int Y = slea.readShort();			
 		log.info("[Hacks] Player {} is trying to jump to a different map portal rather than the correct one");
- */
-	}
+         */
+    }
 }

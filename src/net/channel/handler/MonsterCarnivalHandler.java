@@ -38,160 +38,159 @@ public class MonsterCarnivalHandler extends AbstractMaplePacketHandler {
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         int tab = slea.readByte();
         int num = slea.readByte();
-		int neededCP = getCPNeeded(tab, num);
-		if (c.getPlayer().getCP() < neededCP) {
-			c.getSession().write(MaplePacketCreator.serverNotice(5, "You do not have enough CP to use this."));
-			c.getSession().write(MaplePacketCreator.enableActions());
-			return;
-		}
+        int neededCP = getCPNeeded(tab, num);
+        if (c.getPlayer().getCP() < neededCP) {
+            c.getSession().write(MaplePacketCreator.serverNotice(5, "You do not have enough CP to use this."));
+            c.getSession().write(MaplePacketCreator.enableActions());
+            return;
+        }
         if (tab == 0) { //only spawning for now..
             MapleMonster mob = MapleLifeFactory.getMonster(getMonsterIdByNum(num));
-			Point spawnPos = c.getPlayer().getMap().getRandomSP(c.getPlayer().getTeam());
-			if (spawnPos == null) {
-				c.getSession().write(MaplePacketCreator.serverNotice(5, "The monster cannot be summoned, as all spawn points are taken."));
-				c.getSession().write(MaplePacketCreator.enableActions());
-				return;				
-			}
-			mob.setPosition(spawnPos);
+            Point spawnPos = c.getPlayer().getMap().getRandomSP(c.getPlayer().getTeam());
+            if (spawnPos == null) {
+                c.getSession().write(MaplePacketCreator.serverNotice(5, "The monster cannot be summoned, as all spawn points are taken."));
+                c.getSession().write(MaplePacketCreator.enableActions());
+                return;
+            }
+            mob.setPosition(spawnPos);
             //c.getPlayer().getMap().spawnMonsterOnGroundBelow(mob, spawnPos);
             c.getPlayer().getMap().addMonsterSpawn(mob, 1, c.getPlayer().getTeam());
             c.getSession().write(MaplePacketCreator.enableActions());
         } else if (tab == 1) { //debuffs
-			boolean dispel = false;
-			MapleDisease debuff = null;
-			boolean wholeParty = false;
-			int skillId = -1;
-			int level = -1;
-			switch (num) {
-				case 0: //darkness
-					debuff = MapleDisease.DARKNESS;
-					wholeParty = true;
-					skillId = 121;
-					level = 6;
-					break;
-				case 1: //weakness
-					debuff = MapleDisease.WEAKEN;
-					wholeParty = true;
-					skillId = 122;
-					level = 7;
-					break;
-				case 2: //curse
-					c.getSession().write(MaplePacketCreator.enableActions());
-					return;
-				case 3: //poison
-					c.getSession().write(MaplePacketCreator.enableActions());
-					return;
-				case 4: //slow
-					debuff = MapleDisease.SLOW;
-					wholeParty = true;
-					skillId = 126;
-					level = 6;
-					break;
-				case 5: //seal
-					debuff = MapleDisease.SEAL;
-					skillId = 120;
-					level = 10;
-					break;
-				case 6: //stun
-					debuff = MapleDisease.STUN;
-					skillId = 123;
-					level = 11;
-					break;
-				case 7: //cancel buff	
-					dispel = true;
-					debuff = null;
-					break;
-			}
-			boolean done = false;
-			if (debuff != null) {
-				if (wholeParty) {
-					if (Math.random() < 0.8) { //80%
-						for (int i = 0; i<c.getPlayer().getParty().getEnemy().getMembers().size(); i++) {
-							MapleCharacter chr = c.getChannelServer().getPlayerStorage().getCharacterById(c.getPlayer().getParty().getEnemy().getMemberByPos(i).getId());
-							if (chr != null) {
-								chr.giveDebuff(debuff, MobSkillFactory.getMobSkill(skillId, level), true);
-							}
-						}						
-					} else {
-						c.getSession().write(MaplePacketCreator.serverNotice(5, "Casting the spell failed."));
-					}
-				} else {
-					if (c.getPlayer().getParty().getEnemy() != null) {
-						while (!done) {
-							for (int i = 0; i<c.getPlayer().getParty().getEnemy().getMembers().size(); i++) {
-								if (Math.random() > 0.4) {
-									MapleCharacter chr = c.getChannelServer().getPlayerStorage().getCharacterById(c.getPlayer().getParty().getEnemy().getMemberByPos(i).getId());
-									if (chr != null) {
-										chr.giveDebuff(debuff, MobSkillFactory.getMobSkill(skillId, level), true);
-										done = true;
-										break;
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-			if (dispel) {
-				while (!done) {
-					for (int i = 0; i<c.getPlayer().getParty().getEnemy().getMembers().size(); i++) {
-						if (Math.random() > 0.4) {
-							MapleCharacter chr = c.getChannelServer().getPlayerStorage().getCharacterById(c.getPlayer().getParty().getEnemy().getMemberByPos(i).getId());
-							if (chr != null) {
-								chr.dispel();
-								done = true;
-							}
-						}
-					}
-				}				
-			}
-			c.getSession().write(MaplePacketCreator.enableActions());
-		} else if (tab == 2) { //protectors
-			MonsterStatus status = null;
-			switch (num) {
-				case 0:
-					status = MonsterStatus.WEAPON_ATTACK_UP;
-					break;
-				case 1:
-					status = MonsterStatus.WEAPON_DEFENSE_UP;
-					break;
-				case 2:
-					status = MonsterStatus.MAGIC_ATTACK_UP;
-					break;
-				case 3:
-					status = MonsterStatus.MAGIC_DEFENSE_UP;
-					break;
-				case 4:
-					break;
-				case 5:
-					break;
-				case 6:
-					break;
-				case 7:
-					status = MonsterStatus.WEAPON_IMMUNITY;
-					break;
-				case 8:
-					status = MonsterStatus.MAGIC_IMMUNITY;
-					break;
-			}
-			if (status != null) {
-				int success = c.getPlayer().getMap().spawnGuardian(status, c.getPlayer().getTeam());
-				if (success == -1 || success == 0) {
-					if (success == -1)
-						c.getSession().write(MaplePacketCreator.serverNotice(5, "The protector cannot be summoned, as all protector spots are taken."));
-					else if (success == 0)
-						c.getSession().write(MaplePacketCreator.serverNotice(5, "The protector is already summoned."));
-					c.getSession().write(MaplePacketCreator.enableActions());		
-					return;
-				}
-			} else {
-				c.getSession().write(MaplePacketCreator.serverNotice(5, "The protector cannot be summoned."));
-				c.getSession().write(MaplePacketCreator.enableActions());					
-			}
-			c.getSession().write(MaplePacketCreator.enableActions());
-		}
-		c.getPlayer().gainCP(-neededCP);
-		c.getPlayer().getMap().broadcastMessage(MaplePacketCreator.playerSummoned(c.getPlayer().getName(), tab, num));
+            boolean dispel = false;
+            MapleDisease debuff = null;
+            boolean wholeParty = false;
+            int skillId = -1;
+            int level = -1;
+            switch (num) {
+                case 0: //darkness
+                    debuff = MapleDisease.DARKNESS;
+                    wholeParty = true;
+                    skillId = 121;
+                    level = 6;
+                    break;
+                case 1: //weakness
+                    debuff = MapleDisease.WEAKEN;
+                    wholeParty = true;
+                    skillId = 122;
+                    level = 7;
+                    break;
+                case 2: //curse
+                    c.getSession().write(MaplePacketCreator.enableActions());
+                    return;
+                case 3: //poison
+                    c.getSession().write(MaplePacketCreator.enableActions());
+                    return;
+                case 4: //slow
+                    debuff = MapleDisease.SLOW;
+                    wholeParty = true;
+                    skillId = 126;
+                    level = 6;
+                    break;
+                case 5: //seal
+                    debuff = MapleDisease.SEAL;
+                    skillId = 120;
+                    level = 10;
+                    break;
+                case 6: //stun
+                    debuff = MapleDisease.STUN;
+                    skillId = 123;
+                    level = 11;
+                    break;
+                case 7: //cancel buff	
+                    dispel = true;
+                    debuff = null;
+                    break;
+            }
+            boolean done = false;
+            if (debuff != null) {
+                if (wholeParty) {
+                    if (Math.random() < 0.8) { //80%
+                        for (int i = 0; i < c.getPlayer().getParty().getEnemy().getMembers().size(); i++) {
+                            MapleCharacter chr = c.getChannelServer().getPlayerStorage().getCharacterById(c.getPlayer().getParty().getEnemy().getMemberByPos(i).getId());
+                            if (chr != null) {
+                                chr.giveDebuff(debuff, MobSkillFactory.getMobSkill(skillId, level), true);
+                            }
+                        }
+                    } else {
+                        c.getSession().write(MaplePacketCreator.serverNotice(5, "Casting the spell failed."));
+                    }
+                } else if (c.getPlayer().getParty().getEnemy() != null) {
+                    while (!done) {
+                        for (int i = 0; i < c.getPlayer().getParty().getEnemy().getMembers().size(); i++) {
+                            if (Math.random() > 0.4) {
+                                MapleCharacter chr = c.getChannelServer().getPlayerStorage().getCharacterById(c.getPlayer().getParty().getEnemy().getMemberByPos(i).getId());
+                                if (chr != null) {
+                                    chr.giveDebuff(debuff, MobSkillFactory.getMobSkill(skillId, level), true);
+                                    done = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if (dispel) {
+                while (!done) {
+                    for (int i = 0; i < c.getPlayer().getParty().getEnemy().getMembers().size(); i++) {
+                        if (Math.random() > 0.4) {
+                            MapleCharacter chr = c.getChannelServer().getPlayerStorage().getCharacterById(c.getPlayer().getParty().getEnemy().getMemberByPos(i).getId());
+                            if (chr != null) {
+                                chr.dispel();
+                                done = true;
+                            }
+                        }
+                    }
+                }
+            }
+            c.getSession().write(MaplePacketCreator.enableActions());
+        } else if (tab == 2) { //protectors
+            MonsterStatus status = null;
+            switch (num) {
+                case 0:
+                    status = MonsterStatus.WEAPON_ATTACK_UP;
+                    break;
+                case 1:
+                    status = MonsterStatus.WEAPON_DEFENSE_UP;
+                    break;
+                case 2:
+                    status = MonsterStatus.MAGIC_ATTACK_UP;
+                    break;
+                case 3:
+                    status = MonsterStatus.MAGIC_DEFENSE_UP;
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                case 6:
+                    break;
+                case 7:
+                    status = MonsterStatus.WEAPON_IMMUNITY;
+                    break;
+                case 8:
+                    status = MonsterStatus.MAGIC_IMMUNITY;
+                    break;
+            }
+            if (status != null) {
+                int success = c.getPlayer().getMap().spawnGuardian(status, c.getPlayer().getTeam());
+                if (success == -1 || success == 0) {
+                    if (success == -1) {
+                        c.getSession().write(MaplePacketCreator.serverNotice(5, "The protector cannot be summoned, as all protector spots are taken."));
+                    } else if (success == 0) {
+                        c.getSession().write(MaplePacketCreator.serverNotice(5, "The protector is already summoned."));
+                    }
+                    c.getSession().write(MaplePacketCreator.enableActions());
+                    return;
+                }
+            } else {
+                c.getSession().write(MaplePacketCreator.serverNotice(5, "The protector cannot be summoned."));
+                c.getSession().write(MaplePacketCreator.enableActions());
+            }
+            c.getSession().write(MaplePacketCreator.enableActions());
+        }
+        c.getPlayer().gainCP(-neededCP);
+        c.getPlayer().getMap().broadcastMessage(MaplePacketCreator.playerSummoned(c.getPlayer().getName(), tab, num));
     }
 
     public int getMonsterIdByNum(int num) {
@@ -206,7 +205,7 @@ public class MonsterCarnivalHandler extends AbstractMaplePacketHandler {
         8 - King Bloctopus - 3230103
         9 - Master Chronos - 4230115
         10 - Rombot - 4130103
-        */
+         */
         int mid = 0;
         num++; //whatever, don't wanna change all the cases XD
 
@@ -247,6 +246,7 @@ public class MonsterCarnivalHandler extends AbstractMaplePacketHandler {
         }
         return mid;
     }
+
     /*
 	Brown Teddy: 7CP
 	Bloctopus: 7CP
@@ -259,52 +259,80 @@ public class MonsterCarnivalHandler extends AbstractMaplePacketHandler {
 	Master Chronos: 12CP
 	Rombot: 30CP
 
-     */ 
+     */
     public int getCPNeeded(int tab, int pos) {
-	    switch (tab) {
-		    case 0 : { //mob
-			    switch (pos) {
-				    case 0 : return 7;
-				    case 1 : return 7;
-				    case 2 : return 8;
-				    case 3 : return 8;
-				    case 4 : return 9;
-				    case 5 : return 9;
-				    case 6 : return 10;
-				    case 7 : return 11;
-				    case 8 : return 12;
-				    case 9 : return 30;
-				    default : throw new RuntimeException("Position out of range? Wtf?");
-			    }
-		    }
-			
-		    case 1: { //debuff
-			    switch (pos) {
-					case 0: return 17;
-					case 1: return 19;
-					case 2: return 12;
-					case 3: return 19;
-					case 4: return 16;
-					case 5: return 14;
-					case 6: return 22;
-					case 7: return 18;
-				}
-		    }
-			
-		    case 2: { //protector
-			    switch (pos) {
-					case 0: return 17;
-					case 1: return 16;
-					case 2: return 17;
-					case 3: return 16;
-					case 4: return 13;
-					case 5: return 16;
-					case 6: return 12;
-					case 7: return 35;
-					case 8: return 35;
-				}
-		    }
-	    }
-	    throw new RuntimeException("Wtf? Reached the end of the method...");
+        switch (tab) {
+            case 0: { //mob
+                switch (pos) {
+                    case 0:
+                        return 7;
+                    case 1:
+                        return 7;
+                    case 2:
+                        return 8;
+                    case 3:
+                        return 8;
+                    case 4:
+                        return 9;
+                    case 5:
+                        return 9;
+                    case 6:
+                        return 10;
+                    case 7:
+                        return 11;
+                    case 8:
+                        return 12;
+                    case 9:
+                        return 30;
+                    default:
+                        throw new RuntimeException("Position out of range? Wtf?");
+                }
+            }
+
+            case 1: { //debuff
+                switch (pos) {
+                    case 0:
+                        return 17;
+                    case 1:
+                        return 19;
+                    case 2:
+                        return 12;
+                    case 3:
+                        return 19;
+                    case 4:
+                        return 16;
+                    case 5:
+                        return 14;
+                    case 6:
+                        return 22;
+                    case 7:
+                        return 18;
+                }
+            }
+
+            case 2: { //protector
+                switch (pos) {
+                    case 0:
+                        return 17;
+                    case 1:
+                        return 16;
+                    case 2:
+                        return 17;
+                    case 3:
+                        return 16;
+                    case 4:
+                        return 13;
+                    case 5:
+                        return 16;
+                    case 6:
+                        return 12;
+                    case 7:
+                        return 35;
+                    case 8:
+                        return 35;
+                }
+            }
+        }
+        throw new RuntimeException("Wtf? Reached the end of the method...");
     }
 }

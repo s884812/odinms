@@ -52,9 +52,9 @@ public class PortalScriptManager {
             CompiledScript compiled = ((Compilable) portal).compile(fr);
             compiled.eval();
         } catch (ScriptException e) {
-             FilePrinter.printError(FilePrinter.ScriptEx_Log, "Erro ao executar o Portal script. (" + scriptName + ") " + e);
+            FilePrinter.printError(FilePrinter.ScriptEx_Log, "Erro ao executar o Portal script. (" + scriptName + ") " + e);
         } catch (IOException e) {
-             FilePrinter.printError(FilePrinter.ScriptEx_Log, "Erro ao executar o Portal script. (" + scriptName + ") " + e);
+            FilePrinter.printError(FilePrinter.ScriptEx_Log, "Erro ao executar o Portal script. (" + scriptName + ") " + e);
         } finally {
             if (fr != null) {
                 try {
@@ -85,4 +85,3 @@ public class PortalScriptManager {
         scripts.clear();
     }
 }
-

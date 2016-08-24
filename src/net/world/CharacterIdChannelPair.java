@@ -10,6 +10,7 @@ import java.io.ObjectOutput;
  * @author Frz
  */
 public class CharacterIdChannelPair implements Externalizable {
+
     private int charid;
     private int channel;
 

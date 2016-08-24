@@ -17,19 +17,19 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ */
 package server.movement;
 
 import java.awt.Point;
 
 public interface LifeMovement extends LifeMovementFragment {
-	@Override
-	Point getPosition();
 
-	int getNewstate();
+    @Override
+    Point getPosition();
 
-	int getDuration();
-	
-	int getType();
+    int getNewstate();
+
+    int getDuration();
+
+    int getType();
 }

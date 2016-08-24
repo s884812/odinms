@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor. Then suck a cock.
  */
-
 package client;
 
 /**

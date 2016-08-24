@@ -18,7 +18,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package config.skills;
 
 /**
@@ -26,6 +26,7 @@ package config.skills;
  * @author BubblesDev
  */
 public class Swordsman {
+
     public static final int IMPROVED_MAX_HP_INCREASE = 1000001;
     public static final int IRON_BODY = 1000003;
 }

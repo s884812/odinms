@@ -69,8 +69,7 @@ public class MaplePlayerShop extends PlayerInteractionManager {
         }
         owner.setInteraction(null);
     }
-    
-    
+
     public void banPlayer(String name) {
         if (!bannedList.contains(name)) {
             bannedList.add(name);

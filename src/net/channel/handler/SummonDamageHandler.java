@@ -22,7 +22,6 @@ import server.maps.MapleSummon;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
-
 public class SummonDamageHandler extends AbstractMaplePacketHandler {
 
     public class SummonAttackEntry {
@@ -45,15 +44,17 @@ public class SummonDamageHandler extends AbstractMaplePacketHandler {
         }
     }
 
-      @Override
+    @Override
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         int oid = slea.readInt();
         MapleCharacter player = c.getPlayer();
         Collection<MapleSummon> summons = player.getSummons().values();
         MapleSummon summon = null;
-        for (MapleSummon sum : summons)
-            if (sum.getObjectId() == oid)
+        for (MapleSummon sum : summons) {
+            if (sum.getObjectId() == oid) {
                 summon = sum;
+            }
+        }
         if (summon == null) {
             System.out.println(MapleClient.getLogMessage(c, "Using summon attack without a summon"));
             return;
@@ -79,11 +80,12 @@ public class SummonDamageHandler extends AbstractMaplePacketHandler {
             int damage = attackEntry.getDamage();
             MapleMonster target = player.getMap().getMonsterByOid(attackEntry.getMonsterOid());
             if (target != null) {
-                if (damage > 0 && summonEffect.getMonsterStati().size() > 0)
+                if (damage > 0 && summonEffect.getMonsterStati().size() > 0) {
                     if (summonEffect.makeChanceResult()) {
                         MonsterStatusEffect monsterStatusEffect = new MonsterStatusEffect(summonEffect.getMonsterStati(), summonSkill, false);
                         target.applyStatus(player, monsterStatusEffect, summonEffect.isPoison(), 4000);
                     }
+                }
                 player.getMap().damageMonster(player, target, damage);
             }
         }

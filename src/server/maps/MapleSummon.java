@@ -31,13 +31,13 @@ public class MapleSummon extends AbstractAnimatedMapleMapObject {
         setPosition(pos);
     }
 
-	public void sendSpawnData(MapleClient client) {
-		client.getSession().write(MaplePacketCreator.spawnSpecialMapObject(this, skillLevel, false));
-	}
+    public void sendSpawnData(MapleClient client) {
+        client.getSession().write(MaplePacketCreator.spawnSpecialMapObject(this, skillLevel, false));
+    }
 
-	public void sendDestroyData(MapleClient client) {
-		client.getSession().write(MaplePacketCreator.removeSpecialMapObject(this, false));
-	}
+    public void sendDestroyData(MapleClient client) {
+        client.getSession().write(MaplePacketCreator.removeSpecialMapObject(this, false));
+    }
 
     public MapleCharacter getOwner() {
         return this.owner;
@@ -76,11 +76,11 @@ public class MapleSummon extends AbstractAnimatedMapleMapObject {
         return MapleMapObjectType.SUMMON;
     }
 
-   	public boolean canMultiSummon() {
-		return (skill == 5211001 || skill == 5211002 || skill == 5220002);
-	}
+    public boolean canMultiSummon() {
+        return (skill == 5211001 || skill == 5211002 || skill == 5220002);
+    }
 
-    	public boolean isOctopus() {
-		return (skill == 5211001 || skill == 5220002);
-	}
+    public boolean isOctopus() {
+        return (skill == 5211001 || skill == 5220002);
+    }
 }

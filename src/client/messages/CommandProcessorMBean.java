@@ -17,10 +17,10 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ */
 package client.messages;
 
 public interface CommandProcessorMBean {
-	String processCommandJMX(int cserver, int mapid, String command);
+
+    String processCommandJMX(int cserver, int mapid, String command);
 }

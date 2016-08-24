@@ -17,8 +17,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ */
 package net.channel.handler;
 
 import client.MapleClient;
@@ -28,14 +27,15 @@ import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 public class GeneralchatHandler extends AbstractMaplePacketHandler {
-	@Override
-	public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-		String text = slea.readMapleAsciiString();
-		int show = slea.readByte();
 
-		if (!CommandProcessor.getInstance().processCommand(c, text)) {
-                    c.getPlayer().resetAfkTimer();
-                    c.getPlayer().getMap().broadcastMessage(MaplePacketCreator.getChatText(c.getPlayer().getId(), text, c.getPlayer().hasGmLevel(3) && c.getChannelServer().allowGmWhiteText(), show));
-		}
-	}
+    @Override
+    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+        String text = slea.readMapleAsciiString();
+        int show = slea.readByte();
+
+        if (!CommandProcessor.getInstance().processCommand(c, text)) {
+            c.getPlayer().resetAfkTimer();
+            c.getPlayer().getMap().broadcastMessage(MaplePacketCreator.getChatText(c.getPlayer().getId(), text, c.getPlayer().hasGmLevel(3) && c.getChannelServer().allowGmWhiteText(), show));
+        }
+    }
 }

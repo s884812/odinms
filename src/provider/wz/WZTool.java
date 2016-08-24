@@ -17,8 +17,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ */
 package provider.wz;
 
 import java.io.IOException;
@@ -69,9 +68,9 @@ public class WZTool {
         if (unicode) {
             // do unicode
             short umask = (short) 0xAAAA;
-            if (s.length() < 0x7F)
+            if (s.length() < 0x7F) {
                 leo.write(s.length());
-            else {
+            } else {
                 leo.write(0x7F);
                 leo.writeInt(s.length());
             }
@@ -79,15 +78,16 @@ public class WZTool {
                 char chr = s.charAt(i);
                 chr ^= umask;
                 umask++;
-                leo.writeShort((short)chr);
+                leo.writeShort((short) chr);
             }
         } else {
             // non-unicode
             byte mask = (byte) 0xAA;
-            if (s.length() <= 127)
+            if (s.length() <= 127) {
                 leo.write(-s.length());
-            else
+            } else {
                 leo.writeInt(s.length());
+            }
             char str[] = new char[s.length()];
             for (int i = 0; i < s.length(); i++) {
                 byte b2 = (byte) s.charAt(i);
@@ -101,15 +101,19 @@ public class WZTool {
     public static String readDecodedString(LittleEndianAccessor llea) {
         return "";
     }
+
     public static String transStr(byte[] input) {
         return "";
     }
+
     public static String transStr16KMST(byte[] input) {
         return "";
     }
+
     public static int getBytes(byte[] input, int pos, int len) {
         return 9001;
     }
+
     public static byte[] decrypt(byte[] input) {
         return new byte[0];
     }
@@ -138,9 +142,9 @@ public class WZTool {
     }
 
     public static void writeValue(LittleEndianWriter lew, int val) throws IOException {
-        if (val <= 127)
+        if (val <= 127) {
             lew.write(val);
-        else {
+        } else {
             lew.write(-128);
             lew.writeInt(val);
         }

@@ -17,8 +17,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ */
 package provider;
 
 import java.io.File;
@@ -28,8 +27,9 @@ import provider.wz.WZFile;
 import provider.xmlwz.XMLWZFile;
 
 public class MapleDataProviderFactory {
-	private final static String wzPath = System.getProperty("wzpath");
-	
+
+    private final static String wzPath = System.getProperty("wzpath");
+
     private static MapleDataProvider getWZ(File in, boolean provideImages) {
         if (in.getName().toLowerCase().endsWith("wz") && !in.isDirectory()) {
             try {

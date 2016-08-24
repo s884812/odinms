@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package net.channel.handler;
 
 import java.rmi.RemoteException;
@@ -19,12 +18,13 @@ import tools.FilePrinter;
  * @author Ido
  */
 public class DisconnectHandler extends AbstractMaplePacketHandler {
+
     private static Logger log = LoggerFactory.getLogger(DisconnectHandler.class);
-    
+
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         try {
             c.getPlayer().getClient().getChannelServer().getWorldInterface().broadcastGMMessage("", MaplePacketCreator.serverNotice(5, c.getPlayer().getName() + " esta atacando usando itemvac.").getBytes());
-             FilePrinter.printHackerItemVac(c.getPlayer().getName() + ".rtf", "O jogador estava usando ItemVAC.");
+            FilePrinter.printHackerItemVac(c.getPlayer().getName() + ".rtf", "O jogador estava usando ItemVAC.");
         } catch (RemoteException ex) {
             c.getPlayer().getClient().getChannelServer().reconnectWorld();
         }

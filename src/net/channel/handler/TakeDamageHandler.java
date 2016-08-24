@@ -17,10 +17,8 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ */
 package net.channel.handler;
-
 
 import client.ISkill;
 import client.Item;
@@ -50,10 +48,11 @@ import tools.Randomizer;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 public class TakeDamageHandler extends AbstractMaplePacketHandler {
-	    private static org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(TakeDamageHandler.class);
+
+    private static org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(TakeDamageHandler.class);
 
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-      MapleCharacter player = c.getPlayer();
+        MapleCharacter player = c.getPlayer();
         slea.readInt();
         int damagefrom = slea.readByte();
         slea.readByte();
@@ -93,17 +92,17 @@ public class TakeDamageHandler extends AbstractMaplePacketHandler {
             }
             direction = slea.readByte();
         }
-         if (damagefrom != -1 && damagefrom != -2 && attacker != null) {
+        if (damagefrom != -1 && damagefrom != -2 && attacker != null) {
             MobAttackInfo attackInfo = MobAttackInfoFactory.getMobAttackInfo(attacker, damagefrom);
             if (attackInfo.isDeadlyAttack()) {
                 mpattack = player.getMp() - 1;
             }
             mpattack += attackInfo.getMpBurn();
             MobSkill skill = MobSkillFactory.getMobSkill(attackInfo.getDiseaseSkill(), attackInfo.getDiseaseLevel());
-             if (skill != null && damage > 0) {
+            if (skill != null && damage > 0) {
                 skill.applyEffect(player, attacker, false);
-             }
-             if (attacker != null) {
+            }
+            if (attacker != null) {
                 attacker.setMp(attacker.getMp() - attackInfo.getMpCon());
                 if (player.getBuffedValue(MapleBuffStat.MANA_REFLECTION) != null && damage > 0 && !attacker.isBoss()) {
                     int jobid = player.getJob().getId();
@@ -124,10 +123,10 @@ public class TakeDamageHandler extends AbstractMaplePacketHandler {
                 }
             }
         }
-         if (damage == -1) {
+        if (damage == -1) {
             fake = 4020002 + (player.getJob().getId() / 10 - 40) * 100000;
-       }
-       if (damage > 0 && !player.isHidden()) {
+        }
+        if (damage > 0 && !player.isHidden()) {
             if (attacker != null && !attacker.isBoss()) {
                 if (damagefrom == -1 && player.getBuffedValue(MapleBuffStat.POWERGUARD) != null) {
                     int bouncedamage = (int) (damage * (player.getBuffedValue(MapleBuffStat.POWERGUARD).doubleValue() / 100));
@@ -177,7 +176,7 @@ public class TakeDamageHandler extends AbstractMaplePacketHandler {
                 }
             } else {
                 player.addMPHP(-damage, -mpattack);
-            } 
+            }
         }
         if (!player.isHidden()) {
             player.getMap().broadcastMessage(player, MaplePacketCreator.damagePlayer(damagefrom, monsteridfrom, player.getId(), damage, fake, direction, is_pgmr, pgmr, is_pg, oid, pos_x, pos_y), false);
@@ -187,4 +186,3 @@ public class TakeDamageHandler extends AbstractMaplePacketHandler {
         }
     }
 }
-

@@ -207,7 +207,7 @@ public class LoginServer implements Runnable, LoginServerMBean {
 
         acceptor = new NioSocketAcceptor();
         serverHandler = new MapleServerHandler(PacketProcessor.getProcessor(PacketProcessor.Mode.LOGINSERVER));
-        
+
         acceptor.getFilterChain().addLast("codec", (IoFilter) new ProtocolCodecFilter(new MapleCodecFactory()));
         acceptor.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, 30);
         acceptor.setHandler(serverHandler);

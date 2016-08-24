@@ -18,7 +18,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package scripting.quest;
 
 import client.MapleClient;
@@ -30,6 +30,7 @@ import server.quest.MapleQuest;
  * @author RMZero213
  */
 public class QuestActionManager extends NPCConversationManager {
+
     private boolean start; // this is if the script in question is start or end
     private int quest;
 

@@ -22,7 +22,6 @@
 
     This is the item sort handler, which handles inventory sorting (red button next to X button)
  */
-
 package net.channel.handler;
 
 import client.MapleClient;
@@ -34,9 +33,10 @@ import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 public class ItemSortHandler extends AbstractMaplePacketHandler {
-	@Override
-	public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-	/*
+
+    @Override
+    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+        /*
 		40 00 4D 2B A1 00 05 cash
 		40 00 F7 17 A1 00 04 etc
 		40 00 6F 36 A1 00 03 setup
@@ -46,34 +46,34 @@ public class ItemSortHandler extends AbstractMaplePacketHandler {
 		40 00 AD 61 A1 00 01 eqp
 
 		MapleStory just sorts items at the top
-	*/
+         */
 
-	slea.readInt(); //Timestamp or something?
-	byte mode = slea.readByte();
+        slea.readInt(); //Timestamp or something?
+        byte mode = slea.readByte();
 
-	boolean sorted = false;
-	MapleInventoryType pInvType = MapleInventoryType.getByType(mode);
-	MapleInventory pInv = c.getPlayer().getInventory(pInvType); //Mode should correspond with MapleInventoryType
-	
-	while(!sorted) {
-		byte freeSlot = pInv.getNextFreeSlot();
-		if (freeSlot != -1) {
-			byte itemSlot = -1;
-			for (byte i = (byte)(freeSlot+1); i <= 100; i++) {
-				if (pInv.getItem(i) != null) {
-					itemSlot = i;
-					break;
-				}
-			}
-			if (itemSlot <= 100 && itemSlot > 0) {
+        boolean sorted = false;
+        MapleInventoryType pInvType = MapleInventoryType.getByType(mode);
+        MapleInventory pInv = c.getPlayer().getInventory(pInvType); //Mode should correspond with MapleInventoryType
+
+        while (!sorted) {
+            byte freeSlot = pInv.getNextFreeSlot();
+            if (freeSlot != -1) {
+                byte itemSlot = -1;
+                for (byte i = (byte) (freeSlot + 1); i <= 100; i++) {
+                    if (pInv.getItem(i) != null) {
+                        itemSlot = i;
+                        break;
+                    }
+                }
+                if (itemSlot <= 100 && itemSlot > 0) {
 //				pInv.move(i, freeSlot, (short)9999);
-				MapleInventoryManipulator.move(c, pInvType, itemSlot, freeSlot);
+                    MapleInventoryManipulator.move(c, pInvType, itemSlot, freeSlot);
 //				c.getSession().write(MaplePacketCreator.enableActions());
-			} else {
-				sorted = true;
-				}
-			}
-		}
-		c.getSession().write(MaplePacketCreator.enableActions());
-	}
+                } else {
+                    sorted = true;
+                }
+            }
+        }
+        c.getSession().write(MaplePacketCreator.enableActions());
+    }
 }

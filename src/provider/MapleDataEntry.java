@@ -17,9 +17,9 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
-/*
+ /*
  * MapleDataEntry.java
  *
  * Created on 26. November 2007, 22:21
@@ -27,7 +27,6 @@
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
-
 package provider;
 
 /**
@@ -35,8 +34,12 @@ package provider;
  * @author Matze
  */
 public interface MapleDataEntry extends MapleDataEntity {
-	public String getName();
-	public int getSize();
-	public int getChecksum();
-	public int getOffset();
+
+    public String getName();
+
+    public int getSize();
+
+    public int getChecksum();
+
+    public int getOffset();
 }

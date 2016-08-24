@@ -7,6 +7,7 @@ import client.MapleClient;
 import tools.MaplePacketCreator;
 
 public class MapleMapItem extends AbstractMapleMapObject {
+
     protected IItem item;
     protected MapleMapObject dropper;
     protected MapleCharacter owner;
@@ -17,7 +18,9 @@ public class MapleMapItem extends AbstractMapleMapObject {
     protected boolean pickedUp = false;
     protected boolean ffa = true;
 
-    /** Creates a new instance of MapleMapItem */
+    /**
+     * Creates a new instance of MapleMapItem
+     */
     public MapleMapItem(IItem item, Point position, MapleMapObject dropper, MapleCharacter owner) {
         setPosition(position);
         this.item = item;
@@ -82,18 +85,18 @@ public class MapleMapItem extends AbstractMapleMapObject {
     public void sendSpawnData(MapleClient client) {
         if (getMeso() > 0) {
             client.getSession().write(MaplePacketCreator.dropMesoFromMapObject(displayMeso, getObjectId(),
-            getDropper().getObjectId(), getOwner().getId(), null, getPosition(), (byte) 2));
+                    getDropper().getObjectId(), getOwner().getId(), null, getPosition(), (byte) 2));
         } else {
             client.getSession().write(MaplePacketCreator.dropItemFromMapObject(getItem().getItemId(), getObjectId(),
-            0, getOwner().getId(), null, getPosition(), (byte) 2));
+                    0, getOwner().getId(), null, getPosition(), (byte) 2));
         }
     }
 
-	public boolean isFfa() {
-		return ffa;
-	}
+    public boolean isFfa() {
+        return ffa;
+    }
 
-	public void setFfa(boolean ffa) {
-		this.ffa = ffa;
-	}
+    public void setFfa(boolean ffa) {
+        this.ffa = ffa;
+    }
 }

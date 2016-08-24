@@ -3,6 +3,7 @@ package tools.data.input;
 import java.io.ByteArrayOutputStream;
 
 public class GenericLittleEndianAccessor implements LittleEndianAccessor {
+
     private ByteInputStream bs;
 
     /**
@@ -146,9 +147,8 @@ public class GenericLittleEndianAccessor implements LittleEndianAccessor {
     }
 
     /**
-     * Reads a MapleStory convention lengthed ASCII string.
-     * This consists of a short integer telling the length of the string,
-     * then the string itself.
+     * Reads a MapleStory convention lengthed ASCII string. This consists of a
+     * short integer telling the length of the string, then the string itself.
      *
      * @return The string read.
      */

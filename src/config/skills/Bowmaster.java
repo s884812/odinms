@@ -18,7 +18,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package config.skills;
 
 /**
@@ -26,6 +26,7 @@ package config.skills;
  * @author BubblesDev
  */
 public class Bowmaster {
+
     public static final int MAPLE_WARRIOR = 3121000;
     public static final int SHARP_EYES = 3121002;
     public static final int HURRICANE = 3121004;

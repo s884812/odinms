@@ -19,12 +19,11 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
+ /*
  * MapleInventoryManipulator.java
  * 
  * Created on 27. November 2007, 16:19
  */
-
 package server;
 
 import java.awt.Point;
@@ -71,35 +70,35 @@ public class MapleInventoryManipulator {
     }
 
     public static boolean addSuperFromNPC(MapleClient c, int itemid, String logInfo, int max) {
-                IItem idrop;
-		MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
-                IItem item = new Item(itemid, (byte)0, (short)1);
-		MapleInventoryType type = ii.getInventoryType(item.getItemId());
-                //ii.randomizeStats((Equip)item, max);
-                Equip nEquip = ii.randomizeStats((Equip) ii.getEquipById(itemid), max);
-                item = nEquip;
-                idrop = nEquip;
+        IItem idrop;
+        MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
+        IItem item = new Item(itemid, (byte) 0, (short) 1);
+        MapleInventoryType type = ii.getInventoryType(item.getItemId());
+        //ii.randomizeStats((Equip)item, max);
+        Equip nEquip = ii.randomizeStats((Equip) ii.getEquipById(itemid), max);
+        item = nEquip;
+        idrop = nEquip;
 
-		short quantity = item.getQuantity();
-                if (quantity == 1) {
-                        byte newSlot = c.getPlayer().getInventory(type).addItem(item);
-                        StringBuilder logMsg = new StringBuilder("Adding from drop. (");
-                        logMsg.append(logInfo);
-                        logMsg.append(" )");
-                        item.log(logMsg.toString(),false);
+        short quantity = item.getQuantity();
+        if (quantity == 1) {
+            byte newSlot = c.getPlayer().getInventory(type).addItem(item);
+            StringBuilder logMsg = new StringBuilder("Adding from drop. (");
+            logMsg.append(logInfo);
+            logMsg.append(" )");
+            item.log(logMsg.toString(), false);
 
-                        if (newSlot == -1) {
-                                c.getSession().write(MaplePacketCreator.getInventoryFull());
-                                c.getSession().write(MaplePacketCreator.getShowInventoryFull());
-                                return false;
-                        }
-                        c.getSession().write(MaplePacketCreator.addInventorySlot(type, idrop, true));
-                } else {
-                        throw new RuntimeException("Trying to create equip with non-one quantity");
-                }
-		//c.getSession().write(MaplePacketCreator.getShowItemGain(item.getItemId(), item.getQuantity(), true));
-		return true;
-	}
+            if (newSlot == -1) {
+                c.getSession().write(MaplePacketCreator.getInventoryFull());
+                c.getSession().write(MaplePacketCreator.getShowInventoryFull());
+                return false;
+            }
+            c.getSession().write(MaplePacketCreator.addInventorySlot(type, idrop, true));
+        } else {
+            throw new RuntimeException("Trying to create equip with non-one quantity");
+        }
+        //c.getSession().write(MaplePacketCreator.getShowItemGain(item.getItemId(), item.getQuantity(), true));
+        return true;
+    }
 
     private MapleInventoryManipulator() {
     }
@@ -166,18 +165,16 @@ public class MapleInventoryManipulator {
                     break;
                 }
             }
-        } else {
-            if (quantity == 1) {
-                byte newSlot = c.getPlayer().getInventory(type).addItem(item);
-                if (newSlot == -1) {
-                    c.getSession().write(MaplePacketCreator.getInventoryFull());
-                    c.getSession().write(MaplePacketCreator.getShowInventoryFull());
-                    return false;
-                }
-                c.getSession().write(MaplePacketCreator.addInventorySlot(type, item, true));
-            } else {
-                throw new RuntimeException("Trying to create equip with non-one quantity");
+        } else if (quantity == 1) {
+            byte newSlot = c.getPlayer().getInventory(type).addItem(item);
+            if (newSlot == -1) {
+                c.getSession().write(MaplePacketCreator.getInventoryFull());
+                c.getSession().write(MaplePacketCreator.getShowInventoryFull());
+                return false;
             }
+            c.getSession().write(MaplePacketCreator.addInventorySlot(type, item, true));
+        } else {
+            throw new RuntimeException("Trying to create equip with non-one quantity");
         }
         c.getSession().write(MaplePacketCreator.getShowItemGain(item.getItemId(), item.getQuantity()));
         return true;
@@ -252,27 +249,25 @@ public class MapleInventoryManipulator {
                 c.getSession().write(MaplePacketCreator.addInventorySlot(type, nItem));
                 c.getSession().write(MaplePacketCreator.enableActions());
             }
-        } else {
-            if (quantity == 1) {
-                IItem nEquip = ii.getEquipById(itemId);
-                StringBuilder logMsg = new StringBuilder("Created while adding by id. (");
-                logMsg.append(logInfo);
-                logMsg.append(" )");
-                nEquip.log(logMsg.toString(), false);
-                if (owner != null) {
-                    nEquip.setOwner(owner);
-                }
-
-                byte newSlot = c.getPlayer().getInventory(type).addItem(nEquip);
-                if (newSlot == -1) {
-                    c.getSession().write(MaplePacketCreator.getInventoryFull());
-                    c.getSession().write(MaplePacketCreator.getShowInventoryFull());
-                    return false;
-                }
-                c.getSession().write(MaplePacketCreator.addInventorySlot(type, nEquip));
-            } else {
-                throw new InventoryException("Trying to create equip with non-one quantity");
+        } else if (quantity == 1) {
+            IItem nEquip = ii.getEquipById(itemId);
+            StringBuilder logMsg = new StringBuilder("Created while adding by id. (");
+            logMsg.append(logInfo);
+            logMsg.append(" )");
+            nEquip.log(logMsg.toString(), false);
+            if (owner != null) {
+                nEquip.setOwner(owner);
             }
+
+            byte newSlot = c.getPlayer().getInventory(type).addItem(nEquip);
+            if (newSlot == -1) {
+                c.getSession().write(MaplePacketCreator.getInventoryFull());
+                c.getSession().write(MaplePacketCreator.getShowInventoryFull());
+                return false;
+            }
+            c.getSession().write(MaplePacketCreator.addInventorySlot(type, nEquip));
+        } else {
+            throw new InventoryException("Trying to create equip with non-one quantity");
         }
         return true;
     }
@@ -337,19 +332,17 @@ public class MapleInventoryManipulator {
                 c.getSession().write(MaplePacketCreator.addInventorySlot(type, nItem));
                 c.getSession().write(MaplePacketCreator.enableActions());
             }
-        } else {
-            if (quantity == 1) {
-                byte newSlot = c.getPlayer().getInventory(type).addItem(item);
+        } else if (quantity == 1) {
+            byte newSlot = c.getPlayer().getInventory(type).addItem(item);
 
-                if (newSlot == -1) {
-                    c.getSession().write(MaplePacketCreator.getInventoryFull());
-                    c.getSession().write(MaplePacketCreator.getShowInventoryFull());
-                    return false;
-                }
-                c.getSession().write(MaplePacketCreator.addInventorySlot(type, item, true));
-            } else {
-                throw new RuntimeException("Trying to create equip with non-one quantity");
+            if (newSlot == -1) {
+                c.getSession().write(MaplePacketCreator.getInventoryFull());
+                c.getSession().write(MaplePacketCreator.getShowInventoryFull());
+                return false;
             }
+            c.getSession().write(MaplePacketCreator.addInventorySlot(type, item, true));
+        } else {
+            throw new RuntimeException("Trying to create equip with non-one quantity");
         }
         if (show) {
             c.getSession().write(MaplePacketCreator.getShowItemGain(item.getItemId(), item.getQuantity()));
@@ -409,7 +402,7 @@ public class MapleInventoryManipulator {
         }
     }
 
-     public static void removeById(MapleClient c, MapleInventoryType type, int itemId, int quantity, boolean fromDrop, boolean consume) {
+    public static void removeById(MapleClient c, MapleInventoryType type, int itemId, int quantity, boolean fromDrop, boolean consume) {
         List<IItem> items = c.getPlayer().getInventory(type).listById(itemId);
         int remremove = quantity;
         for (IItem item : items) {
@@ -455,7 +448,7 @@ public class MapleInventoryManipulator {
         }
     }
 
-     public static void equip(MapleClient c, byte src, byte dst) {
+    public static void equip(MapleClient c, byte src, byte dst) {
         MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
         Equip source = (Equip) c.getPlayer().getInventory(MapleInventoryType.EQUIP).getItem(src);
         Equip target = (Equip) c.getPlayer().getInventory(MapleInventoryType.EQUIPPED).getItem(dst);
@@ -472,13 +465,16 @@ public class MapleInventoryManipulator {
                     c.getPlayer().dropMessage(1, "Voce nao e GM!");
                     return;
             }
-        } if (source.getItemId() == 1812006) {
+        }
+        if (source.getItemId() == 1812006) {
             removeAllById(c, source.getItemId(), false);
             c.getPlayer().dropMessage(1, "Magic Scale Has Been Blocked");
             return;
-        } if (!ii.isProperSlot(source.getItemId(), dst)) {
-	    return;
-	} if (dst == -6) {
+        }
+        if (!ii.isProperSlot(source.getItemId(), dst)) {
+            return;
+        }
+        if (dst == -6) {
             // unequip the overall
             IItem top = c.getPlayer().getInventory(MapleInventoryType.EQUIPPED).getItem((byte) -5);
             if (top != null && ii.isOverall(top.getItemId())) {
@@ -580,15 +576,15 @@ public class MapleInventoryManipulator {
         c.getPlayer().equipChanged();
     }
 
-        public static void drop(MapleClient c, MapleInventoryType type, byte src, short quantity) {
+    public static void drop(MapleClient c, MapleInventoryType type, byte src, short quantity) {
         MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
         if (src < 0) {
             type = MapleInventoryType.EQUIPPED;
         }
-       if(c.getPlayer().getGMLevel() == 3) {
+        if (c.getPlayer().getGMLevel() == 3) {
             c.getSession().write(MaplePacketCreator.serverNotice(5, "GameMasters JR's nao podem dropar itens."));
             return;
-       }
+        }
         IItem source = c.getPlayer().getInventory(type).getItem(src);
         int itemId = source.getItemId();
         if (itemId >= 5000000 && itemId <= 5000100) {
@@ -629,8 +625,6 @@ public class MapleInventoryManipulator {
         }
     }
 
-
-    
     public static void editEquipById(MapleCharacter chr, int itemid, byte stat, short value) {
         editEquipById(chr, itemid, stat, value, false);
     }
@@ -680,5 +674,5 @@ public class MapleInventoryManipulator {
                 c.getPlayer().equipChanged();
             }
         }
-    }  
+    }
 }

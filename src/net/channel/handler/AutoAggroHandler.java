@@ -17,8 +17,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ */
 package net.channel.handler;
 
 import client.MapleClient;
@@ -29,28 +28,25 @@ import tools.data.input.SeekableLittleEndianAccessor;
 
 public class AutoAggroHandler extends AbstractMaplePacketHandler {
 
-	//private static org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(AutoAggroHandler.class);
-
-	@Override
-	public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-		// A0 00 7C 00 00 00 0C 00 00 00
-		int oid = slea.readInt();
-		MapleMap map = c.getPlayer().getMap();
-		MapleMonster monster = map.getMonsterByOid(oid);
-		if (monster != null && monster.getController() != null) {
-			if (!monster.isControllerHasAggro()) {
-				if (map.getCharacterById(monster.getController().getId()) == null) {
-					monster.switchController(c.getPlayer(), true);
-				} else {
-					monster.switchController(monster.getController(), true);
-				}
-			} else {
-				if (map.getCharacterById(monster.getController().getId()) == null) {
-					monster.switchController(c.getPlayer(), true);
-				}
-			}
-		} else if (monster != null && monster.getController() == null) {
-			monster.switchController(c.getPlayer(), true);
-		}
-	}
+    //private static org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(AutoAggroHandler.class);
+    @Override
+    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+        // A0 00 7C 00 00 00 0C 00 00 00
+        int oid = slea.readInt();
+        MapleMap map = c.getPlayer().getMap();
+        MapleMonster monster = map.getMonsterByOid(oid);
+        if (monster != null && monster.getController() != null) {
+            if (!monster.isControllerHasAggro()) {
+                if (map.getCharacterById(monster.getController().getId()) == null) {
+                    monster.switchController(c.getPlayer(), true);
+                } else {
+                    monster.switchController(monster.getController(), true);
+                }
+            } else if (map.getCharacterById(monster.getController().getId()) == null) {
+                monster.switchController(c.getPlayer(), true);
+            }
+        } else if (monster != null && monster.getController() == null) {
+            monster.switchController(c.getPlayer(), true);
+        }
+    }
 }

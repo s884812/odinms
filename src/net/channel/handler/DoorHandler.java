@@ -17,13 +17,12 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
-/*
+ /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package net.channel.handler;
 
 import client.MapleClient;
@@ -38,19 +37,19 @@ import tools.data.input.SeekableLittleEndianAccessor;
  */
 public class DoorHandler extends AbstractMaplePacketHandler {
 
-	public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-		int oid = slea.readInt();
-		@SuppressWarnings("unused")
-		boolean mode = (slea.readByte() == 0); // specifies if backwarp or not, 1 town to target, 0 target to town
-		for (MapleMapObject obj : c.getPlayer().getMap().getMapObjects()) {
-			if (obj instanceof MapleDoor) {
-				MapleDoor door = (MapleDoor) obj;
-				if (door.getOwner().getId() == oid) {
-					door.warp(c.getPlayer(), mode);
-					return;
-				}
-			}
-		}
-	}
+    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+        int oid = slea.readInt();
+        @SuppressWarnings("unused")
+        boolean mode = (slea.readByte() == 0); // specifies if backwarp or not, 1 town to target, 0 target to town
+        for (MapleMapObject obj : c.getPlayer().getMap().getMapObjects()) {
+            if (obj instanceof MapleDoor) {
+                MapleDoor door = (MapleDoor) obj;
+                if (door.getOwner().getId() == oid) {
+                    door.warp(c.getPlayer(), mode);
+                    return;
+                }
+            }
+        }
+    }
 
 }

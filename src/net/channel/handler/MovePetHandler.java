@@ -9,7 +9,7 @@ import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 import tools.data.input.StreamUtil;
 
-    public class MovePetHandler extends AbstractMovementPacketHandler {
+public class MovePetHandler extends AbstractMovementPacketHandler {
     //private static org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(MovePetHandler.class);
 
     @Override

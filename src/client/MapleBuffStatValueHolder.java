@@ -17,8 +17,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ */
 package client;
 
 import java.util.concurrent.ScheduledFuture;
@@ -33,10 +32,10 @@ public class MapleBuffStatValueHolder {
     public ScheduledFuture<?> schedule;
 
     public MapleBuffStatValueHolder(MapleStatEffect effect, long startTime, ScheduledFuture<?> schedule, int value) {
-	super();
-	this.effect = effect;
-	this.startTime = startTime;
-	this.schedule = schedule;
-	this.value = value;
+        super();
+        this.effect = effect;
+        this.startTime = startTime;
+        this.schedule = schedule;
+        this.value = value;
     }
 }

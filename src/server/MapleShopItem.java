@@ -17,43 +17,43 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
-/*
+ /*
  * MapleShopItem.java
  *
  * Created on 25. November 2007, 20:36
  */
-
 package server;
 
 /**
  *
  * @author Matze
  */
-
 public class MapleShopItem {
-	
-	private short buyable;
-	private int itemId;
-	private int price;
 
-	/** Creates a new instance of MapleShopItem */
-	public MapleShopItem(short buyable, int itemId, int price) {
-		this.buyable = buyable;
-		this.itemId = itemId;
-		this.price = price;
-	}
+    private short buyable;
+    private int itemId;
+    private int price;
 
-	public short getBuyable() {
-		return buyable;
-	}
+    /**
+     * Creates a new instance of MapleShopItem
+     */
+    public MapleShopItem(short buyable, int itemId, int price) {
+        this.buyable = buyable;
+        this.itemId = itemId;
+        this.price = price;
+    }
 
-	public int getItemId() {
-		return itemId;
-	}
+    public short getBuyable() {
+        return buyable;
+    }
 
-	public int getPrice() {
-		return price;
-	}
+    public int getItemId() {
+        return itemId;
+    }
+
+    public int getPrice() {
+        return price;
+    }
 }

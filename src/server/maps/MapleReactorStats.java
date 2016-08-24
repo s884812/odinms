@@ -18,7 +18,6 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package server.maps;
 
 import java.awt.Point;
@@ -29,14 +28,14 @@ import tools.Pair;
 /**
  * @author Lerk
  */
-
 public class MapleReactorStats {
-	private Point tl;
-	private Point br;
-        private byte facingDirection;
-	private Map<Byte, StateData> stateInfo = new HashMap<Byte, StateData>();
-	
-	/*public int getInfoId() {
+
+    private Point tl;
+    private Point br;
+    private byte facingDirection;
+    private Map<Byte, StateData> stateInfo = new HashMap<Byte, StateData>();
+
+    /*public int getInfoId() {
 	return infoId;
 	}
 	
@@ -51,80 +50,80 @@ public class MapleReactorStats {
 	public int getType() {
 		return type;
 	}*/
-        
-            public final byte getFacingDirection() {
-	return facingDirection;
-    }
-	
-	public void setTL(Point tl) {
-		this.tl = tl;
-	}
-
-	public void setBR(Point br) {
-		this.br = br;
-	}
-
-	public Point getTL() {
-		return tl;
-	}
-
-	public Point getBR() {
-		return br;
-	}
-
-	public void addState(byte state, int type, Pair<Integer, Integer> reactItem, byte nextState) {
-		StateData newState = new StateData(type, reactItem, nextState);
-		stateInfo.put(state, newState);
-	}
-
-	public byte getNextState(byte state) {
-	StateData nextState = stateInfo.get(state);
-	if (nextState != null) {
-	    return nextState.getNextState();
-	} else {
-	    return -1;
-	}
+    public final byte getFacingDirection() {
+        return facingDirection;
     }
 
-	 public int getType(byte state) {
-	StateData nextState = stateInfo.get(state);
-	if (nextState != null) {
-	    return nextState.getType();
-	} else {
-	    return -1;
-	}
+    public void setTL(Point tl) {
+        this.tl = tl;
+    }
+
+    public void setBR(Point br) {
+        this.br = br;
+    }
+
+    public Point getTL() {
+        return tl;
+    }
+
+    public Point getBR() {
+        return br;
+    }
+
+    public void addState(byte state, int type, Pair<Integer, Integer> reactItem, byte nextState) {
+        StateData newState = new StateData(type, reactItem, nextState);
+        stateInfo.put(state, newState);
+    }
+
+    public byte getNextState(byte state) {
+        StateData nextState = stateInfo.get(state);
+        if (nextState != null) {
+            return nextState.getNextState();
+        } else {
+            return -1;
+        }
+    }
+
+    public int getType(byte state) {
+        StateData nextState = stateInfo.get(state);
+        if (nextState != null) {
+            return nextState.getType();
+        } else {
+            return -1;
+        }
     }
 
     public Pair<Integer, Integer> getReactItem(byte state) {
-	StateData nextState = stateInfo.get(state);
-	if (nextState != null) {
-	    return nextState.getReactItem();
-	} else {
-	    return null;
-	}
+        StateData nextState = stateInfo.get(state);
+        if (nextState != null) {
+            return nextState.getReactItem();
+        } else {
+            return null;
+        }
     }
-	private class StateData {
 
-	private int type;
-	private Pair<Integer, Integer> reactItem;
-	private byte nextState;
+    private class StateData {
 
-	private StateData(int type, Pair<Integer, Integer> reactItem, byte nextState) {
-	    this.type = type;
-	    this.reactItem = reactItem;
-	    this.nextState = nextState;
-	}
+        private int type;
+        private Pair<Integer, Integer> reactItem;
+        private byte nextState;
 
-	private int getType() {
-	    return type;
-	}
+        private StateData(int type, Pair<Integer, Integer> reactItem, byte nextState) {
+            this.type = type;
+            this.reactItem = reactItem;
+            this.nextState = nextState;
+        }
 
-	private byte getNextState() {
-	    return nextState;
-	}
+        private int getType() {
+            return type;
+        }
 
-	private Pair<Integer, Integer> getReactItem() {
-	    return reactItem;
-	}
+        private byte getNextState() {
+            return nextState;
+        }
+
+        private Pair<Integer, Integer> getReactItem() {
+            return reactItem;
+        }
     }
 }

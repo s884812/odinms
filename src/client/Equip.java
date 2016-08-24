@@ -6,7 +6,7 @@ public class Equip extends Item implements IEquip {
     private byte level;
     private byte locked;
     private MapleJob job;
-    private short str,  dex,  _int,  luk,  hp,  mp,  watk,  matk,  wdef,  mdef,  acc,  avoid,  hands,  speed,  jump;
+    private short str, dex, _int, luk, hp, mp, watk, matk, wdef, mdef, acc, avoid, hands, speed, jump;
     private int ringid;
     private long expiration;
     private boolean wear = false;
@@ -199,7 +199,6 @@ public class Equip extends Item implements IEquip {
         this.acc = acc;
     }
 
-
     public void setAvoid(short avoid) {
         this.avoid = avoid;
     }
@@ -231,7 +230,7 @@ public class Equip extends Item implements IEquip {
     public void setLevel(byte level) {
         this.level = level;
     }
-    
+
     public boolean isWearing() {
         return wear;
     }

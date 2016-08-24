@@ -18,7 +18,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package config.skills;
 
 /**
@@ -26,6 +26,7 @@ package config.skills;
  * @author kevintjuh93
  */
 public class Legend {
+
     public static final int THREE_SNAILS = 20001000;
     public static final int RECOVERY = 20001001;
     public static final int AGILE_BODY = 20001002;
@@ -35,7 +36,7 @@ public class Legend {
     public static final int JUMP_DOWN = 20001006;
     public static final int MAKER = 20001007;
     public static final int BAMBOO_THRUST = 20001009;
-    public static final int INVICIBLE_BARRIER = 20001010; 
+    public static final int INVICIBLE_BARRIER = 20001010;
     public static final int METEO_SHOWER = 20001011;
     public static final int BLESSING_OF_THE_FAIRY = 20000012;
     public static final int TUTORIAL_SKILL1 = 20000014;

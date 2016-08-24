@@ -17,14 +17,13 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
-/*
+ /*
  * MapleQuestRequirement.java
  *
  * Created on 10. Dezember 2007, 23:15
  */
-
 package server.quest;
 
 import client.IItem;
@@ -46,7 +45,6 @@ import tools.FilePrinter;
  *
  * @author Matze
  */
-
 public class MapleQuestRequirement {
 
     private MapleQuestRequirementType type;
@@ -112,8 +110,8 @@ public class MapleQuestRequirement {
                     try {
                         killReq = MapleDataTool.getInt(mobEntry.getChildByPath("count"));
                     } catch (Throwable t) {//wonder what quest is being a bitch
-                       FilePrinter.printError(FilePrinter.QUEST + quest.getId() + ".txt", t); 
-                    }                 
+                        FilePrinter.printError(FilePrinter.QUEST + quest.getId() + ".txt", t);
+                    }
                     if (c.getQuest(quest).getMobKills(mobId) < killReq) {
                         return false;
                     }

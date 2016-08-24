@@ -17,29 +17,31 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ */
 package client;
 
 import java.util.regex.Pattern;
 
 public class MapleCharacterUtil {
-	private static Pattern namePattern = Pattern.compile("[a-zA-Z0-9_-]{3,12}");
-	
-	private MapleCharacterUtil() {
-		// whoosh
-	}
-	
-	 public static boolean canCreateChar(String name, int world) {
-        if (name.length() < 4 || name.length() > 12)
+
+    private static Pattern namePattern = Pattern.compile("[a-zA-Z0-9_-]{3,12}");
+
+    private MapleCharacterUtil() {
+        // whoosh
+    }
+
+    public static boolean canCreateChar(String name, int world) {
+        if (name.length() < 4 || name.length() > 12) {
             return false;
-        if (java.util.regex.Pattern.compile("[a-zA-Z0-9_-]{3,12}").matcher(name).matches())
+        }
+        if (java.util.regex.Pattern.compile("[a-zA-Z0-9_-]{3,12}").matcher(name).matches()) {
             return MapleCharacter.getIdByName(name, world) < 0 && !name.toLowerCase().contains("gm");
-         return false;
-       }
-        
-       public static boolean hasSymbols(String name) {
-        String[] symbols = {"`","~","!","@","#","$","%","^","&","*","(",")","_","-","=","+","{","[","]","}","|",";",":","'",",","<",">",".","?","/"};
+        }
+        return false;
+    }
+
+    public static boolean hasSymbols(String name) {
+        String[] symbols = {"`", "~", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "-", "=", "+", "{", "[", "]", "}", "|", ";", ":", "'", ",", "<", ">", ".", "?", "/"};
         for (byte s = 0; s < symbols.length; s++) {
             if (name.contains(symbols[s])) {
                 return true;
@@ -48,8 +50,7 @@ public class MapleCharacterUtil {
         return false;
     }
 
-
-	public static String makeMapleReadable(String in) {
+    public static String makeMapleReadable(String in) {
         String i = in.replace('I', 'i');
         i = i.replace('l', 'L');
         i = i.replace("rn", "Rn");

@@ -68,7 +68,7 @@ public class DueyHandler extends AbstractMaplePacketHandler {
 
     @Override
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-      //  c.getPlayer().resetAfkTimer();
+        //  c.getPlayer().resetAfkTimer();
         byte operation = slea.readByte();
         if (operation == Actions.TOSERVER_SEND_ITEM.getCode()) {
             final int fee = 5000;

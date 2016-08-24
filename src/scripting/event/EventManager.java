@@ -17,7 +17,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package scripting.event;
 
 import java.util.Collection;
@@ -44,30 +44,30 @@ import tools.FilePrinter;
  */
 public class EventManager {
 
-	private Invocable iv;
-	private ChannelServer cserv;
-	private Map<String, EventInstanceManager> instances = new HashMap<String, EventInstanceManager>();
-	private Properties props = new Properties();
-	private String name;
-        protected int channel, playerCount = 0;
-        private ScheduledFuture<?> schedule = null;
+    private Invocable iv;
+    private ChannelServer cserv;
+    private Map<String, EventInstanceManager> instances = new HashMap<String, EventInstanceManager>();
+    private Properties props = new Properties();
+    private String name;
+    protected int channel, playerCount = 0;
+    private ScheduledFuture<?> schedule = null;
 
-	public EventManager(ChannelServer cserv, Invocable iv, String name) {
-		this.iv = iv;
-		this.cserv = cserv;
-		this.name = name;
-	}
+    public EventManager(ChannelServer cserv, Invocable iv, String name) {
+        this.iv = iv;
+        this.cserv = cserv;
+        this.name = name;
+    }
 
-	public void cancel() {
+    public void cancel() {
         try {
             iv.invokeFunction("cancelSchedule", (Object) null);
         } catch (Exception ex) {
             System.out.println("Event name : " + name + ", method Name : cancelSchedule:\n" + ex);
-             FilePrinter.printError(FilePrinter.ScriptEx_Log, "Event name : " + name + ", method Name : cancelSchedule:\n" + ex);
+            FilePrinter.printError(FilePrinter.ScriptEx_Log, "Event name : " + name + ", method Name : cancelSchedule:\n" + ex);
         }
     }
-        
-       public void schedule(final String methodName, long delay) {
+
+    public void schedule(final String methodName, long delay) {
         schedule = TimerManager.getInstance().schedule(new Runnable() {
             public void run() {
                 try {
@@ -82,8 +82,8 @@ public class EventManager {
             }
         }, delay);
     }
-       
-     public void schedule(final String methodName, final EventInstanceManager eim, long delay) {
+
+    public void schedule(final String methodName, final EventInstanceManager eim, long delay) {
         schedule = TimerManager.getInstance().schedule(new Runnable() {
             public void run() {
                 try {
@@ -96,8 +96,8 @@ public class EventManager {
             }
         }, delay);
     }
-       
-        public ScheduledFuture<?> schedule(final String methodName, long delay, final EventInstanceManager eim) {
+
+    public ScheduledFuture<?> schedule(final String methodName, long delay, final EventInstanceManager eim) {
         return EventTimer.getInstance().schedule(new Runnable() {
 
             public void run() {
@@ -111,11 +111,11 @@ public class EventManager {
         }, delay);
     }
 
-   public void cancelSchedule() {
+    public void cancelSchedule() {
         schedule.cancel(true);
     }
 
-     public ScheduledFuture<?> scheduleAtTimestamp(final String methodName, long timestamp) {
+    public ScheduledFuture<?> scheduleAtTimestamp(final String methodName, long timestamp) {
         return EventTimer.getInstance().scheduleAtTimestamp(new Runnable() {
 
             public void run() {
@@ -130,8 +130,7 @@ public class EventManager {
         }, timestamp);
     }
 
-
-   public ChannelServer getChannelServer() {
+    public ChannelServer getChannelServer() {
         return cserv;
     }
 
@@ -149,7 +148,7 @@ public class EventManager {
         return ret;
     }
 
-	public void disposeInstance(String name) {
+    public void disposeInstance(String name) {
         instances.remove(name);
     }
 
@@ -192,16 +191,16 @@ public class EventManager {
             Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
 //Squad method: starts a Squad quest Zakum, HT, etc
-	public void startInstance(MapleSquad squad, MapleMap map) {
-		try {
-			EventInstanceManager eim = (EventInstanceManager)(iv.invokeFunction("setup", (Object) null));
-			eim.registerSquad(squad, map);
-		} catch (ScriptException ex) {
-			Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
-		} catch (NoSuchMethodException ex) {
-			Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
-		}
-	}
+    public void startInstance(MapleSquad squad, MapleMap map) {
+        try {
+            EventInstanceManager eim = (EventInstanceManager) (iv.invokeFunction("setup", (Object) null));
+            eim.registerSquad(squad, map);
+        } catch (ScriptException ex) {
+            Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchMethodException ex) {
+            Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

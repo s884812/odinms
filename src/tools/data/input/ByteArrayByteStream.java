@@ -4,6 +4,7 @@ import java.io.IOException;
 import tools.HexTool;
 
 public class ByteArrayByteStream implements SeekableInputStreamBytestream {
+
     private int pos = 0;
     private long bytesRead = 0;
     private byte[] arr;
@@ -63,23 +64,22 @@ public class ByteArrayByteStream implements SeekableInputStreamBytestream {
     }
 
     /**
-     * Returns the current stream as a hexadecimal string of values.
-     * Shows the entire stream, and the remaining data at the current position.
+     * Returns the current stream as a hexadecimal string of values. Shows the
+     * entire stream, and the remaining data at the current position.
      *
      * @return The current stream as a string.
      * @see java.lang.Object#toString()
      */
     //@Override
     //public String toString() {
-        //String nows = "";
-        //if (arr.length - pos > 0) {
-        //    byte[] now = new byte[arr.length - pos];
-        //    System.arraycopy(arr, pos, now, 0, arr.length - pos);
-        //    nows = HexTool.toString(now);
-        //}
-        //return "All: " + HexTool.toString(arr) + "\nNow: " + nows;
+    //String nows = "";
+    //if (arr.length - pos > 0) {
+    //    byte[] now = new byte[arr.length - pos];
+    //    System.arraycopy(arr, pos, now, 0, arr.length - pos);
+    //    nows = HexTool.toString(now);
     //}
-
+    //return "All: " + HexTool.toString(arr) + "\nNow: " + nows;
+    //}
     /**
      * Returns the number of bytes available from the stream.
      *

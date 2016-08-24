@@ -18,7 +18,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package config.skills;
 
 /**
@@ -26,6 +26,7 @@ package config.skills;
  * @author BubblesDev
  */
 public class Brawler {
+
     public static final int IMPROVE_MAX_HP = 5100000;
     public static final int KNUCKLER_MASTERY = 5100001;
     public static final int BACK_SPIN_BLOW = 5101002;

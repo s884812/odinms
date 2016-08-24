@@ -17,8 +17,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ */
 package server.maps;
 
 import java.awt.Point;
@@ -26,25 +25,29 @@ import java.awt.Point;
 import client.MapleClient;
 
 public interface MapleMapObject {
-	public int getObjectId();
 
-	public void setObjectId(int id);
+    public int getObjectId();
 
-	public MapleMapObjectType getType();
+    public void setObjectId(int id);
 
-	/**
-	 * returns a copy of the current position
-	 * @return
-	 */
-	public Point getPosition();
+    public MapleMapObjectType getType();
 
-	/**
-	 * sets the current position of the object to the position given in the point.
-	 * @param position
-	 */
-	public void setPosition(Point position);
-	
-	public void sendSpawnData (MapleClient client);
-	
-	public void sendDestroyData (MapleClient client);
+    /**
+     * returns a copy of the current position
+     *
+     * @return
+     */
+    public Point getPosition();
+
+    /**
+     * sets the current position of the object to the position given in the
+     * point.
+     *
+     * @param position
+     */
+    public void setPosition(Point position);
+
+    public void sendSpawnData(MapleClient client);
+
+    public void sendDestroyData(MapleClient client);
 }

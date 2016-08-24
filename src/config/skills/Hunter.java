@@ -18,14 +18,15 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package config.skills;
 
 /**
- * 
+ *
  * @author BubblesDev
  */
 public class Hunter {
+
     public static final int BOW_MASTERY = 3100000;
     public static final int FINAL_ATTACK = 3100001;
     public static final int BOW_BOOSTER = 3101002;

@@ -26,6 +26,7 @@ package config.skills;
  * @author BubblesDev
  */
 public class Aran {
+
     public static final int COMBO_ABILITY = 21000000;
     public static final int POLEARM_BOOSTER = 21001003;
     public static final int MAPLE_WARRIOR = 21121000;

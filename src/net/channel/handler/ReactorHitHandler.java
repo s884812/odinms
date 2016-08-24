@@ -18,7 +18,6 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package net.channel.handler;
 
 import client.MapleClient;
@@ -29,18 +28,17 @@ import tools.data.input.SeekableLittleEndianAccessor;
 /**
  * @author Lerk
  */
-
 public class ReactorHitHandler extends AbstractMaplePacketHandler {
 
-	public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-	final int oid = slea.readInt();
-	final int charPos = slea.readInt();
-	final short stance = slea.readShort();
-	final MapleReactor reactor = c.getPlayer().getMap().getReactorByOid(oid);
+    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+        final int oid = slea.readInt();
+        final int charPos = slea.readInt();
+        final short stance = slea.readShort();
+        final MapleReactor reactor = c.getPlayer().getMap().getReactorByOid(oid);
 
-	if (reactor == null || !reactor.isAlive()) {
-	    return;
-	}
-	reactor.hitReactor(charPos, stance, c);
+        if (reactor == null || !reactor.isAlive()) {
+            return;
+        }
+        reactor.hitReactor(charPos, stance, c);
     }
 }
