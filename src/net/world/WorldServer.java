@@ -17,7 +17,7 @@ public class WorldServer {
 
     private static WorldServer instance = null;
     private static Logger log = LoggerFactory.getLogger(WorldServer.class);
-    private int worldId;
+    private static int worldId;
     private String serverName;
     private String serverMessage;
     private String eventMessage;
@@ -26,13 +26,12 @@ public class WorldServer {
     private int flag;
 
     private WorldServer() {
-        this.worldId = Integer.parseInt(System.getProperty("world.worldId"));
         DatabaseConnection.getConnection();
         Properties props = WorldProperties.getInstance(worldId).getProp();
         this.serverName = props.getProperty("world.serverName");
         this.serverMessage = props.getProperty("world.serverMessage");
         this.maxCharacters = Integer.parseInt(props.getProperty("world.maxCharacters"));
-        this.eventMessage =  props.getProperty("world.eventMessage");
+        this.eventMessage = props.getProperty("world.eventMessage");
         this.flag = Integer.parseInt(props.getProperty("world.flag"));
     }
 
@@ -67,21 +66,22 @@ public class WorldServer {
         return eventMessage;
     }
 
-    public int getFlag()
-    {
+    public int getFlag() {
         return flag;
     }
-    
+
     public Properties getWorldProp() {
         return WorldProperties.getInstance(worldId).getProp();
     }
-    
 
     public static void main(String[] args) {
         try {
+            worldId = Integer.parseInt(System.getProperty("world.worldId"));
+            log.info("Creating World-" + worldId);
             Registry registry = LocateRegistry.createRegistry(Registry.REGISTRY_PORT,
                     new SslRMIClientSocketFactory(), new SslRMIServerSocketFactory());
             registry.rebind("WorldRegistry", WorldRegistryImpl.getInstance());
+
         } catch (RemoteException ex) {
             log.error("Could not initialize RMI system", ex);
         }

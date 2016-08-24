@@ -12,7 +12,7 @@ import java.util.Map;
  *
  * @author t4si
  */
-public class WorldProperties extends AbstractProperties {
+public class ChannelProperties extends AbstractProperties {
     
     static Map<Integer, WorldProperties> props = new HashMap<>();
     
@@ -28,8 +28,7 @@ public class WorldProperties extends AbstractProperties {
         }
     }
     
-    public WorldProperties(int worldId) {
-        super("./configs/world" + worldId +"/world.properties");
+    public ChannelProperties(int worldId) {
+        super("./configs/world" + worldId + "channel.properties");
     }
-    
 }

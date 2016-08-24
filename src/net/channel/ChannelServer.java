@@ -83,6 +83,8 @@ import org.apache.mina.core.service.IoAcceptor;
 import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
+import properties.ChannelProperties;
+import properties.WorldProperties;
 import provider.MapleDataProviderFactory;
 import scripting.event.EventScriptManager;
 import server.MapleSquad;
@@ -104,9 +106,9 @@ import server.maps.MapTimer;
 public class ChannelServer implements Runnable, ChannelServerMBean {
 
     MapleClient c;
+    private static int world = 0;
     private static int uniqueID = 1;
     private int port = 7575;
-    private static Properties initialProp;
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(ChannelServer.class);
     private static WorldRegistry worldRegistry;
     private final PlayerStorage players = new PlayerStorage();
@@ -125,6 +127,7 @@ public class ChannelServer implements Runnable, ChannelServerMBean {
     private boolean gmWhiteText;
     private boolean cashshop;
     private boolean mts;
+    private Properties worldProps;
     private boolean dropUndroppables;
     private boolean moreThanOne;
     private int channel;
@@ -132,7 +135,6 @@ public class ChannelServer implements Runnable, ChannelServerMBean {
     private boolean GMItems;
     private final String key;
     private boolean AB;
-    private Properties props = new Properties();
     private ChannelWorldInterface cwi;
     private WorldChannelInterface wci = null;
     private MapleServerHandler serverHandler;
@@ -184,32 +186,24 @@ public class ChannelServer implements Runnable, ChannelServerMBean {
                 System.out.println("Reconnecting to world server");
                 synchronized (wci) {
                     try {
-                        initialProp = new Properties();
-                        FileReader fr = new FileReader(System.getProperty("channel.config"));
-                        initialProp.load(fr);
-                        fr.close();
-                        Registry registry = LocateRegistry.getRegistry(initialProp.getProperty("world.host"), Registry.REGISTRY_PORT, new SslRMIClientSocketFactory());
+                        worldProps = WorldProperties.getInstance(world).getProp();
+                        Registry registry = LocateRegistry.getRegistry(worldProps.getProperty("world.host"), Registry.REGISTRY_PORT, new SslRMIClientSocketFactory());
                         worldRegistry = (WorldRegistry) registry.lookup("WorldRegistry");
                         cwi = new ChannelWorldInterfaceImpl(this);
                         wci = worldRegistry.registerChannelServer(key, cwi);
-                        props = wci.getGameProperties();
-                        expRate = Integer.parseInt(props.getProperty("world.exp"));
-                        QuestExpRate = Integer.parseInt(props.getProperty("world.questExp"));
-                        mesoRate = Integer.parseInt(props.getProperty("world.meso"));
-                        dropRate = Integer.parseInt(props.getProperty("world.drop"));
-                        bossdropRate = Integer.parseInt(props.getProperty("world.bossdrop"));
-                        petExpRate = Integer.parseInt(props.getProperty("world.petExp"));
-                        mountExpRate = Integer.parseInt(props.getProperty("world.mountExp"));
-                        serverMessage = props.getProperty("world.serverMessage");
-                        dropUndroppables = Boolean.parseBoolean(props.getProperty("world.alldrop", "false"));
-                        moreThanOne = Boolean.parseBoolean(props.getProperty("world.morethanone", "false"));
-                        gmWhiteText = Boolean.parseBoolean(props.getProperty("world.gmWhiteText", "true"));
-                        cashshop = Boolean.parseBoolean(props.getProperty("world.cashshop", "false"));
-                        mts = Boolean.parseBoolean(props.getProperty("world.mts", "false"));
-                        Properties dbProp = new Properties();
-                        fr = new FileReader("Jogo/BancoDados/db.properties");
-                        dbProp.load(fr);
-                        fr.close();
+                        expRate = Integer.parseInt(worldProps.getProperty("world.exp"));
+                        QuestExpRate = Integer.parseInt(worldProps.getProperty("world.questExp"));
+                        mesoRate = Integer.parseInt(worldProps.getProperty("world.meso"));
+                        dropRate = Integer.parseInt(worldProps.getProperty("world.drop"));
+                        bossdropRate = Integer.parseInt(worldProps.getProperty("world.bossdrop"));
+                        petExpRate = Integer.parseInt(worldProps.getProperty("world.petExp"));
+                        mountExpRate = Integer.parseInt(worldProps.getProperty("world.mountExp"));
+                        serverMessage = worldProps.getProperty("world.serverMessage");
+                        dropUndroppables = Boolean.parseBoolean(worldProps.getProperty("world.alldrop", "false"));
+                        moreThanOne = Boolean.parseBoolean(worldProps.getProperty("world.morethanone", "false"));
+                        gmWhiteText = Boolean.parseBoolean(worldProps.getProperty("world.gmWhiteText", "true"));
+                        cashshop = Boolean.parseBoolean(worldProps.getProperty("world.cashshop", "false"));
+                        mts = Boolean.parseBoolean(worldProps.getProperty("world.mts", "false"));
                         DatabaseConnection.getConnection();
                         wci.serverReady();
                     } catch (IOException | NotBoundException | NumberFormatException e) {
@@ -229,7 +223,7 @@ public class ChannelServer implements Runnable, ChannelServerMBean {
         try {
             cwi = new ChannelWorldInterfaceImpl(this);
             wci = worldRegistry.registerChannelServer(key, cwi);
-            props = wci.getGameProperties();
+            Properties props = wci.getGameProperties();
             expRate = Integer.parseInt(props.getProperty("world.exp"));
             QuestExpRate = Integer.parseInt(props.getProperty("world.questExp"));
             mesoRate = Integer.parseInt(props.getProperty("world.meso"));
@@ -240,7 +234,7 @@ public class ChannelServer implements Runnable, ChannelServerMBean {
             serverMessage = props.getProperty("world.serverMessage");
             dropUndroppables = Boolean.parseBoolean(props.getProperty("world.alldrop", "false"));
             moreThanOne = Boolean.parseBoolean(props.getProperty("world.morethanone", "false"));
-            eventSM = new EventScriptManager(this, props.getProperty("channel.events").split(","));
+            eventSM = new EventScriptManager(this, props.getProperty("world.events").split(","));
             gmWhiteText = Boolean.parseBoolean(props.getProperty("world.gmWhiteText", "false"));
             cashshop = Boolean.parseBoolean(props.getProperty("world.cashshop", "false"));
             mts = Boolean.parseBoolean(props.getProperty("world.mts", "false"));
@@ -257,8 +251,6 @@ public class ChannelServer implements Runnable, ChannelServerMBean {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        port = Integer.parseInt(props.getProperty("channel.net.port"));
-        ip = props.getProperty("channel.net.interface") + ":" + port;
 
         IoBuffer.setUseDirectBuffer(false);
         IoBuffer.setAllocator(new SimpleBufferAllocator());
@@ -282,6 +274,7 @@ public class ChannelServer implements Runnable, ChannelServerMBean {
 
         try {
             System.out.println("[INFO] Canal (" + getChannel() + ") Aberto na porta ( " + port + ").");
+            acceptor.bind(new InetSocketAddress(port));
             wci.serverReady();
             eventSM.init();
             final ChannelServer serv = this;
@@ -413,10 +406,12 @@ public class ChannelServer implements Runnable, ChannelServerMBean {
         return mapFactory;
     }
 
-    private static ChannelServer newInstance(String key) throws InstanceAlreadyExistsException, MBeanRegistrationException, NotCompliantMBeanException, MalformedObjectNameException {
+    private static ChannelServer newInstance(String key, String ip, int port) throws InstanceAlreadyExistsException, MBeanRegistrationException, NotCompliantMBeanException, MalformedObjectNameException {
         ChannelServer instance = new ChannelServer(key);
+        instance.ip = ip;
+        instance.port = port;
         MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
-        mBeanServer.registerMBean(instance, new ObjectName("net.channel:type=ChannelServer,name=ChannelServer" + uniqueID++));
+        mBeanServer.registerMBean(instance, new ObjectName("net.channel:type=ChannelServer,name=ChannelServer_" + world + "_" + uniqueID++));
         pendingInstances.put(key, instance);
         return instance;
     }
@@ -540,10 +535,6 @@ public class ChannelServer implements Runnable, ChannelServerMBean {
         });
     }
 
-    public String getProperty(String name) {
-        return props.getProperty(name);
-    }
-
     public boolean isShutdown() {
         return shutdown;
     }
@@ -578,7 +569,7 @@ public class ChannelServer implements Runnable, ChannelServerMBean {
 
     public void reloadEvents() {
         eventSM.cancel();
-        eventSM = new EventScriptManager(this, props.getProperty("channel.events").split(","));
+        eventSM = new EventScriptManager(this, worldProps.getProperty("world.events").split(","));
         eventSM.init();
     }
 
@@ -725,12 +716,19 @@ public class ChannelServer implements Runnable, ChannelServerMBean {
     public static void main(String args[]) throws FileNotFoundException, IOException, NotBoundException,
             InstanceAlreadyExistsException, MBeanRegistrationException,
             NotCompliantMBeanException, MalformedObjectNameException {
-        initialProp = new Properties();
-        initialProp.load(new FileReader(System.getProperty("channel.config")));
-        Registry registry = LocateRegistry.getRegistry(initialProp.getProperty("world.host"), Registry.REGISTRY_PORT, new SslRMIClientSocketFactory());
+
+        world = Integer.parseInt(System.getProperty("channel.worldId", "0"));
+
+        Properties props = ChannelProperties.getInstance(world).getProp();
+
+        String host = props.getProperty("channel.net.interface");
+        int channelCount = Integer.parseInt(props.getProperty("channel.count", "1"));
+        int channelPort = Integer.parseInt(props.getProperty("channel.net.interface", "7575"));
+
+        Registry registry = LocateRegistry.getRegistry(host, Registry.REGISTRY_PORT, new SslRMIClientSocketFactory());
         worldRegistry = (WorldRegistry) registry.lookup("WorldRegistry");
-        for (int i = 0; i < Integer.parseInt(initialProp.getProperty("channel.count", "0")); i++) {
-            newInstance(initialProp.getProperty("channel." + i + ".key")).run();
+        for (int i = 0; i < channelCount; i++) {
+            newInstance(props.getProperty("channel." + i + ".key"), host, channelPort++).run();
         }
         DatabaseConnection.getConnection();
         CommandProcessor.registerMBean();

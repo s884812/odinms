@@ -21,7 +21,7 @@ public class DatabaseProperties extends AbstractProperties {
     }
 
     public DatabaseProperties() {
-        super("./config/db.properties");
+        super("./configs/db.properties");
     }
 
 }

@@ -113,7 +113,10 @@ public class DatabaseConnection {
                 log.error("ERROR", e);
             }
             try {
-                Connection con = DriverManager.getConnection(props.getProperty("url"), props.getProperty("usuario"), props.getProperty("senha"));
+                Connection con = DriverManager.getConnection(
+                        props.getProperty("url"),
+                        props.getProperty("dbuser"), 
+                        props.getProperty("dbpass"));
                 allConnections.add(con);
                 return con;
             } catch (SQLException e) {

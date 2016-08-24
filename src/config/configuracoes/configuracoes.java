@@ -16,27 +16,6 @@ import server.maps.MapleMapObjectType;
 
 public class configuracoes {
 
-    /* Correcoes p/ possivel bug */
-    private static final Properties server;
-    public static final byte getChannelLimit;
-
-    static {
-        server = WorldServer.getInstance().getWorldProp();
-        getChannelLimit = Byte.parseByte(server.getProperty("ChannelCount", "6"));
-    }
-
-    public static String getProperty(String name) {
-        if (server.containsKey(name)) {
-            return server.getProperty(name);
-        } else {
-            System.out.println("Erro ao localizar as propriedades para: " + name + ".");
-            return null;
-        }
-    }
-
-    public static Properties worldServerProperties() {
-        return server;
-    }
     public static final List<MapleMapObjectType> rangedMapobjectTypes = Arrays.asList(
             MapleMapObjectType.ITEM,
             MapleMapObjectType.MONSTER,
@@ -47,8 +26,6 @@ public class configuracoes {
             MapleMapObjectType.MIST);
 
     /* Fim/*
-    
-    
     /*    Mensagens     */
     public static final short Leader_versao = 62;
     public static String Nome_Server = "LeaderMS";

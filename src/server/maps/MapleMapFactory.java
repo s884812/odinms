@@ -225,19 +225,19 @@ public class MapleMapFactory {
                 }
                 map.setTimeLimit(MapleDataTool.getIntConvert("timeLimit", mapData.getChildByPath("info"), -1));
                 maps.put(omapid, map);
-
-                if (channel > 0 && Boolean.parseBoolean(ChannelServer.getInstance(channel).getProperty("world.faekchar"))) {
-                    MapleClient faek = new MapleClient(null, null, new MockIOSession());
-                    try {
-                        MapleCharacter faekchar = MapleCharacter.loadCharFromDB(30000, faek, true);
-                        faek.setPlayer(faekchar);
-                        faekchar.setPosition(new Point(0, 0));
-                        faekchar.setMap(map);
-                        map.addPlayer(faekchar);
-                    } catch (SQLException e) {
-                        Logger.error("Loading FAEK failed", e);
-                    }
-                }
+//
+//                if (channel > 0 && Boolean.parseBoolean(ChannelServer.getInstance(channel).getProperty("world.faekchar"))) {
+//                    MapleClient faek = new MapleClient(null, null, new MockIOSession());
+//                    try {
+//                        MapleCharacter faekchar = MapleCharacter.loadCharFromDB(30000, faek, true);
+//                        faek.setPlayer(faekchar);
+//                        faekchar.setPosition(new Point(0, 0));
+//                        faekchar.setMap(map);
+//                        map.addPlayer(faekchar);
+//                    } catch (SQLException e) {
+//                        Logger.error("Loading FAEK failed", e);
+//                    }
+//                }
             }
         }
         return map;
