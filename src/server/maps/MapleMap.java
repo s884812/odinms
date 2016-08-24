@@ -1048,7 +1048,7 @@ public class MapleMap {
                                 || monster.getId() == 8520000)
                                 || monster.getId() == 9400549) {
                             int mesos = (int) ((Math.random() * (monster.getLevel() * 210 - monster.getLevel() * 70 + 1)) + monster.getLevel() * 70);
-                            final int cc = ChannelServer.getInstance(dropOwner.getClient().getChannel()).getMesoRate();
+                            final int cc = ChannelServer.getInstance(dropOwner.getClient().getSelectedChannel()).getMesoRate();
                             if (monster.isHT()) {
                                 mesos *= 180;
                             }
@@ -1070,7 +1070,7 @@ public class MapleMap {
                             }, dropTime);
                             droppedMesos++;
                         } else {
-                            final int mesoRate = ChannelServer.getInstance(dropOwner.getClient().getChannel()).getMesoRate();
+                            final int mesoRate = ChannelServer.getInstance(dropOwner.getClient().getSelectedChannel()).getMesoRate();
                             Random r = new Random();
                             double mesoDecrease = Math.pow(0.93, monster.getExp() / 300.0);
                             if (mesoDecrease > 1.0) {
@@ -2507,7 +2507,7 @@ public class MapleMap {
                 MapleMap outMap;
                 MapleMapFactory mapFactory;
                 for (MapleCharacter aaa : characters) {
-                    mapFactory = ChannelServer.getInstance(aaa.getClient().getChannel()).getMapFactory();
+                    mapFactory = ChannelServer.getInstance(aaa.getClient().getSelectedChannel()).getMapFactory();
                     outMap = mapFactory.getMap(910010300);
                     aaa.getClient().getPlayer().changeMap(outMap, outMap.getPortal(0));
                     aaa.getClient().getPlayer().getEventInstance().unregisterPlayer(aaa.getClient().getPlayer()); //Unregister them all
@@ -2522,7 +2522,7 @@ public class MapleMap {
         MapleMap outMap;
         MapleMapFactory mapFactory;
         for (MapleCharacter aaa : characters) {
-            mapFactory = ChannelServer.getInstance(aaa.getClient().getChannel()).getMapFactory();
+            mapFactory = ChannelServer.getInstance(aaa.getClient().getSelectedChannel()).getMapFactory();
             outMap = mapFactory.getMap(910010300);
             aaa.getClient().getPlayer().changeMap(outMap, outMap.getPortal(0));
             aaa.getClient().getPlayer().getEventInstance().unregisterPlayer(aaa.getClient().getPlayer()); //Unregister them all
@@ -2533,7 +2533,7 @@ public class MapleMap {
         MapleMap outMap;
         MapleMapFactory mapFactory;
         for (MapleCharacter aaa : characters) {
-            mapFactory = ChannelServer.getInstance(aaa.getClient().getChannel()).getMapFactory();
+            mapFactory = ChannelServer.getInstance(aaa.getClient().getSelectedChannel()).getMapFactory();
             outMap = mapFactory.getMap(211000001);
             aaa.getClient().getPlayer().changeMap(outMap, outMap.getPortal(0));
             aaa.getClient().getPlayer().getEventInstance().unregisterPlayer(aaa.getClient().getPlayer()); //Unregister them all

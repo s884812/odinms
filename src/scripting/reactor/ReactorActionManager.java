@@ -107,7 +107,7 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
             if (d.itemId == 0) {
                 int range = maxMeso - minMeso;
                 int displayDrop = (int) (Math.random() * range) + minMeso;
-                int mesoDrop = (int) (displayDrop * ChannelServer.getInstance(getClient().getChannel()).getMesoRate());
+                int mesoDrop = (int) (displayDrop * ChannelServer.getInstance(getClient().getSelectedChannel()).getMesoRate());
                 reactor.getMap().spawnMesoDrop(mesoDrop, displayDrop, dropPos, reactor, getPlayer(), meso);
             } else {
                 IItem drop;

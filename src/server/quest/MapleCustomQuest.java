@@ -26,16 +26,12 @@
 package server.quest;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.FileReader;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.LinkedList;
-import java.util.Properties;
 
 import client.MapleQuestStatus;
 import database.DatabaseConnection;
@@ -50,10 +46,10 @@ public class MapleCustomQuest extends MapleQuest {
     public MapleCustomQuest(int id) {
         try {
             this.id = id;
-            startActs = new LinkedList<MapleQuestAction>();
-            completeActs = new LinkedList<MapleQuestAction>();
-            startReqs = new LinkedList<MapleQuestRequirement>();
-            completeReqs = new LinkedList<MapleQuestRequirement>();
+            startActs = new LinkedList<>();
+            completeActs = new LinkedList<>();
+            startReqs = new LinkedList<>();
+            completeReqs = new LinkedList<>();
             Connection con = DatabaseConnection.getConnection();
             PreparedStatement ps = con.prepareStatement("SELECT * FROM questrequirements WHERE "
                     + "questid = ?");

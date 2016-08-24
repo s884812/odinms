@@ -131,7 +131,7 @@ public class MapleGenericPortal implements MaplePortal {
         } else if (getTargetMapId() != 999999999) {
             MapleMap to;
             if (player.getEventInstance() == null) {
-                to = ChannelServer.getInstance(c.getChannel()).getMapFactory().getMap(getTargetMapId());
+                to = ChannelServer.getInstance(c.getSelectedChannel()).getMapFactory().getMap(getTargetMapId());
             } else {
                 to = player.getEventInstance().getMapInstance(getTargetMapId());
             }

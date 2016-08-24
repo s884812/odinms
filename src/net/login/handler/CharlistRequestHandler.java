@@ -21,7 +21,12 @@
 package net.login.handler;
 
 import client.MapleClient;
+import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import net.AbstractMaplePacketHandler;
+import net.login.LoginServer;
+import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 public class CharlistRequestHandler extends AbstractMaplePacketHandler {
@@ -30,11 +35,18 @@ public class CharlistRequestHandler extends AbstractMaplePacketHandler {
 
     @Override
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        int server = slea.readByte();
-        int channel = slea.readByte() + 1;
-        c.setWorld(server);
-        //log.info("Client is connecting to server {} channel {}", server, channel);
-        c.setChannel(channel);
-        c.sendCharList(server);
+        int worldId = slea.readByte();
+        int channelIndex = slea.readByte();
+        int channel = channelIndex + 1;
+        int maxCharacters = 6;
+        try {
+            maxCharacters = LoginServer.getRemoteWorld(worldId).getWorldLoginInterface().getMaxCharacters();
+        } catch (RemoteException ex) {
+            Logger.getLogger(CharlistRequestHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        c.setSelectedWorld(worldId);
+        c.setSelectedChannel(channel);
+        c.getSession().write(MaplePacketCreator.getCharList(c, worldId, maxCharacters));
+
     }
 }

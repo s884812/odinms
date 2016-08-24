@@ -58,6 +58,69 @@ import server.MapleItemInformationProvider;
 import client.Equip;
 import client.IItem;
 import static client.messages.CommandProcessor.getOptionalIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
+import static client.messages.CommandProcessor.getNamedIntArg;
 
 public class GMCommand implements Command {
 
@@ -118,10 +181,10 @@ public class GMCommand implements Command {
             if (range == 0) {
                 c.getPlayer().getMap().broadcastMessage(packet);
             } else if (range == 1) {
-                ChannelServer.getInstance(c.getChannel()).broadcastPacket(packet);
+                ChannelServer.getInstance(c.getSelectedChannel()).broadcastPacket(packet);
             } else if (range == 2) {
                 try {
-                    ChannelServer.getInstance(c.getChannel()).getWorldInterface().broadcastMessage(
+                    ChannelServer.getInstance(c.getSelectedChannel()).getWorldInterface().broadcastMessage(
                             c.getPlayer().getName(), packet.getBytes());
                 } catch (RemoteException e) {
                     c.getChannelServer().reconnectWorld();
@@ -257,7 +320,7 @@ public class GMCommand implements Command {
 
                 } else {
                     int mapid = Integer.parseInt(splitted[2]);
-                    MapleMap target = ChannelServer.getInstance(c.getChannel()).getMapFactory().getMap(mapid);
+                    MapleMap target = ChannelServer.getInstance(c.getSelectedChannel()).getMapFactory().getMap(mapid);
                     victim.changeMap(target, target.getPortal(0));
                 }
             } else {
@@ -276,7 +339,7 @@ public class GMCommand implements Command {
                             MapleTrade.cancelTrade(c.getPlayer());
                         }
                         try {
-                            WorldChannelInterface wci = ChannelServer.getInstance(c.getChannel()).getWorldInterface();
+                            WorldChannelInterface wci = ChannelServer.getInstance(c.getSelectedChannel()).getWorldInterface();
                             wci.addBuffsToStorage(c.getPlayer().getId(), c.getPlayer().getAllBuffs());
                             wci.addCooldownsToStorage(c.getPlayer().getId(), c.getPlayer().getAllCooldowns());
                         } catch (RemoteException e) {
@@ -286,7 +349,7 @@ public class GMCommand implements Command {
                         if (c.getPlayer().getCheatTracker() != null) {
                             c.getPlayer().getCheatTracker().dispose();
                         }
-                        ChannelServer.getInstance(c.getChannel()).removePlayer(c.getPlayer());
+                        ChannelServer.getInstance(c.getSelectedChannel()).removePlayer(c.getPlayer());
                         c.updateLoginState(MapleClient.LOGIN_SERVER_TRANSITION);
                         try {
                             MaplePacket packet = MaplePacketCreator.getChannelChange(InetAddress.getByName(socket[0]), Integer.parseInt(socket[1]));
@@ -344,7 +407,7 @@ public class GMCommand implements Command {
             if (splitted.length > 1) {
                 MaplePacket packet = MaplePacketCreator.serverNotice(6, "[" + c.getPlayer().getName() + "] " + StringUtil.joinStringFrom(splitted, 1));
                 try {
-                    ChannelServer.getInstance(c.getChannel()).getWorldInterface().broadcastMessage(c.getPlayer().getName(), packet.getBytes());
+                    ChannelServer.getInstance(c.getSelectedChannel()).getWorldInterface().broadcastMessage(c.getPlayer().getName(), packet.getBytes());
                 } catch (RemoteException e) {
                     c.getChannelServer().reconnectWorld();
                 }
@@ -360,7 +423,7 @@ public class GMCommand implements Command {
                 }
                 cserv.setDropRate(drop);
                 MaplePacket packet = MaplePacketCreator.serverNotice(6, "Drop rate foi alterado para " + drop + "x.");
-                ChannelServer.getInstance(c.getChannel()).broadcastPacket(packet);
+                ChannelServer.getInstance(c.getSelectedChannel()).broadcastPacket(packet);
             } else {
                 mc.dropMessage("Syntax: !droprate <number>");
             }
@@ -373,7 +436,7 @@ public class GMCommand implements Command {
                 }
                 cserv.setBossDropRate(bossdrop);
                 MaplePacket packet = MaplePacketCreator.serverNotice(6, "Boss rate foi alterado para " + bossdrop + "x.");
-                ChannelServer.getInstance(c.getChannel()).broadcastPacket(packet);
+                ChannelServer.getInstance(c.getSelectedChannel()).broadcastPacket(packet);
             } else {
                 mc.dropMessage("Syntax: !bossdroprate <number>");
             }
@@ -386,7 +449,7 @@ public class GMCommand implements Command {
                 }
                 cserv.setExpRate(exp);
                 MaplePacket packet = MaplePacketCreator.serverNotice(6, "Experiencia foi alterada para " + exp + "x.");
-                ChannelServer.getInstance(c.getChannel()).broadcastPacket(packet);
+                ChannelServer.getInstance(c.getSelectedChannel()).broadcastPacket(packet);
             } else {
                 mc.dropMessage("Syntax: !bossdroprate <number>");
             }

@@ -194,8 +194,8 @@ public class MonsterCarnival {
     }
 
     public void finish(int winningTeam) {
-        int chnl = leader1.getClient().getChannel();
-        int chnl1 = leader2.getClient().getChannel();
+        int chnl = leader1.getClient().getSelectedChannel();
+        int chnl1 = leader2.getClient().getSelectedChannel();
         if (chnl != chnl1) {
             throw new RuntimeException("CPQ leaders are on different channels..");
         }
@@ -285,8 +285,8 @@ public class MonsterCarnival {
             return;
         }
         boolean redWin = cp1 > cp2;
-        int chnl = leader1.getClient().getChannel();
-        int chnl1 = leader2.getClient().getChannel();
+        int chnl = leader1.getClient().getSelectedChannel();
+        int chnl1 = leader2.getClient().getSelectedChannel();
         if (chnl != chnl1) {
             throw new RuntimeException("CPQ leaders are on different channels..");
         }

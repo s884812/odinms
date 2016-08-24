@@ -54,7 +54,7 @@ public class EnterMTSHandler extends AbstractMaplePacketHandler {
                 c.getPlayer().unequipAllPets();
             }
             try {
-                WorldChannelInterface wci = ChannelServer.getInstance(c.getChannel()).getWorldInterface();
+                WorldChannelInterface wci = ChannelServer.getInstance(c.getSelectedChannel()).getWorldInterface();
                 wci.addBuffsToStorage(c.getPlayer().getId(), c.getPlayer().getAllBuffs());
                 wci.addCooldownsToStorage(c.getPlayer().getId(), c.getPlayer().getAllCooldowns());
             } catch (RemoteException e) {

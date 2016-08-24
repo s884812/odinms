@@ -210,7 +210,6 @@ public class ChannelServer implements Runnable, ChannelServerMBean {
                         fr = new FileReader("Jogo/BancoDados/db.properties");
                         dbProp.load(fr);
                         fr.close();
-                        DatabaseConnection.setProps(dbProp);
                         DatabaseConnection.getConnection();
                         wci.serverReady();
                     } catch (IOException | NotBoundException | NumberFormatException e) {
@@ -249,7 +248,6 @@ public class ChannelServer implements Runnable, ChannelServerMBean {
             FileReader fileReader = new FileReader("Jogo/BancoDados/db.properties");
             dbProp.load(fileReader);
             fileReader.close();
-            DatabaseConnection.setProps(dbProp);
             DatabaseConnection.getConnection();
             Connection c = DatabaseConnection.getConnection();
             try {

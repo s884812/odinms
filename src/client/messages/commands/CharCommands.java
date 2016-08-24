@@ -131,14 +131,14 @@ public class CharCommands implements Command {
                 c.getChannelServer().eventOn = true;
                 c.getChannelServer().eventMap = mapid;
                 try {
-                    c.getChannelServer().getWorldInterface().broadcastMessage(null, MaplePacketCreator.serverNotice(6, c.getChannel(), "[Evento] O evento foi iniciado no canal (" + c.getChannel() + "). Use @evento para participar.").getBytes());
+                    c.getChannelServer().getWorldInterface().broadcastMessage(null, MaplePacketCreator.serverNotice(6, c.getSelectedChannel(), "[Evento] O evento foi iniciado no canal (" + c.getSelectedChannel() + "). Use @evento para participar.").getBytes());
                 } catch (RemoteException e) {
                     c.getChannelServer().reconnectWorld();
                 }
             } else {
                 c.getChannelServer().eventOn = false;
                 try {
-                    c.getChannelServer().getWorldInterface().broadcastMessage(null, MaplePacketCreator.serverNotice(6, c.getChannel(), "[Evento] O evento terminou, obrigado aqueles que participaram.").getBytes());
+                    c.getChannelServer().getWorldInterface().broadcastMessage(null, MaplePacketCreator.serverNotice(6, c.getSelectedChannel(), "[Evento] O evento terminou, obrigado aqueles que participaram.").getBytes());
                 } catch (RemoteException e) {
                     c.getChannelServer().reconnectWorld();
                 }
@@ -327,12 +327,12 @@ public class CharCommands implements Command {
                 mc.dropMessage("!#clearslot " + splitted[1] + " does not exist!");
             }
         } else if (splitted[0].equals("!online")) {
-            mc.dropMessage("Characters connected to channel " + c.getChannel() + ":");
-            Collection<MapleCharacter> chrs = c.getChannelServer().getInstance(c.getChannel()).getPlayerStorage().getAllCharacters();
+            mc.dropMessage("Characters connected to channel " + c.getSelectedChannel() + ":");
+            Collection<MapleCharacter> chrs = c.getChannelServer().getInstance(c.getSelectedChannel()).getPlayerStorage().getAllCharacters();
             for (MapleCharacter chr : chrs) {
                 mc.dropMessage(chr.getName() + " at map ID: " + chr.getMapId());
             }
-            mc.dropMessage("Total characters on channel " + c.getChannel() + ": " + chrs.size());
+            mc.dropMessage("Total characters on channel " + c.getSelectedChannel() + ": " + chrs.size());
         } else if (splitted[0].equals("!saveall")) {
             Collection<ChannelServer> cservs = ChannelServer.getAllInstances();
             for (ChannelServer cserv : cservs) {

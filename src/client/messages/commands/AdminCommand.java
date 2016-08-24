@@ -103,7 +103,7 @@ public class AdminCommand implements Command {
             // shutdown
         } else if (splitted[0].equals("!shutdownnow")) {
             CommandProcessor.forcePersisting();
-            new ShutdownServer(c.getChannel()).run();
+            new ShutdownServer(c.getSelectedChannel()).run();
         } else if (splitted[0].equals("!removenpcs")) {
             MapleCharacter player = c.getPlayer();
             List<MapleMapObject> npcs = player.getMap().getMapObjectsInRange(c.getPlayer().getPosition(), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.NPC));
@@ -222,7 +222,7 @@ public class AdminCommand implements Command {
             //list the chars...
             for (ChannelServer cs : ChannelServer.getAllInstances()) {
                 for (MapleCharacter mch : cs.getPlayerStorage().getAllCharacters()) {
-                    if (mch.getMapId() != c.getPlayer().getMapId() || mch.getClient().getChannel() != c.getChannel()) {
+                    if (mch.getMapId() != c.getPlayer().getMapId() || mch.getClient().getSelectedChannel() != c.getSelectedChannel()) {
                         people.add(mch);
                     }
                 }
@@ -231,9 +231,9 @@ public class AdminCommand implements Command {
             String ip = c.getChannelServer().getIP();
             String[] socket = ip.split(":");
             for (MapleCharacter chr : people) {
-                if (chr.getClient().getChannel() != c.getChannel()) {
+                if (chr.getClient().getSelectedChannel() != c.getSelectedChannel()) {
                     chr.getMap().removePlayer(chr);
-                    ChannelServer.getInstance(chr.getClient().getChannel()).removePlayer(chr);
+                    ChannelServer.getInstance(chr.getClient().getSelectedChannel()).removePlayer(chr);
                     chr.getClient().updateLoginState(MapleClient.LOGIN_SERVER_TRANSITION);
                     chr.getClient().getSession().write(MaplePacketCreator.getChannelChange(
                             InetAddress.getByName(socket[0]), Integer.parseInt(socket[1])));
@@ -550,7 +550,7 @@ public class AdminCommand implements Command {
 
             c.getPlayer().changeMap(end, end.getPortal(12));
             try {
-                ChannelServer.getInstance(c.getChannel()).getWorldInterface().broadcastMessage(
+                ChannelServer.getInstance(c.getSelectedChannel()).getWorldInterface().broadcastMessage(
                         c.getPlayer().getName(), MaplePacketCreator.serverNotice(0, "MapleStory Physical Fitness Test (or rather, tedious jump quest event) has started.").getBytes());
             } catch (RemoteException e) {
                 c.getChannelServer().reconnectWorld();

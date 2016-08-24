@@ -24,6 +24,9 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 import client.MapleClient;
+import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import net.AbstractMaplePacketHandler;
 import net.login.LoginServer;
 import tools.MaplePacketCreator;
@@ -42,22 +45,19 @@ public class CharSelectedHandler extends AbstractMaplePacketHandler {
             c.getSession().close();
             return;
         }
+        if (c.getIdleTask() != null) {
+            c.getIdleTask().cancel(true);
+        }
         try {
-            if (c.getIdleTask() != null) {
-                c.getIdleTask().cancel(true);
-            }
-            c.updateLoginState(MapleClient.LOGIN_SERVER_TRANSITION);
 
-            String channelServerIP = MapleClient.getChannelServerIPFromSubnet(c.getSession().getRemoteAddress().toString().replace("/", "").split(":")[0], c.getChannel());
-            if (channelServerIP.equals("0.0.0.0")) {
-                String[] socket = LoginServer.getInstance().getIP(c.getChannelByWorld()).split(":");
-                c.getSession().write(MaplePacketCreator.getServerIP(InetAddress.getByName(socket[0]), Integer.parseInt(socket[1]), charId));
-            } else {
-                String[] socket = LoginServer.getInstance().getIP(c.getChannelByWorld()).split(":");
-                c.getSession().write(MaplePacketCreator.getServerIP(InetAddress.getByName(channelServerIP), Integer.parseInt(socket[1]), charId));
-            }
-        } catch (UnknownHostException e) {
-            log.error("Host not found", e);
+            String channelIPPort = LoginServer.getRemoteWorld(c.getSelectedWorld()).getWorldLoginInterface().getChannelIP(1);
+            c.updateLoginState(MapleClient.LOGIN_SERVER_TRANSITION);
+            String[] socket = channelIPPort.split(":");
+            c.getSession().write(MaplePacketCreator.getServerIP(InetAddress.getByName(socket[0]), Integer.parseInt(socket[1]), charId));
+        } catch (UnknownHostException | RemoteException e) {
+            c.updateLoginState(MapleClient.LOGIN_LOGGEDIN);
+            c.getSession().write(MaplePacketCreator.serverNotice(1, "Host not found"));
+
         }
     }
 }

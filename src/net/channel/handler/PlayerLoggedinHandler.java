@@ -82,7 +82,7 @@ public class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
             try {
                 WorldChannelInterface worldInterface = channelServer.getWorldInterface();
                 if (state == MapleClient.LOGIN_SERVER_TRANSITION) {
-                    for (String charName : c.loadCharacterNames(c.getWorld())) {
+                    for (String charName : c.loadCharacterNames(c.getSelectedWorld())) {
                         if (worldInterface.isConnected(charName)) {
                             log.warn(MapleClient.getLogMessage(player, "Attempting to double login with " + charName));
                             allowLogin = false;
@@ -141,7 +141,7 @@ public class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
             Collection<BuddylistEntry> buddies = player.getBuddylist().getBuddies();
             int buddyIds[] = player.getBuddylist().getBuddyIds();
 
-            cserv.getWorldInterface().loggedOn(player.getName(), player.getId(), c.getChannel(), buddyIds);
+            cserv.getWorldInterface().loggedOn(player.getName(), player.getId(), c.getSelectedChannel(), buddyIds);
             if (player.getParty() != null) {
                 cserv.getWorldInterface().updateParty(player.getParty().getId(), PartyOperation.LOG_ONOFF, new MaplePartyCharacter(player));
             }
@@ -158,7 +158,7 @@ public class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
             c.getPlayer().showNote();
 
             if (player.getGuildId() > 0) {
-                c.getChannelServer().getWorldInterface().setGuildMemberOnline(player.getMGC(), true, c.getChannel());
+                c.getChannelServer().getWorldInterface().setGuildMemberOnline(player.getMGC(), true, c.getSelectedChannel());
                 c.getSession().write(MaplePacketCreator.showGuildInfo(player));
                 int allianceId = player.getGuild().getAllianceId();
                 if (allianceId > 0) {

@@ -38,7 +38,7 @@ public class MessengerHandler extends AbstractMaplePacketHandler {
         String input;
         byte mode = slea.readByte();
         MapleCharacter player = c.getPlayer();
-        WorldChannelInterface wci = ChannelServer.getInstance(c.getChannel()).getWorldInterface();
+        WorldChannelInterface wci = ChannelServer.getInstance(c.getSelectedChannel()).getWorldInterface();
         MapleMessenger messenger = player.getMessenger();
 
         switch (mode) {
@@ -97,8 +97,8 @@ public class MessengerHandler extends AbstractMaplePacketHandler {
                         }
                     } else {
                         try {
-                            if (ChannelServer.getInstance(c.getChannel()).getWorldInterface().isConnected(input)) {
-                                ChannelServer.getInstance(c.getChannel()).getWorldInterface().messengerInvite(c.getPlayer().getName(), messenger.getId(), input, c.getChannel());
+                            if (ChannelServer.getInstance(c.getSelectedChannel()).getWorldInterface().isConnected(input)) {
+                                ChannelServer.getInstance(c.getSelectedChannel()).getWorldInterface().messengerInvite(c.getPlayer().getName(), messenger.getId(), input, c.getSelectedChannel());
                             } else {
                                 c.getSession().write(MaplePacketCreator.messengerNote(input, 4, 0));
                             }

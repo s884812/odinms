@@ -14,7 +14,7 @@ public class PublicChatHandler {
     private static Map<Integer, Integer> playerHolder = new HashMap<Integer, Integer>();
 
     private static void addPlayer(MapleCharacter chr) {
-        playerHolder.put(chr.getId(), chr.getClient().getChannel());
+        playerHolder.put(chr.getId(), chr.getClient().getSelectedChannel());
         for (int chrIds : playerHolder.keySet()) {
             MapleCharacter chrs = ChannelServer.getInstance(playerHolder.get(chrIds)).getPlayerStorage().getCharacterById(chrIds);
             if (chrs == null) {

@@ -25,9 +25,14 @@ import java.net.UnknownHostException;
 import java.util.Random;
 
 import client.MapleClient;
+import java.rmi.RemoteException;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import net.login.LoginServer;
 import net.AbstractMaplePacketHandler;
 import net.channel.ChannelServer;
+import properties.WorldProperties;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
@@ -37,30 +42,26 @@ public class PickCharHandler extends AbstractMaplePacketHandler {
 
     @Override
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        int charId = slea.readInt();
-        int world = slea.readInt();
-        c.setWorld(world);
-        try {
-            c.setChannel(new Random().nextInt(ChannelServer.getAllInstances().size()) / 2);
-        } catch (Exception e) {
-            c.setChannel(1);
-        }
-        try {
-            if (c.getIdleTask() != null) {
-                c.getIdleTask().cancel(true);
-            }
-            c.updateLoginState(MapleClient.LOGIN_SERVER_TRANSITION);
 
-            String channelServerIP = MapleClient.getChannelServerIPFromSubnet(c.getSession().getRemoteAddress().toString().replace("/", "").split(":")[0], c.getChannel());
-            if (channelServerIP.equals("0.0.0.0")) {
-                String[] socket = LoginServer.getInstance().getIP(c.getChannelByWorld()).split(":");
-                c.getSession().write(MaplePacketCreator.getServerIP(InetAddress.getByName(socket[0]), Integer.parseInt(socket[1]), charId));
-            } else {
-                String[] socket = LoginServer.getInstance().getIP(c.getChannelByWorld()).split(":");
-                c.getSession().write(MaplePacketCreator.getServerIP(InetAddress.getByName(channelServerIP), Integer.parseInt(socket[1]), charId));
-            }
-        } catch (UnknownHostException e) {
-            log.error("Host not found", e);
+        int characterId = slea.readInt();
+        int worldId = slea.readInt();
+
+        c.setSelectedWorld(worldId);
+        c.setSelectedChannel(1);
+
+        if (c.getIdleTask() != null) {
+            c.getIdleTask().cancel(true);
+        }
+
+        try {
+            String channelIPPort = LoginServer.getRemoteWorld(worldId).getWorldLoginInterface().getChannelIP(1);
+            c.updateLoginState(MapleClient.LOGIN_SERVER_TRANSITION);
+            String[] socket = channelIPPort.split(":");
+            c.getSession().write(MaplePacketCreator.getServerIP(InetAddress.getByName(socket[0]), Integer.parseInt(socket[1]), characterId));
+        } catch (UnknownHostException | RemoteException e) {
+            c.updateLoginState(MapleClient.LOGIN_LOGGEDIN);
+            c.getSession().write(MaplePacketCreator.serverNotice(1, "Host not found"));
+
         }
     }
 }

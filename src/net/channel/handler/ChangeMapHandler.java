@@ -43,13 +43,13 @@ public class ChangeMapHandler extends AbstractMaplePacketHandler {
     @Override
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         if (slea.available() == 0) {
-            int channel = c.getChannel();
-            String ip = ChannelServer.getInstance(c.getChannel()).getIP(channel);
+            int channel = c.getSelectedChannel();
+            String ip = ChannelServer.getInstance(c.getSelectedChannel()).getIP(channel);
             String[] socket = ip.split(":");
             c.getPlayer().saveToDB(true, true);
             c.getPlayer().setInCS(false);
             c.getPlayer().setInMTS(false);
-            ChannelServer.getInstance(c.getChannel()).removePlayer(c.getPlayer());
+            ChannelServer.getInstance(c.getSelectedChannel()).removePlayer(c.getPlayer());
             c.updateLoginState(MapleClient.LOGIN_SERVER_TRANSITION);
             try {
                 MaplePacket packet = MaplePacketCreator.getChannelChange(
@@ -108,7 +108,7 @@ public class ChangeMapHandler extends AbstractMaplePacketHandler {
                     }
                 }
             } else if (targetid != -1 && c.getPlayer().isGM()) {
-                MapleMap to = ChannelServer.getInstance(c.getChannel()).getMapFactory().getMap(targetid);
+                MapleMap to = ChannelServer.getInstance(c.getSelectedChannel()).getMapFactory().getMap(targetid);
                 MaplePortal pto = to.getPortal(0);
                 player.changeMap(to, pto);
             } else if (targetid != -1 && !c.getPlayer().isGM()) {

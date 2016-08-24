@@ -20,7 +20,6 @@
  */
 package net.login;
 
-import java.io.FileReader;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.net.InetSocketAddress;
@@ -42,7 +41,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import net.MapleServerHandler;
 import net.PacketProcessor;
-import net.login.remote.LoginWorldInterface;
 import net.mina.MapleCodecFactory;
 import net.world.remote.WorldLoginInterface;
 import net.world.remote.WorldRegistry;
@@ -51,11 +49,12 @@ import org.apache.mina.core.buffer.SimpleBufferAllocator;
 import org.apache.mina.core.filterchain.IoFilter;
 import server.TimerManager;
 
-import org.apache.mina.core.service.IoAcceptor;
 import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
-import org.apache.mina.transport.socket.SocketAcceptor;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
+import properties.LoginProperties;
+import properties.WorldProperties;
+import tools.Pair;
 
 public class LoginServer implements Runnable, LoginServerMBean {
 
@@ -63,23 +62,17 @@ public class LoginServer implements Runnable, LoginServerMBean {
     private NioSocketAcceptor acceptor;
     private MapleServerHandler serverHandler;
     static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(LoginServer.class);
-    private static WorldRegistry worldRegistry = null;
-    private final Map<Integer, String> channelServer = new HashMap<>();
-    private LoginWorldInterface lwi;
-    private WorldLoginInterface wli;
-    private Properties prop = new Properties();
-    private final Properties initialProp = new Properties();
-    private Boolean worldReady = Boolean.TRUE;
-    private final Properties subnetInfo = new Properties();
-    private Map<Integer, Integer> load = new HashMap<>();
-    private String serverName;
-    private String eventMessage;
-    int flag;
-    int maxCharacters;
+
+    private static Map<Integer, WorldRemote> remoteWorlds = new HashMap<>();
+
+    private final Map<Integer, Map<Integer, String>> channelServerIps = new HashMap<>();
+
+    private Map<Integer, Map<Integer, Integer>> loads = new HashMap<>();
+
     private boolean pin;
     private boolean AutoReg;
     private byte AutoRegLimit;
-    private boolean twoWorlds;
+    private int worldCount;
     private boolean resetStats;
 
     int userLimit;
@@ -104,70 +97,81 @@ public class LoginServer implements Runnable, LoginServerMBean {
         return instance;
     }
 
-    public Set<Integer> getChannels() {
-        return channelServer.keySet();
+    public Set<Integer> getChannels(int world) {
+        return channelServerIps.get(world).keySet();
     }
 
-    public void addChannel(int channel, String ip) {
-        channelServer.put(channel, ip);
-        load.put(channel, 0);
+    public void addChannel(int world, int channel, String ip) {
+
+        if (!channelServerIps.containsKey(world)) {
+            addWorld(world);
+        }
+        channelServerIps.get(world).put(channel, ip);
+        loads.get(world).put(channel, 0);
     }
 
-    public void removeChannel(int channel) {
-        channelServer.remove(channel);
-        load.remove(channel);
+    public void removeChannel(int world, int channel) {
+        channelServerIps.get(world).remove(channel);
+        loads.get(world).remove(channel);
     }
 
-    public String getIP(int channel) {
-        return channelServer.get(channel);
+    public String getIP(int world, int channel) {
+        return channelServerIps.get(world).get(channel);
     }
 
-    public void reconnectWorld() {
+    public void addWorld(int world) {
+        channelServerIps.put(world, new HashMap<>());
+        loads.put(world, new HashMap());
+    }
+
+    public int getWorldCount() {
+        return worldCount;
+    }
+
+    public static Map<Integer, WorldRemote> getRemoteWorlds() {
+        return remoteWorlds;
+    }
+
+    public static WorldRemote getRemoteWorld(int worldId) {
+        return remoteWorlds.get(worldId);
+    }
+
+    public void reconnectWorld(int worldId) {
+
+        if (!remoteWorlds.containsKey(worldId)) {
+            return;
+        }
+
+        WorldRemote wr = remoteWorlds.get(worldId);
+
         try {
-            wli.isAvailable();
+            wr.getWorldLoginInterface().isAvailable();
         } catch (RemoteException ex) {
-            synchronized (worldReady) {
-                worldReady = Boolean.FALSE;
-            }
-            synchronized (lwi) {
-                synchronized (worldReady) {
-                    if (worldReady) {
-                        return;
-                    }
+
+            synchronized (remoteWorlds) {
+                remoteWorlds.remove(worldId);
+                System.out.printf("Reconnecting to World-{%d}\n", worldId);
+                try {
+                    Properties loginProp = LoginProperties.getInstance().getProp();
+                    Properties worldProp = WorldProperties.getInstance(worldId).getProp();
+                    String worldHost = worldProp.getProperty("world.host", "127.0.0.1");
+                    String loginKey = loginProp.getProperty("login.key");
+                    Registry registry = LocateRegistry.getRegistry(
+                            worldHost, Registry.REGISTRY_PORT, new SslRMIClientSocketFactory());
+                    WorldRegistry worldRegistry = (WorldRegistry) registry.lookup("WorldRegistry");
+                    LoginWorldInterfaceImpl lwi = new LoginWorldInterfaceImpl();
+                    WorldLoginInterface wli = worldRegistry.registerLoginServer(loginKey, lwi);
+
+                    remoteWorlds.put(worldId, new WorldRemote(worldRegistry, lwi, wli));
+
+                    DatabaseConnection.getConnection();
+                    userLimit = Integer.parseInt(loginProp.getProperty("login.userlimit"));
+                    AutoReg = Boolean.parseBoolean(loginProp.getProperty("login.autoRegister", "false"));
+                    AutoRegLimit = Byte.parseByte(loginProp.getProperty("login.atuoRegisterLimit", "5"));
+                    worldCount = Integer.parseInt(loginProp.getProperty("login.worldCount", "1"));
+                } catch (Exception e) {
+                    System.out.println("Reconnecting failed" + e);
                 }
-                System.out.println("Reconnecting to world server");
-                synchronized (wli) {
-                    try {
-                        FileReader fileReader = new FileReader(System.getProperty("login.config"));
-                        initialProp.load(fileReader);
-                        fileReader.close();
-                        Registry registry = LocateRegistry.getRegistry(initialProp.getProperty("world.host"), Registry.REGISTRY_PORT, new SslRMIClientSocketFactory());
-                        worldRegistry = (WorldRegistry) registry.lookup("WorldRegistry");
-                        lwi = new LoginWorldInterfaceImpl();
-                        wli = worldRegistry.registerLoginServer(initialProp.getProperty("login.key"), lwi);
-                        Properties dbProp = new Properties();
-                        fileReader = new FileReader("Jogo/BancoDados/db.properties");
-                        dbProp.load(fileReader);
-                        fileReader.close();
-                        DatabaseConnection.setProps(dbProp);
-                        DatabaseConnection.getConnection();
-                        prop = wli.getWorldProperties();
-                        userLimit = Integer.parseInt(prop.getProperty("login.userlimit"));
-                        serverName = prop.getProperty("login.serverName");
-                        eventMessage = prop.getProperty("login.eventMessage");
-                        flag = Integer.parseInt(prop.getProperty("login.flag"));
-                        maxCharacters = Integer.parseInt(prop.getProperty("login.maxCharacters"));
-                        AutoReg = Boolean.parseBoolean(prop.getProperty("login.AutoRegister", "false"));
-                        AutoRegLimit = Byte.parseByte(prop.getProperty("login.AutoRegisterLimit", "5"));
-                        twoWorlds = Boolean.parseBoolean(prop.getProperty("world.twoWorlds", "false"));
-                    } catch (Exception e) {
-                        System.out.println("Reconnecting failed" + e);
-                    }
-                    worldReady = Boolean.TRUE;
-                }
-            }
-            synchronized (worldReady) {
-                worldReady.notifyAll();
             }
         }
 
@@ -175,35 +179,34 @@ public class LoginServer implements Runnable, LoginServerMBean {
 
     @Override
     public void run() {
-        try {
-            System.getProperties().list(System.out);
-            FileReader fileReader = new FileReader(System.getProperty("login.config"));
-            initialProp.load(fileReader);
-            fileReader.close();
-            Registry registry = LocateRegistry.getRegistry(initialProp.getProperty("world.host"), Registry.REGISTRY_PORT, new SslRMIClientSocketFactory());
-            worldRegistry = (WorldRegistry) registry.lookup("WorldRegistry");
-            lwi = new LoginWorldInterfaceImpl();
-            wli = worldRegistry.registerLoginServer(initialProp.getProperty("login.key"), lwi);
-            Properties dbProp = new Properties();
-            fileReader = new FileReader("Jogo/BancoDados/db.properties");
-            dbProp.load(fileReader);
-            fileReader.close();
-            DatabaseConnection.setProps(dbProp);
-            DatabaseConnection.getConnection();
-            prop = wli.getWorldProperties();
-            userLimit = Integer.parseInt(prop.getProperty("login.userlimit"));
-            serverName = prop.getProperty("login.serverName");
-            eventMessage = prop.getProperty("login.eventMessage");
-            flag = Integer.parseInt(prop.getProperty("login.flag"));
-            maxCharacters = Integer.parseInt(prop.getProperty("login.maxCharacters"));
-            AutoReg = Boolean.parseBoolean(prop.getProperty("login.AutoRegister", "false"));
-            AutoRegLimit = Byte.parseByte(prop.getProperty("login.AutoRegisterLimit", "5"));
-            twoWorlds = Boolean.parseBoolean(prop.getProperty("world.twoWorlds", "false"));
-        } catch (Exception e) {
-            throw new RuntimeException("Could not connect to world server.", e);
-        }
         IoBuffer.setUseDirectBuffer(false);
         IoBuffer.setAllocator(new SimpleBufferAllocator());
+        Properties loginProp = LoginProperties.getInstance().getProp();
+        worldCount = Integer.parseInt(loginProp.getProperty("login.worldCount", "1"));
+        userLimit = Integer.parseInt(loginProp.getProperty("login.userlimit"));
+        AutoReg = Boolean.parseBoolean(loginProp.getProperty("login.AutoRegister", "false"));
+        AutoRegLimit = Byte.parseByte(loginProp.getProperty("login.AutoRegisterLimit", "5"));
+        loginInterval = Integer.parseInt(loginProp.getProperty("login.interval"));
+        rankingInterval = Long.parseLong(loginProp.getProperty("login.ranking.interval"));
+
+        for (int i = 0; i < this.worldCount; ++i) {
+            try {
+                Properties worldProp = WorldProperties.getInstance(i).getProp();
+                String worldHost = worldProp.getProperty("world.host", "127.0.0.1");
+                String loginKey = loginProp.getProperty("login.key");
+                Registry registry = LocateRegistry.getRegistry(
+                        worldHost, Registry.REGISTRY_PORT, new SslRMIClientSocketFactory());
+                WorldRegistry worldRegistry = (WorldRegistry) registry.lookup("WorldRegistry");
+                LoginWorldInterfaceImpl lwi = new LoginWorldInterfaceImpl();
+                WorldLoginInterface wli = worldRegistry.registerLoginServer(loginKey, lwi);
+                remoteWorlds.put(i, new WorldRemote(worldRegistry, lwi, wli));
+            } catch (Exception e) {
+                throw new RuntimeException("Could not connect to World" + i, e);
+            }
+
+        }
+
+        DatabaseConnection.getConnection();
 
         acceptor = new NioSocketAcceptor();
         serverHandler = new MapleServerHandler(PacketProcessor.getProcessor(PacketProcessor.Mode.LOGINSERVER));
@@ -215,9 +218,8 @@ public class LoginServer implements Runnable, LoginServerMBean {
 
         TimerManager tMan = TimerManager.getInstance();
         tMan.start();
-        loginInterval = Integer.parseInt(prop.getProperty("login.interval"));
+
         tMan.register(LoginWorker.getInstance(), loginInterval);
-        rankingInterval = Long.parseLong(prop.getProperty("login.ranking.interval"));
         tMan.register(new RankingWorker(), rankingInterval);
         try {
             acceptor.bind(new InetSocketAddress(PORT));
@@ -231,23 +233,14 @@ public class LoginServer implements Runnable, LoginServerMBean {
     public void shutdown() {
         System.out.println("Shutting down...");
         try {
-            worldRegistry.deregisterLoginServer(lwi);
+            for (int i = 0; i < this.worldCount; i++) {
+                WorldRemote wr = remoteWorlds.get(i);
+                wr.getWorldRegistry().deregisterLoginServer(wr.getLoginWorldInterface());
+            }
         } catch (RemoteException e) {
         }
         TimerManager.getInstance().stop();
         System.exit(0);
-    }
-
-    public WorldLoginInterface getWorldInterface() {
-        synchronized (worldReady) {
-            while (!worldReady) {
-                try {
-                    worldReady.wait();
-                } catch (InterruptedException e) {
-                }
-            }
-        }
-        return wli;
     }
 
     public static void main(String args[]) {
@@ -262,48 +255,16 @@ public class LoginServer implements Runnable, LoginServerMBean {
         return loginInterval;
     }
 
-    public Properties getSubnetInfo() {
-        return subnetInfo;
-    }
-
     public int getUserLimit() {
         return userLimit;
     }
 
-    public String getServerName() {
-        return serverName;
+    public Map<Integer, Integer> getLoad(int world) {
+        return loads.get(world);
     }
 
-    @Override
-    public String getEventMessage() {
-        return eventMessage;
-    }
-
-    @Override
-    public int getFlag() {
-        return flag;
-    }
-
-    public int getMaxCharacters() {
-        return maxCharacters;
-    }
-
-    public Map<Integer, Integer> getLoad() {
-        return load;
-    }
-
-    public void setLoad(Map<Integer, Integer> load) {
-        this.load = load;
-    }
-
-    @Override
-    public void setEventMessage(String newMessage) {
-        this.eventMessage = newMessage;
-    }
-
-    @Override
-    public void setFlag(int newflag) {
-        flag = newflag;
+    public void setLoad(int world, Map<Integer, Integer> load) {
+        this.loads.put(world, load);
     }
 
     @Override
@@ -334,10 +295,6 @@ public class LoginServer implements Runnable, LoginServerMBean {
 
     public byte AutoRegLimit() {
         return AutoRegLimit;
-    }
-
-    public boolean twoWorldsActive() {
-        return twoWorlds;
     }
 
     public boolean getResetStats() {

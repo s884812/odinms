@@ -35,6 +35,6 @@ public class WhisperMapleClientMessageCallback implements MessageCallback {
 
     @Override
     public void dropMessage(String message) {
-        client.getSession().write(MaplePacketCreator.getWhisper(whisperfrom, client.getChannel(), message));
+        client.getSession().write(MaplePacketCreator.getWhisper(whisperfrom, client.getSelectedChannel(), message));
     }
 }

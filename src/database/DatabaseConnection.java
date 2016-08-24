@@ -26,6 +26,7 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Properties;
+import properties.DatabaseProperties;
 
 /**
  * All OdinMS servers maintain a Database Connection. This class therefore
@@ -38,8 +39,9 @@ public class DatabaseConnection {
 
     private static ThreadLocal<Connection> con = new ThreadLocalConnection();
     private final static org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(DatabaseConnection.class);
-    private static Properties props = null;
-    private static boolean propsInited = false;
+    private static final boolean propsInited = false;
+    
+    
     public static final int CLOSE_CURRENT_RESULT = 1;
     /**
      * The constant indicating that the current <code>ResultSet</code> object
@@ -86,18 +88,7 @@ public class DatabaseConnection {
     public static final int NO_GENERATED_KEYS = 2;
 
     public static Connection getConnection() {
-        if (props == null) {
-            throw new RuntimeException("DatabaseConnection not initialized");
-        }
         return con.get();
-    }
-
-    public static boolean isInitialized() {
-        return props != null;
-    }
-
-    public static void setProps(Properties aProps) {
-        props = aProps;
     }
 
     public static void closeAll() throws SQLException {
@@ -111,9 +102,11 @@ public class DatabaseConnection {
     private static class ThreadLocalConnection extends ThreadLocal<Connection> {
 
         public static Collection<Connection> allConnections = new LinkedList<>();
+        
 
         @Override
         protected Connection initialValue() {
+            Properties props = DatabaseProperties.getInstance().getProp();
             try {
                 Class.forName(props.getProperty("driver")); // touch the mysql driver
             } catch (ClassNotFoundException e) {

@@ -410,7 +410,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
     }
 
     public MapleSquad createMapleSquad(MapleSquadType type) {
-        MapleSquad squad = new MapleSquad(c.getChannel(), getPlayer());
+        MapleSquad squad = new MapleSquad(c.getSelectedChannel(), getPlayer());
         if (getSquadState(type) == 0) {
             c.getChannelServer().addMapleSquad(squad, type);
         } else {
@@ -619,11 +619,11 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
     public void warpAllInMap(int mapid, int portal) {
         MapleMap outMap;
         MapleMapFactory mapFactory;
-        mapFactory = ChannelServer.getInstance(c.getChannel()).getMapFactory();
+        mapFactory = ChannelServer.getInstance(c.getSelectedChannel()).getMapFactory();
         outMap = mapFactory.getMap(mapid);
         for (MapleCharacter aaa : outMap.getCharacters()) {
             //Warp everyone out
-            mapFactory = ChannelServer.getInstance(aaa.getClient().getChannel()).getMapFactory();
+            mapFactory = ChannelServer.getInstance(aaa.getClient().getSelectedChannel()).getMapFactory();
             aaa.getClient().getPlayer().changeMap(outMap, outMap.getPortal(portal));
             outMap = mapFactory.getMap(mapid);
             aaa.getClient().getPlayer().getEventInstance().unregisterPlayer(aaa.getClient().getPlayer()); //Unregister them all
@@ -717,7 +717,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
     }
 
     private int getChannel() {
-        return c.getChannel();
+        return c.getSelectedChannel();
     }
 
     public void addItemToMarket(int itemid, int quantity, int price) {

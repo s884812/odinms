@@ -70,12 +70,11 @@ public class WorldRegistryImpl extends UnicastRemoteObject implements WorldRegis
 
     private static final long serialVersionUID = -5170574938159280746L;
     private static WorldRegistryImpl instance = null;
-    private static org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(WorldRegistryImpl.class);
-    // private Map<Integer, ChannelWorldInterface> channelServer = new LinkedHashMap<Integer, ChannelWorldInterface>();
-    private final Map<Integer, ChannelWorldInterface> channelServer = new LinkedHashMap<Integer, ChannelWorldInterface>();
-    private List<LoginWorldInterface> loginServer = new LinkedList<LoginWorldInterface>();
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(WorldRegistryImpl.class);
+    private final Map<Integer, ChannelWorldInterface> channelServer = new LinkedHashMap<>();
+    private List<LoginWorldInterface> loginServer = new LinkedList<>();
 
-    private Map<Integer, MapleParty> parties = new HashMap<Integer, MapleParty>();
+    private Map<Integer, MapleParty> parties = new HashMap<>();
     private AtomicInteger runningPartyId = new AtomicInteger();
 
     private Map<Integer, MapleMessenger> messengers = new HashMap<Integer, MapleMessenger>();
@@ -89,8 +88,6 @@ public class WorldRegistryImpl extends UnicastRemoteObject implements WorldRegis
 
     private WorldRegistryImpl() throws RemoteException {
         super(0, new SslRMIClientSocketFactory(), new SslRMIServerSocketFactory());
-        DatabaseConnection.setProps(WorldServer.getInstance().getDbProp());
-
         Connection con = DatabaseConnection.getConnection();
         PreparedStatement ps;
         try {
@@ -168,7 +165,7 @@ public class WorldRegistryImpl extends UnicastRemoteObject implements WorldRegis
     public void deregisterChannelServer(int channel) throws RemoteException {
         channelServer.remove(channel);
         for (LoginWorldInterface wli : loginServer) {
-            wli.channelOffline(channel);
+            wli.channelOffline(this.getWorldId(), channel);
         }
         System.out.println("Channel " + channel + " is offline.");
     }
@@ -184,7 +181,7 @@ public class WorldRegistryImpl extends UnicastRemoteObject implements WorldRegis
             if (rs.next()) {
                 loginServer.add(cb);
                 for (ChannelWorldInterface cwi : channelServer.values()) {
-                    cb.channelOnline(cwi.getChannelId(), authKey);
+                    cb.channelOnline(this.getWorldId(), cwi.getChannelId(), authKey);
                 }
             }
             rs.close();
@@ -245,23 +242,6 @@ public class WorldRegistryImpl extends UnicastRemoteObject implements WorldRegis
         return MapleGuild.createGuild(leaderId, name);
     }
 
-//    public MapleGuild getGuild(int id, MapleGuildCharacter mgc) {
-//        synchronized (guilds) {
-//            if (guilds.get(id) != null) {
-//                return guilds.get(id);
-//            }
-//
-//            MapleGuild g = new MapleGuild(id, mgc);
-//
-//            if (g.getId() == -1) {//failed to load
-//                return null;
-//            }
-//
-//            guilds.put(id, g);
-//
-//            return g;
-//        }
-//    }
     public final MapleGuild getGuild(final int id, final MapleGuildCharacter mgc) {
         Guild_Mutex.lock();
         try {
@@ -418,6 +398,41 @@ public class WorldRegistryImpl extends UnicastRemoteObject implements WorldRegis
             }
             return null;
         }
+    }
+    
+    public int getWorldId()
+    {
+        return WorldServer.getInstance().getWorldId();
+    }
+    
+    public int getUserLimit()
+    {
+        return WorldServer.getInstance().getUserLimit();
+    }
+    
+    public String getServerName()
+    {
+        return WorldServer.getInstance().getServerName();
+    }
+    
+    public String getServerMessage()
+    {
+        return WorldServer.getInstance().getServerMessage();
+    }
+    
+    public String getEventMessage()
+    {
+        return WorldServer.getInstance().getEventMessage();
+    }
+    
+    public int getFlag()
+    {
+     return WorldServer.getInstance().getFlag();   
+    }
+    
+    public int getMaxCharacters()
+    {
+     return WorldServer.getInstance().getMaxCharacters();
     }
 
     public void addAlliance(int id, MapleAlliance alliance) {

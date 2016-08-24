@@ -341,12 +341,13 @@ public class MaplePacketCreator {
     /**
      * Gets a packet detailing a server and its channels.
      *
+     * @param serverId
      * @param serverIndex The index of the server to create information about.
      * @param serverName The name of the server.
      * @param channelLoad Load of the channel - 1200 seems to be max.
      * @return The server info packet.
      */
-    public static MaplePacket getServerList(int serverId, String serverName, Map<Integer, Integer> channelLoad) {
+    public static MaplePacket getServerList(int serverId, int flag, String serverName, String eventMessage, Map<Integer, Integer> channelLoad) {
         /*
          * 0B 00 00 06 00 53 63 61 6E 69 61 00 00 00 64 00 64 00 00 13 08 00 53 63 61 6E 69 61 2D 31 5E 04 00 00 00 00
          * 00 08 00 53 63 61 6E 69 61 2D 32 25 01 00 00 00 01 00 08 00 53 63 61 6E 69 61 2D 33 F6 00 00 00 00 02 00 08
@@ -364,8 +365,8 @@ public class MaplePacketCreator {
         mplew.writeShort(SendPacketOpcode.SERVERLIST.getValue());
         mplew.write(serverId);
         mplew.writeMapleAsciiString(serverName);
-        mplew.write(LoginServer.getInstance().getFlag());
-        mplew.writeMapleAsciiString(LoginServer.getInstance().getEventMessage());
+        mplew.write(flag);
+        mplew.writeMapleAsciiString(eventMessage);
         mplew.write(0x64); // rate modifier, don't ask O.O!
 
         mplew.write(0x0); // event xp * 2.6 O.O!
@@ -485,20 +486,19 @@ public class MaplePacketCreator {
      * Gets a packet with a list of characters.
      *
      * @param c The MapleClient to load characters of.
-     * @param serverId The ID of the server requested.
+     * @param worldId The ID of the server requested.
      * @return The character list packet.
      */
-    public static MaplePacket getCharList(MapleClient c, int serverId) {
+    public static MaplePacket getCharList(MapleClient c, int worldId, int maxCharacter) {
         MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-
         mplew.writeShort(SendPacketOpcode.CHARLIST.getValue());
         mplew.write(0);
-        List<MapleCharacter> chars = c.loadCharacters(serverId);
+        List<MapleCharacter> chars = c.loadCharacters(worldId);
         mplew.write((byte) chars.size());
         for (MapleCharacter chr : chars) {
             addCharEntry(mplew, chr);
         }
-        mplew.writeInt(LoginServer.getInstance().getMaxCharacters());
+        mplew.writeInt(maxCharacter);
 
         return mplew.getPacket();
     }
@@ -737,7 +737,7 @@ public class MaplePacketCreator {
     public static MaplePacket getCharInfo(MapleCharacter chr) {
         MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
         mplew.writeShort(SendPacketOpcode.WARP_TO_MAP.getValue()); // 0x49
-        mplew.writeInt(chr.getClient().getChannel() - 1);
+        mplew.writeInt(chr.getClient().getSelectedChannel() - 1);
         mplew.write(1);
         mplew.write(1);
         mplew.writeShort(0);
@@ -944,7 +944,7 @@ public class MaplePacketCreator {
         MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
         mplew.writeShort(SendPacketOpcode.WARP_TO_MAP.getValue()); // 0x49
-        mplew.writeInt(chr.getClient().getChannel() - 1);
+        mplew.writeInt(chr.getClient().getSelectedChannel() - 1);
         mplew.writeShort(0x2);
         mplew.writeShort(0);
         mplew.writeInt(to.getId());

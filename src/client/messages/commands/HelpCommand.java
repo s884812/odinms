@@ -57,16 +57,16 @@ public class HelpCommand implements Command {
                 player.getClient().getChannelServer().eventOn = true;
                 player.getClient().getChannelServer().eventMap = mapid;
                 try {
-                    ChannelServer.getInstance(c.getChannel()).getWorldInterface().broadcastMessage(null, MaplePacketCreator.serverNotice(6, c.getChannel(), "[Evento] O evento foi iniciado no canal (" + c.getChannel() + "). Use @evento para participar.").getBytes());
+                    ChannelServer.getInstance(c.getSelectedChannel()).getWorldInterface().broadcastMessage(null, MaplePacketCreator.serverNotice(6, c.getSelectedChannel(), "[Evento] O evento foi iniciado no canal (" + c.getSelectedChannel() + "). Use @evento para participar.").getBytes());
                 } catch (RemoteException e) {
-                    ChannelServer.getInstance(c.getChannel()).reconnectWorld();
+                    ChannelServer.getInstance(c.getSelectedChannel()).reconnectWorld();
                 }
             } else {
                 player.getClient().getChannelServer().eventOn = false;
                 try {
-                    ChannelServer.getInstance(c.getChannel()).getWorldInterface().broadcastMessage(null, MaplePacketCreator.serverNotice(6, c.getChannel(), "[Evento] O evento terminou, obrigado aqueles que participaram.").getBytes());
+                    ChannelServer.getInstance(c.getSelectedChannel()).getWorldInterface().broadcastMessage(null, MaplePacketCreator.serverNotice(6, c.getSelectedChannel(), "[Evento] O evento terminou, obrigado aqueles que participaram.").getBytes());
                 } catch (RemoteException e) {
-                    ChannelServer.getInstance(c.getChannel()).reconnectWorld();
+                    ChannelServer.getInstance(c.getSelectedChannel()).reconnectWorld();
                 }
             }
         } else if (splittedLineLineLine[0].equals("setall")) {
@@ -80,12 +80,12 @@ public class HelpCommand implements Command {
             player.updateSingleStat(MapleStat.INT, x);
             player.updateSingleStat(MapleStat.LUK, x);
         } else if (splittedLineLineLine[0].equals("!online")) {
-            mc.dropMessage("Characters connected to channel " + c.getChannel() + ":");
-            Collection<MapleCharacter> chrs = c.getChannelServer().getInstance(c.getChannel()).getPlayerStorage().getAllCharacters();
+            mc.dropMessage("Characters connected to channel " + c.getSelectedChannel() + ":");
+            Collection<MapleCharacter> chrs = c.getChannelServer().getInstance(c.getSelectedChannel()).getPlayerStorage().getAllCharacters();
             for (MapleCharacter chr : chrs) {
                 mc.dropMessage(chr.getName() + " at map ID: " + chr.getMapId());
             }
-            mc.dropMessage("Total characters on channel " + c.getChannel() + ": " + chrs.size());
+            mc.dropMessage("Total characters on channel " + c.getSelectedChannel() + ": " + chrs.size());
         } else if (splittedLineLineLine[0].equals("!job")) {
             int jobId = Integer.parseInt(splittedLineLineLine[1]);
             if (MapleJob.getById(jobId) != null) {
@@ -116,7 +116,7 @@ public class HelpCommand implements Command {
 
                 } else {
                     int mapid = Integer.parseInt(splittedLineLineLine[2]);
-                    MapleMap target = ChannelServer.getInstance(c.getChannel()).getMapFactory().getMap(mapid);
+                    MapleMap target = ChannelServer.getInstance(c.getSelectedChannel()).getMapFactory().getMap(mapid);
                     victim.changeMap(target, target.getPortal(0));
                 }
             } else {
@@ -135,7 +135,7 @@ public class HelpCommand implements Command {
                             MapleTrade.cancelTrade(c.getPlayer());
                         }
                         try {
-                            WorldChannelInterface wci = ChannelServer.getInstance(c.getChannel()).getWorldInterface();
+                            WorldChannelInterface wci = ChannelServer.getInstance(c.getSelectedChannel()).getWorldInterface();
                             wci.addBuffsToStorage(c.getPlayer().getId(), c.getPlayer().getAllBuffs());
                             wci.addCooldownsToStorage(c.getPlayer().getId(), c.getPlayer().getAllCooldowns());
                         } catch (RemoteException e) {
@@ -145,7 +145,7 @@ public class HelpCommand implements Command {
                         if (c.getPlayer().getCheatTracker() != null) {
                             c.getPlayer().getCheatTracker().dispose();
                         }
-                        ChannelServer.getInstance(c.getChannel()).removePlayer(c.getPlayer());
+                        ChannelServer.getInstance(c.getSelectedChannel()).removePlayer(c.getPlayer());
                         c.updateLoginState(MapleClient.LOGIN_SERVER_TRANSITION);
                         try {
                             MaplePacket packet = MaplePacketCreator.getChannelChange(InetAddress.getByName(socket[0]), Integer.parseInt(socket[1]));
@@ -188,7 +188,7 @@ public class HelpCommand implements Command {
             if (splittedLineLineLine.length > 1) {
                 MaplePacket packet = MaplePacketCreator.serverNotice(6, "[" + c.getPlayer().getName() + "] " + StringUtil.joinStringFrom(splittedLineLineLine, 1));
                 try {
-                    ChannelServer.getInstance(c.getChannel()).getWorldInterface().broadcastMessage(c.getPlayer().getName(), packet.getBytes());
+                    ChannelServer.getInstance(c.getSelectedChannel()).getWorldInterface().broadcastMessage(c.getPlayer().getName(), packet.getBytes());
                 } catch (RemoteException e) {
                     c.getChannelServer().reconnectWorld();
                 }

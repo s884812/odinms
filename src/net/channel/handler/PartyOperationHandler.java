@@ -38,7 +38,7 @@ public class PartyOperationHandler extends AbstractMaplePacketHandler {
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         int operation = slea.readByte();
         MapleCharacter player = c.getPlayer();
-        WorldChannelInterface wci = ChannelServer.getInstance(c.getChannel()).getWorldInterface();
+        WorldChannelInterface wci = ChannelServer.getInstance(c.getSelectedChannel()).getWorldInterface();
         MapleParty party = player.getParty();
         MaplePartyCharacter partyplayer = new MaplePartyCharacter(player);
 

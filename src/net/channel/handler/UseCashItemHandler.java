@@ -349,7 +349,7 @@ public class UseCashItemHandler extends AbstractMaplePacketHandler {
                                     c.lastsmegacompare = System.currentTimeMillis() - c.lastsmega;
                                     if (c.lastsmegacompare > 60 * 1000 * 5) {
                                         c.lastsmega = System.currentTimeMillis();
-                                        c.getChannelServer().getWorldInterface().broadcastMessage(null, MaplePacketCreator.serverNotice(3, c.getChannel(), player.getName() + " : " + slea.readMapleAsciiString(), (slea.readByte() != 0)).getBytes());
+                                        c.getChannelServer().getWorldInterface().broadcastMessage(null, MaplePacketCreator.serverNotice(3, c.getSelectedChannel(), player.getName() + " : " + slea.readMapleAsciiString(), (slea.readByte() != 0)).getBytes());
                                         MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.CASH, slot, (short) 1, false);
                                     } else {
                                         player.dropMessage("Por favor, aguarde pra enviar outra mensagem.");
@@ -374,7 +374,7 @@ public class UseCashItemHandler extends AbstractMaplePacketHandler {
                                             return;
                                         }
                                     }
-                                    c.getChannelServer().getWorldInterface().broadcastMessage(null, MaplePacketCreator.itemMegaphone(msg, whisper, c.getChannel(), item).getBytes());
+                                    c.getChannelServer().getWorldInterface().broadcastMessage(null, MaplePacketCreator.itemMegaphone(msg, whisper, c.getSelectedChannel(), item).getBytes());
                                     MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.CASH, slot, (short) 1, false);
                                     break;
                                 case 5: // Maple TV
@@ -418,7 +418,7 @@ public class UseCashItemHandler extends AbstractMaplePacketHandler {
                                     slea.readInt();
                                     if (!MapleTVEffect.active) {
                                         if (megassenger) {
-                                            c.getChannelServer().getWorldInterface().broadcastMessage(null, MaplePacketCreator.serverNotice(3, c.getChannel(), player.getName() + " : " + builder.toString(), ear).getBytes());
+                                            c.getChannelServer().getWorldInterface().broadcastMessage(null, MaplePacketCreator.serverNotice(3, c.getSelectedChannel(), player.getName() + " : " + builder.toString(), ear).getBytes());
                                         }
                                         new MapleTVEffect(player, victim, messages, tvType);
                                         MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.CASH, slot, (short) 1, false);
@@ -436,7 +436,7 @@ public class UseCashItemHandler extends AbstractMaplePacketHandler {
                             for (int i = 0; i < 4; i++) {
                                 lines.add(slea.readMapleAsciiString());
                             }
-                            c.getChannelServer().getWorldInterface().broadcastSMega(null, MaplePacketCreator.getAvatarMega(c.getPlayer(), c.getChannel(), itemId, lines, (slea.readByte() != 0)).getBytes());
+                            c.getChannelServer().getWorldInterface().broadcastSMega(null, MaplePacketCreator.getAvatarMega(c.getPlayer(), c.getSelectedChannel(), itemId, lines, (slea.readByte() != 0)).getBytes());
                             MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.CASH, slot, (short) 1, false);
 
                         } else {

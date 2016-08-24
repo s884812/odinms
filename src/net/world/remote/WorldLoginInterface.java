@@ -42,9 +42,24 @@ public interface WorldLoginInterface extends Remote {
 
     public Properties getWorldProperties() throws RemoteException;
 
+    public String getServerName() throws RemoteException;
+
+    public String getServerMessage() throws RemoteException;
+
+    public String getEventMessage() throws RemoteException;
+
+    public int getFlag() throws RemoteException;
+
+    public int getMaxCharacters() throws RemoteException;
+
+    public int getUserLimit() throws RemoteException;
+
     public Map<Integer, Integer> getChannelLoad() throws RemoteException;
 
     public boolean isAvailable() throws RemoteException;
 
     public void deleteGuildCharacter(MapleGuildCharacter mgc) throws RemoteException;
+
+    public String getChannelIP(int channel) throws RemoteException;
+
 }

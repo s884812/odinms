@@ -50,6 +50,7 @@ import net.world.guild.MapleGuildCharacter;
 import net.world.remote.CheaterData;
 import net.world.remote.WorldChannelInterface;
 import net.world.remote.WorldLocation;
+import properties.DatabaseProperties;
 import tools.CollectionUtil;
 
 /**
@@ -74,7 +75,7 @@ public class WorldChannelInterfaceImpl extends UnicastRemoteObject implements Wo
     }
 
     public Properties getDatabaseProperties() throws RemoteException {
-        return WorldServer.getInstance().getDbProp();
+        return DatabaseProperties.getInstance().getProp();
     }
 
     public Properties getGameProperties() throws RemoteException {
@@ -99,7 +100,7 @@ public class WorldChannelInterfaceImpl extends UnicastRemoteObject implements Wo
         ready = true;
         for (LoginWorldInterface wli : WorldRegistryImpl.getInstance().getLoginServer()) {
             try {
-                wli.channelOnline(cb.getChannelId(), cb.getIP());
+                wli.channelOnline(WorldRegistryImpl.getInstance().getWorldId(), cb.getChannelId(), cb.getIP());
             } catch (RemoteException e) {
                 WorldRegistryImpl.getInstance().deregisterLoginServer(wli);
             }

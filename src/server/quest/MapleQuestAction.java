@@ -109,7 +109,7 @@ public class MapleQuestAction {
                 if (status.getStatus() == MapleQuestStatus.Status.NOT_STARTED && status.getForfeited() > 0) {
                     break;
                 }
-                c.gainExp(MapleDataTool.getInt(data) * ChannelServer.getInstance(c.getClient().getChannel()).getQuestRate(), true, true);
+                c.gainExp(MapleDataTool.getInt(data) * ChannelServer.getInstance(c.getClient().getSelectedChannel()).getQuestRate(), true, true);
                 break;
             case ITEM:
                 MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();

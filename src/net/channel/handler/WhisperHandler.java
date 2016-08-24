@@ -32,7 +32,7 @@ public class WhisperHandler extends AbstractMaplePacketHandler {
             } else if (!CommandProcessor.getInstance().processCommand(c, text)) {
                 ChannelServer pserv = ChannelServer.getInstance(channel);
                 MapleCharacter victim = pserv.getPlayerStorage().getCharacterByName(recipient);
-                victim.getClient().getSession().write(MaplePacketCreator.getWhisper(c.getPlayer().getName(), c.getChannel(), text));
+                victim.getClient().getSession().write(MaplePacketCreator.getWhisper(c.getPlayer().getName(), c.getSelectedChannel(), text));
                 c.getSession().write(MaplePacketCreator.getWhisperReply(recipient, (byte) 1));
             }
         } else if (mode == 5) { // Find
@@ -43,10 +43,10 @@ public class WhisperHandler extends AbstractMaplePacketHandler {
                     c.getSession().write(MaplePacketCreator.getFindReplyWithCSorMTS(victim.getName(), false));
                 } else if (victim.inMTS()) {
                     c.getSession().write(MaplePacketCreator.getFindReplyWithCSorMTS(victim.getName(), true));
-                } else if (c.getChannel() == victim.getClient().getChannel()) {
+                } else if (c.getSelectedChannel() == victim.getClient().getSelectedChannel()) {
                     c.getSession().write(MaplePacketCreator.getFindReplyWithMap(victim.getName(), victim.getMapId()));
                 } else {
-                    c.getSession().write(MaplePacketCreator.getFindReply(victim.getName(), (byte) victim.getClient().getChannel()));
+                    c.getSession().write(MaplePacketCreator.getFindReply(victim.getName(), (byte) victim.getClient().getSelectedChannel()));
                 }
             } else {
                 c.getSession().write(MaplePacketCreator.getWhisperReply(recipient, (byte) 0));

@@ -22,8 +22,8 @@ public class SpouseChatHandler extends AbstractMaplePacketHandler {
                 c.getSession().write(MaplePacketCreator.toSpouse(c.getPlayer().getName(), text, 4));
             } else { // not found
                 try {
-                    if (ChannelServer.getInstance(c.getChannel()).getWorldInterface().isConnected(recipient)) {
-                        ChannelServer.getInstance(c.getChannel()).getWorldInterface().spouse(c.getPlayer().getName(), recipient, c.getChannel(), text);
+                    if (ChannelServer.getInstance(c.getSelectedChannel()).getWorldInterface().isConnected(recipient)) {
+                        ChannelServer.getInstance(c.getSelectedChannel()).getWorldInterface().spouse(c.getPlayer().getName(), recipient, c.getSelectedChannel(), text);
                         c.getSession().write(MaplePacketCreator.getWhisperReply(recipient, (byte) 1));
                     } else {
                         c.getSession().write(MaplePacketCreator.getWhisperReply(recipient, (byte) 0));

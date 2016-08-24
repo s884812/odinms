@@ -161,7 +161,7 @@ public class ItemPickupHandler extends AbstractMaplePacketHandler {
                         int mesosamm = mapitem.getMeso();
                         int partynum = 0;
                         for (MaplePartyCharacter partymem : c.getPlayer().getParty().getMembers()) {
-                            if (partymem.isOnline() && partymem.getMapid() == c.getPlayer().getMap().getId() && partymem.getChannel() == c.getChannel()) {
+                            if (partymem.isOnline() && partymem.getMapid() == c.getPlayer().getMap().getId() && partymem.getChannel() == c.getSelectedChannel()) {
                                 partynum++;
                             }
                         }

@@ -67,7 +67,7 @@ public class AbstractPlayerInteraction {
     private MapleMap getWarpMap(int map) {
         MapleMap target;
         if (getPlayer().getEventInstance() == null) {
-            target = ChannelServer.getInstance(c.getChannel()).getMapFactory().getMap(map);
+            target = ChannelServer.getInstance(c.getSelectedChannel()).getMapFactory().getMap(map);
         } else {
             target = getPlayer().getEventInstance().getMapInstance(map);
         }
@@ -358,7 +358,7 @@ public class AbstractPlayerInteraction {
         net.MaplePacket packet = MaplePacketCreator.serverNotice(type, message);
         MapleCharacter chr = c.getPlayer();
         try {
-            ChannelServer.getInstance(chr.getClient().getChannel()).getWorldInterface().broadcastMessage(chr.getName(), packet.getBytes());
+            ChannelServer.getInstance(chr.getClient().getSelectedChannel()).getWorldInterface().broadcastMessage(chr.getName(), packet.getBytes());
         } catch (RemoteException e) {
             chr.getClient().getChannelServer().reconnectWorld();
         }

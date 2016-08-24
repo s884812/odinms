@@ -469,7 +469,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
 
         if (channelserver) {
             // ret.chatlog = ChatLog.load(ret.name);
-            MapleMapFactory mapFactory = ChannelServer.getInstance(client.getChannel()).getMapFactory();
+            MapleMapFactory mapFactory = ChannelServer.getInstance(client.getSelectedChannel()).getMapFactory();
             ret.map = mapFactory.getMap(ret.mapid);
             if (ret.map == null) { //char is on a map that doesn't exist warp it to henesys
                 ret.map = mapFactory.getMap(100000000);
@@ -501,7 +501,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
             int position = rs.getInt("messengerposition");
             if (messengerid > 0 && position < 4 && position > -1) {
                 try {
-                    WorldChannelInterface wci = ChannelServer.getInstance(client.getChannel()).getWorldInterface();
+                    WorldChannelInterface wci = ChannelServer.getInstance(client.getSelectedChannel()).getWorldInterface();
                     MapleMessenger messenger = wci.getMessenger(messengerid);
                     if (messenger != null) {
                         ret.messenger = messenger;
@@ -1647,9 +1647,9 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
         try {
             WorldChannelInterface wci = client.getChannelServer().getWorldInterface();
             if (online) {
-                wci.loggedOn(getName(), getId(), client.getChannel(), getBuddylist().getBuddyIds());
+                wci.loggedOn(getName(), getId(), client.getSelectedChannel(), getBuddylist().getBuddyIds());
             } else {
-                wci.loggedOff(getName(), getId(), client.getChannel(), getBuddylist().getBuddyIds());
+                wci.loggedOff(getName(), getId(), client.getSelectedChannel(), getBuddylist().getBuddyIds());
             }
         } catch (RemoteException e) {
             client.getChannelServer().reconnectWorld();
@@ -2296,7 +2296,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
                     }
                     if (party != null) {
                         silentPartyUpdate();
-                        getClient().getSession().write(MaplePacketCreator.updateParty(getClient().getChannel(), party, PartyOperation.SILENT_UPDATE, null));
+                        getClient().getSession().write(MaplePacketCreator.updateParty(getClient().getSelectedChannel(), party, PartyOperation.SILENT_UPDATE, null));
                         updatePartyMemberHP();
                     }
                     if (getMap().getHPDec() > 0) {
@@ -2540,7 +2540,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
 
     public void updatePartyMemberHP() {
         if (party != null) {
-            int channel = client.getChannel();
+            int channel = client.getSelectedChannel();
             for (MaplePartyCharacter partychar : party.getMembers()) {
                 if (partychar.getMapid() == getMapId() && partychar.getChannel() == channel) {
                     MapleCharacter other = ChannelServer.getInstance(channel).getPlayerStorage().getCharacterByName(partychar.getName());
@@ -2599,7 +2599,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
 
     public void receivePartyMemberHP() {
         if (party != null) {
-            int channel = client.getChannel();
+            int channel = client.getSelectedChannel();
             for (MaplePartyCharacter partychar : party.getMembers()) {
                 if (partychar.getMapid() == getMapId() && partychar.getChannel() == channel) {
                     MapleCharacter other = ChannelServer.getInstance(channel).getPlayerStorage().getCharacterByName(partychar.getName());
@@ -3707,9 +3707,9 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
         recalcLocalStats();
         enforceMaxHpMp();
         if (getClient().getPlayer().getMessenger() != null) {
-            WorldChannelInterface wci = ChannelServer.getInstance(getClient().getChannel()).getWorldInterface();
+            WorldChannelInterface wci = ChannelServer.getInstance(getClient().getSelectedChannel()).getWorldInterface();
             try {
-                wci.updateMessenger(getClient().getPlayer().getMessenger().getId(), getClient().getPlayer().getName(), getClient().getChannel());
+                wci.updateMessenger(getClient().getPlayer().getMessenger().getId(), getClient().getPlayer().getName(), getClient().getSelectedChannel());
             } catch (RemoteException e) {
                 getClient().getChannelServer().reconnectWorld();
             }
@@ -4583,10 +4583,10 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
     public void checkMessenger() {
         if (messenger != null && messengerposition < 4 && messengerposition > -1) {
             try {
-                WorldChannelInterface wci = ChannelServer.getInstance(client.getChannel()).getWorldInterface();
+                WorldChannelInterface wci = ChannelServer.getInstance(client.getSelectedChannel()).getWorldInterface();
                 MapleMessengerCharacter messengerplayer = new MapleMessengerCharacter(client.getPlayer(), messengerposition);
                 wci.silentJoinMessenger(messenger.getId(), messengerplayer, messengerposition);
-                wci.updateMessenger(getClient().getPlayer().getMessenger().getId(), getClient().getPlayer().getName(), getClient().getChannel());
+                wci.updateMessenger(getClient().getPlayer().getMessenger().getId(), getClient().getPlayer().getName(), getClient().getSelectedChannel());
             } catch (RemoteException e) {
                 client.getChannelServer().reconnectWorld();
             }
@@ -5868,7 +5868,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
                 unequipAllPets();
             }
             try {
-                WorldChannelInterface wci = ChannelServer.getInstance(getClient().getChannel()).getWorldInterface();
+                WorldChannelInterface wci = ChannelServer.getInstance(getClient().getSelectedChannel()).getWorldInterface();
                 wci.addBuffsToStorage(getId(), getAllBuffs());
                 wci.addCooldownsToStorage(getId(), getAllCooldowns());
             } catch (RemoteException e) {

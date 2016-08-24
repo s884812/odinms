@@ -103,7 +103,7 @@ public class BuddylistModifyHandler extends AbstractMaplePacketHandler {
                     int channel;
                     MapleCharacter otherChar = c.getChannelServer().getPlayerStorage().getCharacterByName(addName);
                     if (otherChar != null) {
-                        channel = c.getChannel();
+                        channel = c.getSelectedChannel();
                         charWithId = new CharacterIdNameBuddyCapacity(otherChar.getId(), otherChar.getName(), otherChar.getBuddylist().getCapacity());
                     } else {
                         channel = worldInterface.find(addName);
@@ -114,7 +114,7 @@ public class BuddylistModifyHandler extends AbstractMaplePacketHandler {
                         BuddyAddResult buddyAddResult = null;
                         if (channel != -1) {
                             ChannelWorldInterface channelInterface = worldInterface.getChannelInterface(channel);
-                            buddyAddResult = channelInterface.requestBuddyAdd(addName, c.getChannel(), player.getId(), player.getName());
+                            buddyAddResult = channelInterface.requestBuddyAdd(addName, c.getSelectedChannel(), player.getId(), player.getName());
                         } else {
                             Connection con = DatabaseConnection.getConnection();
                             PreparedStatement ps = con.prepareStatement("SELECT COUNT(*) as buddyCount FROM buddies WHERE characterid = ? AND pending = 0");
@@ -224,7 +224,7 @@ public class BuddylistModifyHandler extends AbstractMaplePacketHandler {
 
         if (remoteChannel != -1) {
             ChannelWorldInterface channelInterface = worldInterface.getChannelInterface(remoteChannel);
-            channelInterface.buddyChanged(otherCid, player.getId(), player.getName(), c.getChannel(), operation);
+            channelInterface.buddyChanged(otherCid, player.getId(), player.getName(), c.getSelectedChannel(), operation);
         }
     }
 }

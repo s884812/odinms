@@ -83,7 +83,7 @@ public class MapleClient {
     private final MapleAESOFB receive;
     private final IoSession session;
     private MapleCharacter player;
-    private int channel = 1;
+    private int selectedChannel = 1;
     private int accId = 1;
     private boolean guest;
     private boolean loggedIn = false;
@@ -91,7 +91,7 @@ public class MapleClient {
     private Calendar birthday = null;
     private Calendar tempban = null;
     private String accountName;
-    private int world;
+    private int selectedWorld;
     private long lastPong;
     private final String pin = null;
     private boolean haspinturnedon;
@@ -142,10 +142,6 @@ public class MapleClient {
 
     public void setPlayer(MapleCharacter player) {
         this.player = player;
-    }
-
-    public void sendCharList(int server) {
-        this.session.write(MaplePacketCreator.getCharList(this, server));
     }
 
     public List<MapleCharacter> loadCharacters(int serverId) { // TODO make this less costly zZz
@@ -460,37 +456,6 @@ public class MapleClient {
         return loginok;
     }
 
-    /**
-     * Gets the special server IP if the client matches a certain subnet.
-     *
-     * @param subnetInfo A <code>Properties</code> instance containing all the
-     * subnet info.
-     * @param clientIPAddress The IP address of the client as a dotted quad.
-     * @param channel The requested channel to match with the subnet.
-     * @return <code>0.0.0.0</code> if no subnet matched, or the IP if the
-     * subnet matched.
-     */
-    public static String getChannelServerIPFromSubnet(String clientIPAddress, int channel) {
-        long ipAddress = IPAddressTool.dottedQuadToLong(clientIPAddress);
-        Properties subnetInfo = LoginServer.getInstance().getSubnetInfo();
-
-        if (subnetInfo.contains("net.login.subnetcount")) {
-            int subnetCount = Integer.parseInt(subnetInfo.getProperty("net.login.subnetcount"));
-            for (int i = 0; i < subnetCount; i++) {
-                String[] connectionInfo = subnetInfo.getProperty("net.login.subnet." + i).split(":");
-                long subnet = IPAddressTool.dottedQuadToLong(connectionInfo[0]);
-                long channelIP = IPAddressTool.dottedQuadToLong(connectionInfo[1]);
-                int channelNumber = Integer.parseInt(connectionInfo[2]);
-
-                if (((ipAddress & subnet) == (channelIP & subnet)) && (channel == channelNumber)) {
-                    return connectionInfo[1];
-                }
-            }
-        }
-
-        return "0.0.0.0";
-    }
-
     private void unban() {
         int i;
         try {
@@ -780,9 +745,9 @@ public class MapleClient {
                         }
                     }
                     if (!this.serverTransition && isLoggedIn()) {
-                        wci.loggedOff(chr.getName(), chr.getId(), channel, chr.getBuddylist().getBuddyIds());
+                        wci.loggedOff(chr.getName(), chr.getId(), selectedChannel, chr.getBuddylist().getBuddyIds());
                     } else { // Change channel
-                        wci.loggedOn(chr.getName(), chr.getId(), channel, chr.getBuddylist().getBuddyIds());
+                        wci.loggedOn(chr.getName(), chr.getId(), selectedChannel, chr.getBuddylist().getBuddyIds());
                     }
                     if (chr.getGuildId() > 0) {
                         wci.setGuildMemberOnline(chr.getMGC(), false, -1);
@@ -900,17 +865,17 @@ public class MapleClient {
      *
      * @return the channel the client is connected to
      */
-    public int getChannel() {
-        return channel;
+    public int getSelectedChannel() {
+        return selectedChannel;
     }
 
     public ChannelServer getChannelServer() {
-        return ChannelServer.getInstance(getChannel());
+        return ChannelServer.getInstance(getSelectedChannel());
     }
 
     public int getChannelByWorld() {
-        int chnl = channel;
-        switch (world) {
+        int chnl = selectedChannel;
+        switch (selectedWorld) {
             case 1:
                 chnl += 2;
         }
@@ -926,7 +891,7 @@ public class MapleClient {
     public boolean deleteCharacter(int cid) {
         Connection con = DatabaseConnection.getConnection();
         try {
-            PreparedStatement ps = con.prepareStatement("SELECT id, guildid, guildrank, name, allianceRank FROM characters WHERE id = ? AND accountid = ?");
+            PreparedStatement ps = con.prepareStatement("SELECT world, id, guildid, guildrank, name, allianceRank FROM characters WHERE id = ? AND accountid = ?");
             ps.setInt(1, cid);
             ps.setInt(2, accId);
             ResultSet rs = ps.executeQuery();
@@ -939,7 +904,7 @@ public class MapleClient {
             {
                 MapleGuildCharacter mgc = new MapleGuildCharacter(cid, 0, rs.getString("name"), -1, 0, rs.getInt("guildrank"), rs.getInt("guildid"), false, rs.getInt("allianceRank"));
                 try {
-                    LoginServer.getInstance().getWorldInterface().deleteGuildCharacter(mgc);
+                    LoginServer.getRemoteWorld(rs.getInt("world")).getWorldLoginInterface().deleteGuildCharacter(mgc);
                 } catch (RemoteException re) {
                     getChannelServer().reconnectWorld();
                     Logger.error("Unable to remove member from guild list.");
@@ -968,20 +933,20 @@ public class MapleClient {
         this.accountName = accountName;
     }
 
-    public void setChannel(int channel) {
-        this.channel = channel;
+    public void setSelectedChannel(int channel) {
+        this.selectedChannel = channel;
     }
 
     public Calendar getBirthday() {
         return birthday;
     }
 
-    public int getWorld() {
-        return world;
+    public int getSelectedWorld() {
+        return selectedWorld;
     }
 
-    public void setWorld(int world) {
-        this.world = world;
+    public void setSelectedWorld(int world) {
+        this.selectedWorld = world;
     }
 
     public void pongReceived() {
@@ -1181,4 +1146,5 @@ public class MapleClient {
             this.id = id;
         }
     }
+    
 }

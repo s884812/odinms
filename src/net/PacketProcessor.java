@@ -80,12 +80,12 @@ public final class PacketProcessor {
         registerHandler(RecvPacketOpcode.PONG, new KeepAliveHandler());
         if (mode == Mode.LOGINSERVER) {
             registerHandler(RecvPacketOpcode.AFTER_LOGIN, new AfterLoginHandler());
-            registerHandler(RecvPacketOpcode.SERVERLIST_REREQUEST, new ServerlistRequestHandler());
+            registerHandler(RecvPacketOpcode.SERVERLIST_REREQUEST, new ServerListRequestHandler());
             registerHandler(RecvPacketOpcode.CHARLIST_REQUEST, new CharlistRequestHandler());
             registerHandler(RecvPacketOpcode.CHAR_SELECT, new CharSelectedHandler());
             registerHandler(RecvPacketOpcode.LOGIN_PASSWORD, new LoginPasswordHandler());
             registerHandler(RecvPacketOpcode.RELOG, new RelogRequestHandler());
-            registerHandler(RecvPacketOpcode.SERVERLIST_REQUEST, new ServerlistRequestHandler());
+            registerHandler(RecvPacketOpcode.SERVERLIST_REQUEST, new ServerListRequestHandler());
             registerHandler(RecvPacketOpcode.SERVERSTATUS_REQUEST, new ServerStatusRequestHandler());
             registerHandler(RecvPacketOpcode.CHECK_CHAR_NAME, new CheckCharNameHandler());
             registerHandler(RecvPacketOpcode.CREATE_CHAR, new CreateCharHandler());

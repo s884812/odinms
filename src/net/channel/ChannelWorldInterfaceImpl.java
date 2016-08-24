@@ -181,7 +181,7 @@ public class ChannelWorldInterfaceImpl extends UnicastRemoteObject implements Ch
                     } else {
                         chr.setParty(party);
                     }
-                    chr.getClient().getSession().write(MaplePacketCreator.updateParty(chr.getClient().getChannel(), party, operation, target));
+                    chr.getClient().getSession().write(MaplePacketCreator.updateParty(chr.getClient().getSelectedChannel(), party, operation, target));
                 }
             }
         }
@@ -191,7 +191,7 @@ public class ChannelWorldInterfaceImpl extends UnicastRemoteObject implements Ch
                 if (target.getChannel() == server.getChannel()) {
                     MapleCharacter chr = server.getPlayerStorage().getCharacterByName(target.getName());
                     if (chr != null) {
-                        chr.getClient().getSession().write(MaplePacketCreator.updateParty(chr.getClient().getChannel(), party, operation, target));
+                        chr.getClient().getSession().write(MaplePacketCreator.updateParty(chr.getClient().getSelectedChannel(), party, operation, target));
                         chr.setParty(null);
                     }
                 }

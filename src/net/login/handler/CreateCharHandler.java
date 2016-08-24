@@ -40,7 +40,7 @@ public class CreateCharHandler extends AbstractMaplePacketHandler {
         int luk = slea.readByte();
 
         MapleCharacter newchar = MapleCharacter.getDefault(c);
-        newchar.setWorld(c.getWorld());
+        newchar.setWorld(c.getSelectedWorld());
         newchar.setFace(face);
         newchar.setHair(hair + hairColor);
         newchar.setGender(gender);
@@ -133,7 +133,7 @@ public class CreateCharHandler extends AbstractMaplePacketHandler {
         if (checkName(c, name)) {
             return;
         }
-        if (charok && MapleCharacterUtil.canCreateChar(name, c.getWorld())) {
+        if (charok && MapleCharacterUtil.canCreateChar(name, c.getSelectedWorld())) {
             newchar.saveToDB(false, true);
             c.getSession().write(MaplePacketCreator.addNewCharEntry(newchar, charok));
             FilePrinter.printNovo("" + newchar.getName() + ".rtf", "Nome do novo jogador: " + newchar.getName() + "\r\nID da conta: (" + newchar.getAccountID() + ")\r\nAdmissao ao jogo: " + sdf.format(Calendar.getInstance().getTime()) + " as " + sdf2.format(Calendar.getInstance().getTime()) + ".");

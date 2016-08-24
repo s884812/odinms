@@ -11,28 +11,29 @@ import javax.rmi.ssl.SslRMIServerSocketFactory;
 import database.DatabaseConnection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import properties.WorldProperties;
 
 public class WorldServer {
 
     private static WorldServer instance = null;
     private static Logger log = LoggerFactory.getLogger(WorldServer.class);
     private int worldId;
-    private Properties dbProp = new Properties();
-    private Properties worldProp = new Properties();
+    private String serverName;
+    private String serverMessage;
+    private String eventMessage;
+    private int userLimit;
+    private int maxCharacters;
+    private int flag;
 
     private WorldServer() {
-        try {
-            InputStreamReader is = new FileReader("Jogo/BancoDados/db.properties");
-            dbProp.load(is);
-            is.close();
-            DatabaseConnection.setProps(dbProp);
-            DatabaseConnection.getConnection();
-            is = new FileReader("Jogo/Configuracao/LeaderMS.properties");
-            worldProp.load(is);
-            is.close();
-        } catch (Exception e) {
-            log.error("Could not configuration", e);
-        }
+        this.worldId = Integer.parseInt(System.getProperty("world.worldId"));
+        DatabaseConnection.getConnection();
+        Properties props = WorldProperties.getInstance(worldId).getProp();
+        this.serverName = props.getProperty("world.serverName");
+        this.serverMessage = props.getProperty("world.serverMessage");
+        this.maxCharacters = Integer.parseInt(props.getProperty("world.maxCharacters"));
+        this.eventMessage =  props.getProperty("world.eventMessage");
+        this.flag = Integer.parseInt(props.getProperty("world.flag"));
     }
 
     public synchronized static WorldServer getInstance() {
@@ -46,13 +47,35 @@ public class WorldServer {
         return worldId;
     }
 
-    public Properties getDbProp() {
-        return dbProp;
+    public String getServerName() {
+        return serverName;
     }
 
-    public Properties getWorldProp() {
-        return worldProp;
+    public String getServerMessage() {
+        return serverMessage;
     }
+
+    public int getUserLimit() {
+        return userLimit;
+    }
+
+    public int getMaxCharacters() {
+        return maxCharacters;
+    }
+
+    public String getEventMessage() {
+        return eventMessage;
+    }
+
+    public int getFlag()
+    {
+        return flag;
+    }
+    
+    public Properties getWorldProp() {
+        return WorldProperties.getInstance(worldId).getProp();
+    }
+    
 
     public static void main(String[] args) {
         try {

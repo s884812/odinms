@@ -67,7 +67,7 @@ public class MapleServerHandler extends IoHandlerAdapter {
         MapleAESOFB sendCypher = new MapleAESOFB(key, ivSend, (short) (0xFFFF - MAPLE_VERSION));
         MapleAESOFB recvCypher = new MapleAESOFB(key, ivRecv, MAPLE_VERSION);
         MapleClient client = new MapleClient(sendCypher, recvCypher, session);
-        client.setChannel(channel);
+        client.setSelectedChannel(channel);
         session.write(MaplePacketCreator.getHello(MAPLE_VERSION, ivSend, ivRecv, false));
         session.setAttribute(MapleClient.CLIENT_KEY, client);
         session.getConfig().setIdleTime(IdleStatus.READER_IDLE, 30);

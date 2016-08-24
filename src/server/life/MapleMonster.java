@@ -691,7 +691,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             }
         }
         /* Fim */
-        long totalBaseExpL = this.getExp() * ChannelServer.getInstance(killer.getClient().getChannel()).getExpRate() * killer.hasEXPCard();
+        long totalBaseExpL = this.getExp() * ChannelServer.getInstance(killer.getClient().getSelectedChannel()).getExpRate() * killer.hasEXPCard();
         int totalBaseExp = (int) (Math.min(Integer.MAX_VALUE, totalBaseExpL));
         AttackerEntry highest = null;
         int highdamage = 0;
