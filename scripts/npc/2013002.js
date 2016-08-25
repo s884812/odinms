@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /**
  *2013002.js - Minevra the Goddess
  *@author Jvlaple

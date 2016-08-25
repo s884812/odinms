@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /*
 	NPC Name: 		Cygnus
 	Description: 		Quest - Encounter with the Young Queen

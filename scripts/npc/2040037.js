@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /*
  *Orange Ballon - Stage 2 of LPQ =D
   *@author Jvlaple

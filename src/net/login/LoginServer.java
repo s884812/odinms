@@ -157,8 +157,8 @@ public class LoginServer implements Runnable, LoginServerMBean {
                     String worldHost = worldProp.getProperty("world.host", "127.0.0.1");
                     String loginKey = loginProp.getProperty("login.key");
                     Registry registry = LocateRegistry.getRegistry(
-                            worldHost, Registry.REGISTRY_PORT, new SslRMIClientSocketFactory());
-                    WorldRegistry worldRegistry = (WorldRegistry) registry.lookup("WorldRegistry");
+                            worldHost, Registry.REGISTRY_PORT + worldId, new SslRMIClientSocketFactory());
+                    WorldRegistry worldRegistry = (WorldRegistry) registry.lookup("WorldRegistry" + worldId);
                     LoginWorldInterfaceImpl lwi = new LoginWorldInterfaceImpl();
                     WorldLoginInterface wli = worldRegistry.registerLoginServer(loginKey, lwi);
 
@@ -195,8 +195,8 @@ public class LoginServer implements Runnable, LoginServerMBean {
                 String worldHost = worldProp.getProperty("world.host", "127.0.0.1");
                 String loginKey = loginProp.getProperty("login.key");
                 Registry registry = LocateRegistry.getRegistry(
-                        worldHost, Registry.REGISTRY_PORT, new SslRMIClientSocketFactory());
-                WorldRegistry worldRegistry = (WorldRegistry) registry.lookup("WorldRegistry");
+                        worldHost, Registry.REGISTRY_PORT + i, new SslRMIClientSocketFactory());
+                WorldRegistry worldRegistry = (WorldRegistry) registry.lookup("WorldRegistry" + i);
                 LoginWorldInterfaceImpl lwi = new LoginWorldInterfaceImpl();
                 WorldLoginInterface wli = worldRegistry.registerLoginServer(loginKey, lwi);
                 remoteWorlds.put(i, new WorldRemote(worldRegistry, lwi, wli));
@@ -223,7 +223,7 @@ public class LoginServer implements Runnable, LoginServerMBean {
         tMan.register(new RankingWorker(), rankingInterval);
         try {
             acceptor.bind(new InetSocketAddress(PORT));
-            System.out.println("Servidor aberto na porta ( " + PORT + ")");
+            System.out.println("Server bind to port ( " + PORT + ")");
 
         } catch (IOException e) {
             System.out.println("Binding to port " + PORT + " failed: " + e);
@@ -247,7 +247,7 @@ public class LoginServer implements Runnable, LoginServerMBean {
         try {
             LoginServer.getInstance().run();
         } catch (Exception ex) {
-            System.out.println("Error initializing loginserver " + ex);
+            ex.printStackTrace();
         }
     }
 

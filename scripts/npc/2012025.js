@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /* Author: Xterminator
 	NPC Name: 		Geras
 	Map(s): 		Orbis: Station<To Ariant> (200000151)

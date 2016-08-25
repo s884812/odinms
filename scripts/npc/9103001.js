@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /**
 	Rolly - Ludibirum Maze PQ
 * */

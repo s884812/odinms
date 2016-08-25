@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /* Author: Xterminator
 	NPC Name: 		Bush
 	Map(s): 		Victoria Road : Nautilus Harbor (120000000)

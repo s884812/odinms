@@ -43,7 +43,7 @@ public class SkillFactory {
         if (skills.size() != 0) {
             return skills.get(Integer.valueOf(id));
         }
-        System.out.println("[INFO] Carregando SkillFactory :::");
+        System.out.println("[INFO] Loading SkillFactory :::");
         final MapleDataProvider datasource = MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/Skill.wz"));
         final MapleDataDirectoryEntry root = datasource.getRoot();
 
@@ -90,7 +90,7 @@ public class SkillFactory {
     public static void cacheSkills() {
         long now = System.currentTimeMillis();
         int skillid = 1000;
-        System.out.println("[INFO] Carregando skills..");
+        System.out.println("[INFO] Loading skills..");
         for (MapleData skillData : stringData) {
             skillid = Integer.parseInt(skillData.getName());
             try {

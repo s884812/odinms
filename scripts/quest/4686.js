@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /*
 	NPC Name: 		Ponicher
 	Description: 		Quest - A Battle Against Vergamot

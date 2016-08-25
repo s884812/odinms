@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /*
  * The return of the Hero
  * Rien Cold Forest 1

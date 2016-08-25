@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /*
  *Green Ballon - Stage 5of LPQ =D
   *@author Jvlaple

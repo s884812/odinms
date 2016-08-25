@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /*2101014.js - Lobby and Entrance
  * @author Jvlaple
  * For Jvlaple's AriantPQ

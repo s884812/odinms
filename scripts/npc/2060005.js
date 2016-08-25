@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /* 
  *   NPC   : Kenta
  *   Map   : Aquariun - Zoo

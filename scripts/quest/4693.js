@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /*
 	NPC Name: 		Commander Grauda
 	Description: 		Quest - Elliminate Dunas Squad

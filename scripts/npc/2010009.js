@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 importPackage(Packages.net.world.guild);
 
 var status;

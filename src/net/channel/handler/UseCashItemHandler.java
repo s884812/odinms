@@ -614,7 +614,7 @@ public class UseCashItemHandler extends AbstractMaplePacketHandler {
                                 }
                             } else {
                                 MapleInventoryManipulator.addById(c, itemId, (short) 1, "Teleport Rock erro (nao encontrado)");
-                                new ServernoticeMapleClientMessageCallback(1, c).dropMessage("O jogador nao pôde ser encontrado neste canal.");
+                                new ServernoticeMapleClientMessageCallback(1, c).dropMessage("O jogador nao pôde ser encontrado neste Channel.");
                                 c.getSession().write(MaplePacketCreator.enableActions());
                             }
                         }

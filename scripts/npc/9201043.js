@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /*Amos the Strong - Entrance
 **9201043
 **@author Jvlaple

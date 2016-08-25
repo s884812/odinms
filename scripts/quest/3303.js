@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /*
 	NPC Name: 		Han the Broker
 	Map(s): 		Magatia

@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
  /* Author: Xterminator
 	NPC Name: 		Tian
 	Map(s): 		Ludibrium: Station<Orbis> (220000110)

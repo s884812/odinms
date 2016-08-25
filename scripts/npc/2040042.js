@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /*
  *Sky Blue Ballon - Stage 7 of LPQ =D
   *@author Jvlaple

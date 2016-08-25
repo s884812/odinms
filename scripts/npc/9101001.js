@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /* Author: Xterminator
 	NPC Name: 		Peter
 	Map(s): 		Maple Road: Entrance - Mushroom Town Training Camp (3)

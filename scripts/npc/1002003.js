@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /* Author: Xterminator
 	NPC Name: 		Mr. Goldstein
 	Map(s): 		Victoria Road : Lith Harbour (104000000)

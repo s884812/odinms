@@ -52,14 +52,19 @@ public class EventScriptManager extends AbstractScriptManager {
         public Invocable iv;
         public EventManager em;
     }
-    private Map<String, EventEntry> events = new LinkedHashMap<String, EventEntry>();
+
+    private Map<String, EventEntry> events = new LinkedHashMap<>();
 
     public EventScriptManager(ChannelServer cserv, String[] scripts) {
         super();
-        for (String script : scripts) {
+        for (final String script : scripts) {
             if (!script.equals("")) {
-                Invocable iv = getInvocable("event/" + script + ".js", null);
-                events.put(script, new EventEntry(script, iv, new EventManager(cserv, iv, script)));
+                Invocable iv = super.getInvocable("event/" + script + ".js", null);
+                if (iv != null) {
+                    events.put(script, new EventEntry(script, iv, new EventManager(cserv, iv, script)));
+                } else{
+                    log.warn("EventScript : " + script + " not found.");
+                }
             }
         }
     }
@@ -73,17 +78,14 @@ public class EventScriptManager extends AbstractScriptManager {
     }
 
     public void init() {
-        for (EventEntry entry : events.values()) {
-            System.out.println("Script: " + entry.script);
+        events.values().stream().forEach((entry) -> {
             try {
                 ((ScriptEngine) entry.iv).put("em", entry.em);
                 entry.iv.invokeFunction("init", (Object) null);
-            } catch (ScriptException ex) {
-                Logger.getLogger(EventScriptManager.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (NoSuchMethodException ex) {
-                Logger.getLogger(EventScriptManager.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ScriptException | NoSuchMethodException ex) {
+                log.error("EventScript init error ("+ entry.script+") : " + ex.getMessage());
             }
-        }
+        });
     }
 
     public void cancel() {

@@ -1,6 +1,8 @@
 #!/bin/sh
 export CLASSPATH=".:dist/*:lib/*"
 
+echo "世界伺服器"$1"號"
+
 if test "$#" -ne 1; then
     echo "./launch_world.sh <worldId>"
 else

@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /* Author: Xterminator
 	NPC Name: 		Robin
 	Map(s): 		Maple Road : Snail Hunting Ground I (40000)

@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /*
 	NPC Name: 		Kisan
 	Description: 		Quest - Cygnus tutorial helper

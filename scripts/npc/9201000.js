@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /**
  *Moony - 9201000.js
  *@author Jvlaple

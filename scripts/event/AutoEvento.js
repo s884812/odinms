@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /**
 @author JavaScriptz <javascriptz@leaderms.com.br>
 * LeaderMS 2014

@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /**
  *9201027 - Nana(P)
  *@author Jvlaple

@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /* Author: Xterminator
 	NPC Name: 		Asesson
 	Map(s): 		Ariant: Ariant Station Platform (260000100)

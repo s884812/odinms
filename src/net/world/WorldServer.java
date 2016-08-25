@@ -78,9 +78,10 @@ public class WorldServer {
         try {
             worldId = Integer.parseInt(System.getProperty("world.worldId"));
             log.info("Creating World-" + worldId);
-            Registry registry = LocateRegistry.createRegistry(Registry.REGISTRY_PORT,
+            Registry registry = LocateRegistry.createRegistry(Registry.REGISTRY_PORT + worldId,
                     new SslRMIClientSocketFactory(), new SslRMIServerSocketFactory());
-            registry.rebind("WorldRegistry", WorldRegistryImpl.getInstance());
+            registry.rebind("WorldRegistry" + worldId, WorldRegistryImpl.getInstance());
+            log.info("Creating World-" + worldId  + " Completed!");
 
         } catch (RemoteException ex) {
             log.error("Could not initialize RMI system", ex);

@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /* 
 *
 *	KIN - v.61 Male Support

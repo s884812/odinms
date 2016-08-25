@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 var status = 0;
 var minLevel = 21; //arrumar
 var maxLevel = 30; //arrumar

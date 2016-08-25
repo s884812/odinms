@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /* Lira - Zakum Jump Quest NPC 
  * @author Manfred
  * For use with Zakum PQ.

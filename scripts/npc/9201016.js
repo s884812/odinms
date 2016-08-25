@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /* Salon Seamus
 	Amoria Random Hair/Hair Color Change.
 */

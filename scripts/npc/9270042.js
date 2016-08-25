@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /*
  * LeaderMS Revision
  * @autor Gabriel A. <javascriptz@leaderms.com.br>

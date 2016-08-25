@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /*
  *Yellow Ballon - Stage 3 of LPQ =D
   *@author Jvlaple

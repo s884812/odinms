@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /*
   [Monster Carnival PQ] [By Haiku01]
   Update 1: Fixed bracket errors..

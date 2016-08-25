@@ -10,7 +10,7 @@ else
         -Drecvops=recvops.properties \
         -Dsendops=sendops.properties \
         -Dwzpath=wz/ \
-        -Dchnnel.worldId=$1 \
+        -Dchannel.worldId=$1 \
         -Dchannel.config=channel.properties \
         -Djavax.net.ssl.keyStore=filename.keystore \
         -Djavax.net.ssl.keyStorePassword=passwd \

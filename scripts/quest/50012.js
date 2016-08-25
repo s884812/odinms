@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /*
 	NPC Name: 		Asia
 	Description: 		Quest - Magic, Science and space

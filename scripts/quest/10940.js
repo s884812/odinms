@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 //credits to kevintjuh93
 
 var status = -1;

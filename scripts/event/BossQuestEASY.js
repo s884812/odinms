@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 var eventmapid = 910340500;
 var returnmap = 262000300;
 

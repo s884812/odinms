@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /**
  *2022004.js - Tylus after the PQ
  *@author Jvlaple

@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /*
 	NPC Name: 		Dida
 	Description: 		Quest - Attack! Maverick Platoon of Robots

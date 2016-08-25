@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 var eventmapid = 610030600;
 var returnmap = 262000300;
 var monster = Array(7120102, 8800100, 8800101, 8800102, 8840006, 8860000, 9400409, 9400408, 8820001, 8850011); // 8840006 vonleon

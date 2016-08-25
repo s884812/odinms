@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /*2083004.js - Mark of the Squad
  * @author Jvlaple
  * For Jvlaple's HTPQ

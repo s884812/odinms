@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /* Author: Xterminator
 	NPC Name: 		Tommie
 	Map(s): 		Leafre: Cabin<To Orbis> (240000110)

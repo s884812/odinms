@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /* Author: Xterminator
 	NPC Name: 		Ramini
 	Map(s): 		Orbis: Cabin<To Leafre> (200000131)

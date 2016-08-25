@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /* Cadeiras
 Made By bahadirtje Ragezone- YarakMS
 Pf, best nomes de cadeiras by Ank 

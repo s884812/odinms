@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 function start(mode, type, selection) {
     qm.dispose();
 }

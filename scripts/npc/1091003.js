@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /*
 	Serryl (1091003)
 	Location: The Nautilus

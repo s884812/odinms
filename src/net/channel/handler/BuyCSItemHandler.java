@@ -146,7 +146,7 @@ public class BuyCSItemHandler extends AbstractMaplePacketHandler {
                     } catch (SQLException s) {
                     }
                 } else {
-                    c.getPlayer().dropMessage(1, "Nao se encontra no mesmo canal.");
+                    c.getPlayer().dropMessage(1, "Nao se encontra no mesmo Channel.");
                     updateInformation(c);
                 }
             } else {
@@ -201,7 +201,7 @@ public class BuyCSItemHandler extends AbstractMaplePacketHandler {
             CashItemInfo ring = CashItemFactory.getItem(SN);
             MapleCharacter partnerChar = c.getChannelServer().getPlayerStorage().getCharacterByName(recipient);
             if (partnerChar == null) {
-                c.getPlayer().getClient().getSession().write(MaplePacketCreator.serverNotice(1, "O parceiro especificado nao pode ser encontrado.\\r\\nPor favor, verifique se o seu parceiro esta on-line e no mesmo canal."));
+                c.getPlayer().getClient().getSession().write(MaplePacketCreator.serverNotice(1, "O parceiro especificado nao pode ser encontrado.\\r\\nPor favor, verifique se o seu parceiro esta on-line e no mesmo Channel."));
             } else if (c.getPlayer().getInventory(MapleInventoryType.EQUIP).findById(1112000) != null) {
                 c.getPlayer().dropMessage(1, "Voce ja tem um anel com outra pessoa!");
                 return;

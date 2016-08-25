@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 var wui = 0;
 	
 	function start() {

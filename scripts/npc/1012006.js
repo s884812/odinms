@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /* Author: Xterminator
 	NPC Name: 		Trainer Bartos
 	Map(s): 		Victoria Road : Pet-Walking Road (100000202)

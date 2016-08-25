@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /* Author: Xterminator (Modified by RMZero213)
 	NPC Name: 		Roger
 	Map(s): 		Maple Road : Lower level of the Training Camp (2)

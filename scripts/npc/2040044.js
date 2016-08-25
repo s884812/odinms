@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /*
  *Violent Ballon - Stage 9 =D
   *@author Jvlaple

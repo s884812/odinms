@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /**
  Donator shop
  @author Jvlaple

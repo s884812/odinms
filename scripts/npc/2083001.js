@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 var status = 0;
 
 importPackage(Packages.client);

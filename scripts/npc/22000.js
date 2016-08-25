@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /* Author: Xterminator
 	NPC Name: 		Shanks
 	Map(s): 		Maple Road : Southperry (60000)

@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /*2101017.js
  *Cesar
  *@author Jvlaple

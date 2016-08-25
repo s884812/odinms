@@ -1,8 +1,9 @@
+load('nashorn:mozilla_compat.js');
 // @Author Groat
 // Boss Quest 
 
-importPackage(net.sf.odinms.world);
-importPackage(net.sf.odinms.client);
+importPackage(Packages.world);
+importPackage(Packages.client);
 
 var exitMap;
 var instanceId;

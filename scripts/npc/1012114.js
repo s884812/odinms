@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /*
 * @autor Java / Jvaple
 * LeaderMS MapleStory Private Server

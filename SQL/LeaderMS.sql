@@ -25,9 +25,9 @@ CREATE TABLE `accounts` (
   `password` varchar(128) NOT NULL DEFAULT '',
   `salt` varchar(32) DEFAULT NULL,
   `loggedin` tinyint(4) NOT NULL DEFAULT '0',
-  `lastlogin` timestamp NULL DEFAULT NULL,
-  `createdat` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `birthday` date NOT NULL DEFAULT '0000-00-00',
+  `lastlogin` TIMESTAMP NULL DEFAULT NULL,
+  `createdat` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `birthday` date  NULL DEFAULT '0000-00-00',
   `banned` tinyint(1) NOT NULL DEFAULT '0',
   `banreason` text,
   `gm` tinyint(1) NOT NULL DEFAULT '0',
@@ -35,8 +35,8 @@ CREATE TABLE `accounts` (
   `emailcode` varchar(40) DEFAULT NULL,
   `forumaccid` int(11) NOT NULL DEFAULT '0',
   `macs` tinytext,
-  `lastpwemail` timestamp NOT NULL DEFAULT '2002-12-31 17:00:00',
-  `tempban` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `lastpwemail` TIMESTAMP NOT NULL DEFAULT '2002-12-31 17:00:00',
+  `tempban` TIMESTAMP NULL DEFAULT '0000-00-00 00:00:00',
   `greason` tinyint(4) DEFAULT NULL,
   `paypalNX` int(11) DEFAULT NULL,
   `mPoints` int(11) DEFAULT NULL,
@@ -101,7 +101,7 @@ CREATE TABLE `bosslog` (
   `bosslogid` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `characterid` int(10) unsigned NOT NULL,
   `bossid` varchar(20) NOT NULL,
-  `lastattempt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `lastattempt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`bosslogid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -251,7 +251,7 @@ CREATE TABLE `characters` (
   `gm` int(11) NOT NULL DEFAULT '0',
   `party` int(11) NOT NULL DEFAULT '0',
   `buddyCapacity` int(11) NOT NULL DEFAULT '25',
-  `createdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `createdate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `rank` int(10) unsigned NOT NULL DEFAULT '1',
   `rankMove` int(11) NOT NULL DEFAULT '0',
   `jobRank` int(10) unsigned NOT NULL DEFAULT '1',
@@ -318,7 +318,7 @@ CREATE TABLE `cheatlog` (
   `characterid` int(11) NOT NULL DEFAULT '0',
   `offense` tinytext NOT NULL,
   `count` int(11) NOT NULL DEFAULT '0',
-  `lastoffensetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `lastoffensetime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `param` tinytext NOT NULL,
   PRIMARY KEY (`id`),
   KEY `cid` (`characterid`)
@@ -463,7 +463,7 @@ CREATE TABLE `dueypackages` (
   `RecieverId` int(10) unsigned NOT NULL,
   `SenderName` varchar(13) NOT NULL,
   `Mesos` int(10) unsigned DEFAULT '0',
-  `TimeStamp` varchar(10) NOT NULL,
+  `TIMESTAMP` varchar(10) NOT NULL,
   `Checked` tinyint(1) unsigned DEFAULT '1',
   `Type` tinyint(1) unsigned NOT NULL,
   PRIMARY KEY (`PackageId`)
@@ -513,7 +513,7 @@ CREATE TABLE `eventstats` (
   `instance` varchar(30) NOT NULL,
   `characterid` int(11) NOT NULL,
   `channel` int(11) NOT NULL,
-  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`eventstatid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -529,7 +529,7 @@ CREATE TABLE `famelog` (
   `famelogid` int(11) NOT NULL AUTO_INCREMENT,
   `characterid` int(11) NOT NULL DEFAULT '0',
   `characterid_to` int(11) NOT NULL DEFAULT '0',
-  `when` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `when` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`famelogid`),
   KEY `characterid` (`characterid`),
   CONSTRAINT `famelog_ibfk_1` FOREIGN KEY (`characterid`) REFERENCES `characters` (`id`) ON DELETE CASCADE
@@ -547,7 +547,7 @@ CREATE TABLE `gmlog` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `cid` int(11) NOT NULL DEFAULT '0',
   `command` tinytext NOT NULL,
-  `when` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `when` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -757,7 +757,7 @@ CREATE TABLE `iplog` (
   `iplogid` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `accountid` int(11) NOT NULL DEFAULT '0',
   `ip` varchar(30) NOT NULL DEFAULT '',
-  `login` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `login` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`iplogid`),
   KEY `accountid` (`accountid`,`ip`),
   KEY `ip` (`ip`),
@@ -12929,7 +12929,7 @@ CREATE TABLE `notes` (
   `to` varchar(13) NOT NULL DEFAULT '',
   `from` varchar(13) NOT NULL DEFAULT '',
   `message` text NOT NULL,
-  `timestamp` bigint(20) unsigned NOT NULL,
+  `TIMESTAMP` bigint(20) unsigned NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -13455,7 +13455,7 @@ INSERT INTO `reactorquestdrops` VALUES ('90', '4031158', '9102001', '1', '2074')
 DROP TABLE IF EXISTS `reports`;
 CREATE TABLE `reports` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `reporttime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `reporttime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `reporterid` int(11) NOT NULL,
   `victimid` int(11) NOT NULL,
   `reason` tinyint(4) NOT NULL,

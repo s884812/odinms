@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /*
 	NPC Name: 		Old Fox Flagship Al
 	Description: 		Quest - Battling Nibergen

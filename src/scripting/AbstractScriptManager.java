@@ -61,7 +61,7 @@ public abstract class AbstractScriptManager {
                 if (!scriptFile.exists()) {
                     return null;
                 }
-                engine = sem.getEngineByName("javascript");
+                engine = sem.getEngineByName("nashorn");
                 if (c != null) {
                     c.setScriptEngine(path, engine);
                 }
@@ -71,7 +71,7 @@ public abstract class AbstractScriptManager {
             }
             return (Invocable) engine;
         } catch (Exception e) {
-            log.error("Error executing script.", e);
+            log.error("Error executing script (" + path + ")", e);
             return null;
         }
     }

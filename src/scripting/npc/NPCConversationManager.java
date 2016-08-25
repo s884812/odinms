@@ -507,7 +507,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         }
     }
 
-    public ChannelServer getCanalServer() {
+    public ChannelServer getChannelServer() {
         return ChannelServer.getInstance(channel);
     }
 

@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /*
  * @Author Jvlaple
  * @Re-Coder JavaScriptz

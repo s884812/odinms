@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /*
 	NPC Name: 		Nineheart
 	Description: 		Quest - Cygnus movie Intro

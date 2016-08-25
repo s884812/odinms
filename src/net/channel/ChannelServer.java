@@ -106,7 +106,7 @@ import server.maps.MapTimer;
 public class ChannelServer implements Runnable, ChannelServerMBean {
 
     MapleClient c;
-    private static int world = 0;
+    private static int worldId = 0;
     private static int uniqueID = 1;
     private int port = 7575;
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(ChannelServer.class);
@@ -186,9 +186,9 @@ public class ChannelServer implements Runnable, ChannelServerMBean {
                 System.out.println("Reconnecting to world server");
                 synchronized (wci) {
                     try {
-                        worldProps = WorldProperties.getInstance(world).getProp();
-                        Registry registry = LocateRegistry.getRegistry(worldProps.getProperty("world.host"), Registry.REGISTRY_PORT, new SslRMIClientSocketFactory());
-                        worldRegistry = (WorldRegistry) registry.lookup("WorldRegistry");
+                        worldProps = WorldProperties.getInstance(worldId).getProp();
+                        Registry registry = LocateRegistry.getRegistry(worldProps.getProperty("world.host"), Registry.REGISTRY_PORT + worldId, new SslRMIClientSocketFactory());
+                        worldRegistry = (WorldRegistry) registry.lookup("WorldRegistry" + worldId);
                         cwi = new ChannelWorldInterfaceImpl(this);
                         wci = worldRegistry.registerChannelServer(key, cwi);
                         expRate = Integer.parseInt(worldProps.getProperty("world.exp"));
@@ -273,19 +273,19 @@ public class ChannelServer implements Runnable, ChannelServerMBean {
         System.out.println("[INFO] Items carregados em " + ((System.currentTimeMillis() - timeToTake) / 1000.0) + " segundos.");
 
         try {
-            System.out.println("[INFO] Canal (" + getChannel() + ") Aberto na porta ( " + port + ").");
+            System.out.println("[INFO] Channel (" + getChannel() + ") is listening on ( " + port + ").");
             acceptor.bind(new InetSocketAddress(port));
             wci.serverReady();
             eventSM.init();
             final ChannelServer serv = this;
             tMan.schedule(() -> {
-                serv.broadcastPacket(MaplePacketCreator.serverNotice(6, "[Mensagem do Sistema] " + configuracoes.botMensagens[(int) (Math.random() * configuracoes.botMensagens.length)]));
+                serv.broadcastPacket(MaplePacketCreator.serverNotice(6, "[Message System] " + configuracoes.botMensagens[(int) (Math.random() * configuracoes.botMensagens.length)]));
                 tMan.schedule(() -> {
-                    serv.broadcastPacket(MaplePacketCreator.serverNotice(6, "[Mensagem do Sistema] " + configuracoes.botMensagens[(int) (Math.random() * configuracoes.botMensagens.length)]));
+                    serv.broadcastPacket(MaplePacketCreator.serverNotice(6, "[Message System] " + configuracoes.botMensagens[(int) (Math.random() * configuracoes.botMensagens.length)]));
                 }, 20 * 60000 + (int) (Math.random() * 10000));
             }, 3 * 60000);
         } catch (IOException e) {
-            System.out.println("A ligacao na porta " + port + " falhou (ch: " + getChannel() + ")" + e);
+            System.out.println("Binding to " + port + " failed. (Channel: " + getChannel() + ")" + e);
         }
         Runtime.getRuntime().addShutdownHook(new Thread(new ShutDown()));
     }
@@ -407,11 +407,12 @@ public class ChannelServer implements Runnable, ChannelServerMBean {
     }
 
     private static ChannelServer newInstance(String key, String ip, int port) throws InstanceAlreadyExistsException, MBeanRegistrationException, NotCompliantMBeanException, MalformedObjectNameException {
+        log.debug(key);
         ChannelServer instance = new ChannelServer(key);
         instance.ip = ip;
         instance.port = port;
         MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
-        mBeanServer.registerMBean(instance, new ObjectName("net.channel:type=ChannelServer,name=ChannelServer_" + world + "_" + uniqueID++));
+        mBeanServer.registerMBean(instance, new ObjectName("net.channel:type=ChannelServer,name=ChannelServer_" + worldId + "_" + uniqueID++));
         pendingInstances.put(key, instance);
         return instance;
     }
@@ -717,16 +718,16 @@ public class ChannelServer implements Runnable, ChannelServerMBean {
             InstanceAlreadyExistsException, MBeanRegistrationException,
             NotCompliantMBeanException, MalformedObjectNameException {
 
-        world = Integer.parseInt(System.getProperty("channel.worldId", "0"));
+        worldId = Integer.parseInt(System.getProperty("channel.worldId", "0"));
 
-        Properties props = ChannelProperties.getInstance(world).getProp();
+        Properties props = ChannelProperties.getInstance(worldId).getProp();
 
         String host = props.getProperty("channel.net.interface");
-        int channelCount = Integer.parseInt(props.getProperty("channel.count", "1"));
-        int channelPort = Integer.parseInt(props.getProperty("channel.net.interface", "7575"));
+        int channelCount = Integer.parseInt(props.getProperty("channel.count", "5"));
+        int channelPort = Integer.parseInt(props.getProperty("channel.net.port", "7575"));
 
-        Registry registry = LocateRegistry.getRegistry(host, Registry.REGISTRY_PORT, new SslRMIClientSocketFactory());
-        worldRegistry = (WorldRegistry) registry.lookup("WorldRegistry");
+        Registry registry = LocateRegistry.getRegistry(host, Registry.REGISTRY_PORT + worldId, new SslRMIClientSocketFactory());
+        worldRegistry = (WorldRegistry) registry.lookup("WorldRegistry" + worldId);
         for (int i = 0; i < channelCount; i++) {
             newInstance(props.getProperty("channel." + i + ".key"), host, channelPort++).run();
         }

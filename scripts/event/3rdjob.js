@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /* Event 3rdjob.js
 
     Created by Matthew Prince of MapleRoyals.com - matt@mapleroyals.com

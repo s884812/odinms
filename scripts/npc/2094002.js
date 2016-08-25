@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /*2094002.js [Guon in PPQ(Pirate PQ)]
  *@author Jvlaple
  */

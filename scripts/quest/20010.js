@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /*
 	NPC Name: 		Kimu
 	Description: 		Quest - Cygnus tutorial helper

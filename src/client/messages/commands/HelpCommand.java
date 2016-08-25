@@ -57,7 +57,7 @@ public class HelpCommand implements Command {
                 player.getClient().getChannelServer().eventOn = true;
                 player.getClient().getChannelServer().eventMap = mapid;
                 try {
-                    ChannelServer.getInstance(c.getSelectedChannel()).getWorldInterface().broadcastMessage(null, MaplePacketCreator.serverNotice(6, c.getSelectedChannel(), "[Evento] O evento foi iniciado no canal (" + c.getSelectedChannel() + "). Use @evento para participar.").getBytes());
+                    ChannelServer.getInstance(c.getSelectedChannel()).getWorldInterface().broadcastMessage(null, MaplePacketCreator.serverNotice(6, c.getSelectedChannel(), "[Evento] O evento foi iniciado no Channel (" + c.getSelectedChannel() + "). Use @evento para participar.").getBytes());
                 } catch (RemoteException e) {
                     ChannelServer.getInstance(c.getSelectedChannel()).reconnectWorld();
                 }

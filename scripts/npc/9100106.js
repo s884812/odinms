@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /*
  * Criado por JavaScriptz
  * LeaderMS 2014

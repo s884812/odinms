@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /*
     This file is part of the MapleChaos Maple Story Server
     Copyright (C) 2009 Nathan Liu <maplechaos@gmail.com>

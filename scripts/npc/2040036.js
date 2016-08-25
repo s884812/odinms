@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /*
  *Red Ballon - Stage 1 of LPQ =D
   *@author Jvlaple

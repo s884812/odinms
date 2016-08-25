@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /* Author: Xterminator
 	NPC Name: 		Jane
 	Map(s): 		Victoria Road : Lith Harbor (104000000)

@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /**
  *9201045.js - Amos in stage 5, 6 and 7
  *@author Jvlaple

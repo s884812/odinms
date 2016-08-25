@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /*
 9201047 - Glimmer Man 
 */

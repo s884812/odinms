@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 //Created by zambookii on 6/29/2014
 
 var map = 980000000; //put your map id here.

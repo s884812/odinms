@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /* 
 *
 *	NimaKIN - v.61 Female Support

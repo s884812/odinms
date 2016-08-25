@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /* Author: Xterminator
 	NPC Name: 		Heena
 	Map(s): 		Maple Road : Lower level of the Training Camp (2)

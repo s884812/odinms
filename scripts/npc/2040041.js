@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /*
  *Aqua Ballon - Stage 6 of LPQ =D
   *@author Jvlaple

@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /*
  * Cygnus 1st Job advancement - Night Walker
  */

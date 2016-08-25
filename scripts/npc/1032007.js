@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /* Author: Xterminator
 	NPC Name: 		Joel
 	Map(s): 		Victoria Road : Ellinia Station (101000300)

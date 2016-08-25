@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /* Author: Xterminator
 	NPC Name: 		Sunny
 	Map(s): 		Orbis: Station<To Ludibrium> (200000121)

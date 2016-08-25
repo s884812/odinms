@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /* 	
 Ralph (Old Guy in Boat Quay) 
 Function: Useless.

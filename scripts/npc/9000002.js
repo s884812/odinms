@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
  /* 
  * @author Soulfist 
  * LeaderMS 2014

@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /*
 	by ANK - LeaderMS
 2100005

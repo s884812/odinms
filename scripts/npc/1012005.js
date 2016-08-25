@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /* Author: Xterminator
 	NPC Name: 		Cloy
 	Map(s): 		Victoria Road : Henesys Park (100000200)

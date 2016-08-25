@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 	/*
  *Lime Ballon - Stage 4 of LPQ =D
   *@author Jvlaple

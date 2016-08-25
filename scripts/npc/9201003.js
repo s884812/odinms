@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /**
  *9201003.js - Mom and Dad
  *@author Jvlaple

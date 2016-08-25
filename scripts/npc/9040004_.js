@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /*
 	This file was written by "StellarAshes" <stellar_dust@hotmail.com> 
 			as a part of the Guild package for

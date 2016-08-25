@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 var status = -1;
 
 function start(mode, type, selection) {

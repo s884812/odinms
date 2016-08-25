@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /*Tory - [Does the Main function of HPQ]
  *@author Jvlaple
  *This file is part of Henesys Party Quest created by Jvlaple of RaGEZONE. [www.forum.ragezone.com] removing this notice means you may not use this script, or any other software released by Jvlaple.

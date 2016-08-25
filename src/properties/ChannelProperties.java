@@ -14,21 +14,21 @@ import java.util.Map;
  */
 public class ChannelProperties extends AbstractProperties {
     
-    static Map<Integer, WorldProperties> props = new HashMap<>();
+    static Map<Integer, ChannelProperties> props = new HashMap<>();
     
-    public static WorldProperties getInstance(Integer worldId)
+    public static ChannelProperties getInstance(Integer worldId)
     {
         if(props.containsKey(worldId))
             return props.get(worldId);
         else
         {
-            WorldProperties worldProp = new WorldProperties(worldId);
-            props.put(worldId, worldProp);
-            return worldProp;
+            ChannelProperties chProp = new ChannelProperties(worldId);
+            props.put(worldId, chProp);
+            return chProp;
         }
     }
     
     public ChannelProperties(int worldId) {
-        super("./configs/world" + worldId + "channel.properties");
+        super("./configs/world" + worldId + "/channel.properties");
     }
 }

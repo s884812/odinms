@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /* Author: Xterminator
 	NPC Name: 		Phil
 	Map(s): 		Victoria Road : Lith Harbour (104000000)

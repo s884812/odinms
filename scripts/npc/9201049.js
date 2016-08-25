@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /*9201049 - Ames
  *@author Jvlaple
 */

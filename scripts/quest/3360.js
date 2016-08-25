@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /*
 	NPC Name: 		Parwen
 	Description: 		Quest - Verifying the password

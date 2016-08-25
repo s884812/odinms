@@ -105,7 +105,7 @@ public class WorldChannelInterfaceImpl extends UnicastRemoteObject implements Wo
                 WorldRegistryImpl.getInstance().deregisterLoginServer(wli);
             }
         }
-        System.out.println("[INFO] Canal " + cb.getChannelId() + " esta online.");
+        System.out.println("[INFO] Channel " + cb.getChannelId() + " esta online.");
     }
 
     public boolean isReady() {

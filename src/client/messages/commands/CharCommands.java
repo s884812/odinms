@@ -131,7 +131,7 @@ public class CharCommands implements Command {
                 c.getChannelServer().eventOn = true;
                 c.getChannelServer().eventMap = mapid;
                 try {
-                    c.getChannelServer().getWorldInterface().broadcastMessage(null, MaplePacketCreator.serverNotice(6, c.getSelectedChannel(), "[Evento] O evento foi iniciado no canal (" + c.getSelectedChannel() + "). Use @evento para participar.").getBytes());
+                    c.getChannelServer().getWorldInterface().broadcastMessage(null, MaplePacketCreator.serverNotice(6, c.getSelectedChannel(), "[Evento] O evento foi iniciado no Channel (" + c.getSelectedChannel() + "). Use @evento para participar.").getBytes());
                 } catch (RemoteException e) {
                     c.getChannelServer().reconnectWorld();
                 }

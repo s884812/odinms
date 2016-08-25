@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /* Author: Xterminator
 	NPC Name: 		Rain
 	Map(s): 		Maple Road : Amherst (1010000)

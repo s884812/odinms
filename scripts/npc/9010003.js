@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /*
  * LeaderMS Private Server
  * Servidor Brasileiro 2011-2014

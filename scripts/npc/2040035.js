@@ -1,3 +1,4 @@
+load('nashorn:mozilla_compat.js');
 /*
 @author Jvlaple
 *Aturo gives you a random item :D
